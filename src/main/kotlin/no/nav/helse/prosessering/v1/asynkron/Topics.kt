@@ -18,7 +18,7 @@ data class TopicEntry<V>(val metadata: Metadata, val data: V)
 
 data class Cleanup(val metadata: Metadata, val melding: PreprossesertMeldingV1, val journalførtMelding: Journalfort)
 
-data class Journalfort(val journalpostId: String, val søknad: OmsorgspengerSøknad)
+data class Journalfort(val journalpostId: String, val søknad: PreprossesertMeldingV1) //TODO Lage på formatet som k9 ønsker
 
 internal data class Topic<V>(
     val name: String,
@@ -31,19 +31,19 @@ internal data class Topic<V>(
 
 internal object Topics {
     val MOTTATT = Topic(
-        name = "privat-omsorgspengesoknad-mottatt",
+        name = "privat-omsorgspenger-midlertidig-alene-mottatt",
         serDes = MottattSoknadSerDes()
     )
     val PREPROSSESERT = Topic(
-        name = "privat-omsorgspengesoknad-preprossesert",
+        name = "privat-omsorgspenger-midlertidig-alene-preprossesert",
         serDes = PreprossesertSerDes()
     )
     val CLEANUP = Topic(
-        name = "privat-omsorgspengesoknad-cleanup",
+        name = "privat-omsorgspenger-midlertidig-alene-cleanup",
         serDes = CleanupSerDes()
     )
     val JOURNALFORT = Topic(
-        name = "privat-omsorgspengesoknad-journalfort",
+        name = "privat-omsorgspenger-midlertidig-alene-journalfort",
         serDes = JournalfortSerDes()
     )
 

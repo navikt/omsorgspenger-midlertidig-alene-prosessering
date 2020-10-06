@@ -50,7 +50,7 @@ class DokumentService(
             dokument = DokumentGateway.Dokument(
                 content = Søknadsformat.somJson(melding),
                 contentType = "application/json",
-                title = "Søknad om omsorgspenger som JSON"
+                title = "Søknad om omsorgspenger midlertidig alene som JSON"
             ),
             aktørId = aktørId,
             correlationId = correlationId

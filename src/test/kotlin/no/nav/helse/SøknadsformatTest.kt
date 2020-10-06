@@ -1,8 +1,6 @@
 package no.nav.helse
 
 import no.nav.helse.dokument.Søknadsformat
-import no.nav.helse.prosessering.v1.Barn
-import no.nav.helse.prosessering.v1.Medlemskap
 import no.nav.helse.prosessering.v1.MeldingV1
 import no.nav.helse.prosessering.v1.Søker
 import org.skyscreamer.jsonassert.JSONAssert
@@ -24,14 +22,6 @@ class SøknadsformatTest {
                   "søknadId": "$søknadId",
                   "mottatt": "2018-01-02T03:04:05.000000006Z",
                   "språk": "nb",
-                  "kroniskEllerFunksjonshemming": false,
-                  "arbeidssituasjon": ["Arbeidstaker", "Frilans", "Selvstendig Næringsdrivende"],
-                  "barn": {
-                    "navn": "Kari",
-                    "norskIdentifikator": "2323",
-                    "fødselsdato": null,
-                    "aktørId": null
-                  },
                   "søker": {
                     "fødselsnummer": "1212",
                     "fornavn": "Ola",
@@ -39,14 +29,6 @@ class SøknadsformatTest {
                     "etternavn": "Nordmann",
                     "fødselsdato": null,
                     "aktørId": "123456"
-                  },
-                  "relasjonTilBarnet": "Mor",
-                  "sammeAdresse": false,
-                  "medlemskap": {
-                    "harBoddIUtlandetSiste12Mnd": true,
-                    "utenlandsoppholdSiste12Mnd": [],
-                    "skalBoIUtlandetNeste12Mnd": true,
-                    "utenlandsoppholdNeste12Mnd": []
                   },
                   "harBekreftetOpplysninger": true,
                   "harForståttRettigheterOgPlikter": true
@@ -67,20 +49,6 @@ class SøknadsformatTest {
             mellomnavn = "Mellomnavn",
             fornavn = "Ola",
             fødselsdato = null
-        ),
-        barn = Barn(
-            navn = "Kari",
-            norskIdentifikator = "2323",
-            fødselsdato = null,
-            aktørId = null
-        ),
-        relasjonTilBarnet = "Mor",
-        arbeidssituasjon = listOf("Arbeidstaker", "Frilans", "Selvstendig Næringsdrivende"),
-        medlemskap = Medlemskap(
-            harBoddIUtlandetSiste12Mnd = true,
-            skalBoIUtlandetNeste12Mnd = true,
-            utenlandsoppholdSiste12Mnd = listOf(),
-            utenlandsoppholdNeste12Mnd = listOf()
         ),
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true

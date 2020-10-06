@@ -15,14 +15,11 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
-import no.nav.helse.k9.assertUtvidetAntallDagerFormat
 import no.nav.helse.prosessering.v1.*
-import no.nav.helse.prosessering.v1.asynkron.TopicEntry
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URI
 import java.time.Duration
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -136,23 +133,18 @@ class OmsorgspengesoknadProsesseringTest {
     @Test
     fun `Gylding melding blir prosessert av journalføringskonsumer`() {
         val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = gyldigFodselsnummerB,
-            barnetsFødselsdato = null
+            fødselsnummerSoker = gyldigFodselsnummerA
         )
 
         kafkaTestProducer.leggTilMottak(melding)
         journalføringsKonsumer
             .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
     }
 
     @Test
     fun `En feilprosessert melding vil bli prosessert etter at tjenesten restartes`() {
         val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = gyldigFodselsnummerB,
-            barnetsFødselsdato = null
+            fødselsnummerSoker = gyldigFodselsnummerA
         )
 
         wireMockServer.stubJournalfor(500) // Simulerer feil ved journalføring
@@ -165,7 +157,6 @@ class OmsorgspengesoknadProsesseringTest {
         restartEngine()
         journalføringsKonsumer
             .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
     }
 
     private fun readyGir200HealthGir503() {
@@ -182,176 +173,27 @@ class OmsorgspengesoknadProsesseringTest {
     @Test
     fun `Melding som gjeder søker med D-nummer`() {
         val melding = gyldigMelding(
-            fødselsnummerSoker = dNummerA,
-            fødselsnummerBarn = gyldigFodselsnummerB, barnetsFødselsdato = null
+            fødselsnummerSoker = dNummerA
         )
 
         kafkaTestProducer.leggTilMottak(melding)
         journalføringsKonsumer
             .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Melding lagt til prosessering selv om sletting av vedlegg feiler`() {
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = gyldigFodselsnummerB,
-            barnetsFødselsdato = null,
-            barnetsNavn = "kari"
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Melding lagt til prosessering selv om oppslag paa aktør ID for barn feiler`() {
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = gyldigFodselsnummerC,
-            barnetsFødselsdato = null
-        )
-
-        wireMockServer.stubAktoerRegisterGetAktoerIdNotFound(gyldigFodselsnummerC)
-
-        kafkaTestProducer.leggTilMottak(melding)
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Bruk barnets fødselsnummer til å slå opp i tps-proxy dersom navnet mangler`() {
-        wireMockServer.stubTpsProxyGetNavn("KLØKTIG", "BLUNKENDE", "SUPERKONSOLL")
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerC,
-            fødselsnummerBarn = gyldigFodselsnummerB,
-            barnetsNavn = null
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        val preprossesertMelding: TopicEntry<PreprossesertMeldingV1> =
-            preprossesertKonsumer.hentPreprossesertMelding(melding.søknadId)
-        assertEquals("KLØKTIG BLUNKENDE SUPERKONSOLL", preprossesertMelding.data.barn.navn)
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Bruk barnets aktørId til å slå opp i tps-proxy dersom navnet mangler`() {
-        wireMockServer.stubAktørRegister(dNummerA, "56789")
-        wireMockServer.stubTpsProxyGetNavn("KLØKTIG", "BLUNKENDE", "SUPERKONSOLL")
-
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = null,
-            barnetsNavn = null,
-            aktørIdBarn = "56789"
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        val preprosessertMelding: TopicEntry<PreprossesertMeldingV1> =
-            preprossesertKonsumer.hentPreprossesertMelding(melding.søknadId)
-        assertEquals("KLØKTIG BLUNKENDE SUPERKONSOLL", preprosessertMelding.data.barn.navn)
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Forvent barnets fødselsnummer dersom den er satt i melding`() {
-        wireMockServer.stubAktørRegister(gyldigFodselsnummerB, "56789")
-
-        val forventetFodselsNummer: String = gyldigFodselsnummerB
-
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = forventetFodselsNummer,
-            barnetsFødselsdato = null,
-            barnetsNavn = null,
-            aktørIdBarn = "56789"
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        val preprosessertMelding: TopicEntry<PreprossesertMeldingV1> =
-            preprossesertKonsumer.hentPreprossesertMelding(melding.søknadId)
-
-        assertEquals(forventetFodselsNummer, preprosessertMelding.data.barn.norskIdentifikator)
-
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Forvent 2 legeerklæringer og 2 samværsavtaler dersom den er satt i melding`() {
-        wireMockServer.stubAktørRegister(gyldigFodselsnummerB, "56789")
-
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = gyldigFodselsnummerB,
-            barnetsFødselsdato = null,
-            barnetsNavn = null,
-            aktørIdBarn = "56789"
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        val preprossesertMelding: TopicEntry<PreprossesertMeldingV1> =
-            preprossesertKonsumer.hentPreprossesertMelding(melding.søknadId)
-        assertEquals(5, preprossesertMelding.data.dokumentUrls.size)
-        // 2 legeerklæringsvedlegg, 2, to samværsavtalevedlegg, og 1 søknadPdf.
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
-    }
-
-    @Test
-    fun `Forvent barnets fødselsnummer blir slått opp dersom den ikke er satt i melding`() {
-        val forventetFodselsNummer = gyldigFodselsnummerB
-
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = null,
-            barnetsNavn = "Ole Dole Doffen",
-            aktørIdBarn = "777777777"
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        val preprosessertMelding: TopicEntry<PreprossesertMeldingV1> =
-            preprossesertKonsumer.hentPreprossesertMelding(melding.søknadId)
-
-        assertEquals(forventetFodselsNummer, preprosessertMelding.data.barn.norskIdentifikator)
-
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
     }
 
     @Test
     fun `Forvent riktig format på journalført melding`() {
         val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA,
-            fødselsnummerBarn = null,
-            barnetsNavn = "Ole Dole Doffen",
-            aktørIdBarn = "777777777"
+            fødselsnummerSoker = gyldigFodselsnummerA
         )
 
         kafkaTestProducer.leggTilMottak(melding)
         journalføringsKonsumer
             .hentJournalførtMelding(melding.søknadId)
-            .assertUtvidetAntallDagerFormat()
     }
 
     private fun gyldigMelding(
         fødselsnummerSoker: String,
-        fødselsnummerBarn: String?,
-        barnetsNavn: String? = "kari",
-        barnetsFødselsdato: LocalDate? = LocalDate.now().minusDays(100),
-        aktørIdBarn: String? = null,
         sprak: String? = null
     ): MeldingV1 = MeldingV1(
         språk = sprak,
@@ -365,28 +207,8 @@ class OmsorgspengesoknadProsesseringTest {
             mellomnavn = "Mellomnavn",
             fornavn = "Ola"
         ),
-        barn = Barn(
-            navn = barnetsNavn,
-            norskIdentifikator = fødselsnummerBarn,
-            aktørId = aktørIdBarn,
-            fødselsdato = barnetsFødselsdato
-        ),
-        legeerklæring = listOf(
-            URI("http://localhost:8080/vedlegg/1"),
-            URI("http://localhost:8080/vedlegg/2")
-        ),
-        samværsavtale = listOf(
-            URI("http://localhost:8080/vedlegg/3"),
-            URI("http://localhost:8080/vedlegg/4")
-        ),
-        relasjonTilBarnet = "Mor",
-        arbeidssituasjon = listOf("Arbeidstaker", "Frilans", "Selvstendig Næringsdrivende"),
         harBekreftetOpplysninger = true,
-        harForståttRettigheterOgPlikter = true,
-        medlemskap = Medlemskap(
-            harBoddIUtlandetSiste12Mnd = true,
-            skalBoIUtlandetNeste12Mnd = true
-        )
+        harForståttRettigheterOgPlikter = true
     )
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }

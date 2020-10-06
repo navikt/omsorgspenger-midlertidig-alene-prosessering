@@ -11,15 +11,7 @@ data class MeldingV1(
     val søknadId: String,
     val mottatt: ZonedDateTime,
     val språk: String? = "nb",
-    val kroniskEllerFunksjonshemming: Boolean = false,
-    val arbeidssituasjon: List<String>,
-    val barn: Barn,
     val søker: Søker,
-    val relasjonTilBarnet: String? = null,
-    val sammeAdresse: Boolean = false,
-    val medlemskap: Medlemskap,
-    var legeerklæring: List<URI> = listOf(),
-    var samværsavtale: List<URI> = listOf(),
     val harBekreftetOpplysninger: Boolean,
     val harForståttRettigheterOgPlikter: Boolean
 )
@@ -34,34 +26,5 @@ data class Søker(
 ) {
     override fun toString(): String {
         return "Soker(fornavn='$fornavn', mellomnavn=$mellomnavn, etternavn='$etternavn', fødselsdato=$fødselsdato, aktørId='$aktørId')"
-    }
-}
-
-data class Barn(
-    val navn: String?,
-    val norskIdentifikator: String?,
-    @JsonFormat(pattern = "yyyy-MM-dd") val fødselsdato: LocalDate?,
-    val aktørId: String?
-) {
-    override fun toString(): String {
-        return "Barn(navn=$navn, aktørId=$aktørId)"
-    }
-}
-
-data class Medlemskap(
-    val harBoddIUtlandetSiste12Mnd: Boolean,
-    val utenlandsoppholdSiste12Mnd: List<Utenlandsopphold> = listOf(),
-    val skalBoIUtlandetNeste12Mnd: Boolean,
-    val utenlandsoppholdNeste12Mnd: List<Utenlandsopphold> = listOf()
-)
-
-data class Utenlandsopphold(
-    @JsonFormat(pattern = "yyyy-MM-dd") val fraOgMed: LocalDate,
-    @JsonFormat(pattern = "yyyy-MM-dd") val tilOgMed: LocalDate,
-    val landkode: String,
-    val landnavn: String
-) {
-    override fun toString(): String {
-        return "Utenlandsopphold(fraOgMed=$fraOgMed, tilOgMed=$tilOgMed, landkode='$landkode', landnavn='$landnavn')"
     }
 }

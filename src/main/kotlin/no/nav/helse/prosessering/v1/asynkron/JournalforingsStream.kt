@@ -7,7 +7,6 @@ import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.helse.prosessering.v1.PreprossesertBarn
 import no.nav.helse.prosessering.v1.PreprossesertMeldingV1
 import no.nav.helse.prosessering.v1.PreprossesertSøker
 import no.nav.k9.søknad.felles.Barn
@@ -66,7 +65,7 @@ internal class JournalforingsStream(
                         logger.info("Dokumenter journalført med ID = ${journaPostId.journalpostId}.")
                         val journalfort = Journalfort(
                             journalpostId = journaPostId.journalpostId,
-                            søknad = entry.data.tilK9Omsorgspengesøknad()
+                            søknad = entry.data
                         )
                         Cleanup(
                             metadata = entry.metadata,
@@ -82,27 +81,4 @@ internal class JournalforingsStream(
     }
 
     internal fun stop() = stream.stop(becauseOfError = false)
-}
-
-private fun PreprossesertMeldingV1.tilK9Omsorgspengesøknad(): OmsorgspengerSøknad = OmsorgspengerSøknad.builder()
-    .søknadId(SøknadId.of(soknadId))
-    .mottattDato(mottatt)
-    .barn(barn.tilK9Barn())
-    .søker(søker.tilK9Søker())
-    .build()
-
-private fun PreprossesertSøker.tilK9Søker(): Søker = Søker.builder()
-    .norskIdentitetsnummer(NorskIdentitetsnummer.of(fødselsnummer))
-    .build()
-
-private fun PreprossesertBarn.tilK9Barn(): Barn {
-    return when {
-        !norskIdentifikator.isNullOrBlank() -> Barn.builder().norskIdentitetsnummer(
-            NorskIdentitetsnummer.of(
-                norskIdentifikator
-            )
-        ).build()
-        fødselsDato != null -> Barn.builder().fødselsdato(fødselsDato).build()
-        else -> throw IllegalArgumentException("Ikke tillatt med barn som mangler både fødselsdato og fødselnummer.")
-    }
 }

@@ -28,7 +28,6 @@ internal class AsynkronProsesseringV1Service(
         joarkGateway = joarkGateway
     )
 
-
     private val cleanupStream = CleanupStream(
         kafkaConfig = kafkaConfig,
         dokumentService = dokumentService

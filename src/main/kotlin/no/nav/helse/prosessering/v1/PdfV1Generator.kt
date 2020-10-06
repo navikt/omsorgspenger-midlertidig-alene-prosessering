@@ -70,11 +70,7 @@ internal class PdfV1Generator {
         )
     }
 
-    internal fun generateSoknadOppsummeringPdf(
-        melding: MeldingV1,
-        barnetsIdent: NorskIdent?,
-        barnetsNavn: String?
-    ): ByteArray {
+    internal fun generateSoknadOppsummeringPdf(melding: MeldingV1): ByteArray {
         soknadTemplate.apply(
             Context
                 .newBuilder(
@@ -84,22 +80,7 @@ internal class PdfV1Generator {
                         "soknad_mottatt" to DATE_TIME_FORMATTER.format(melding.mottatt),
                         "søker" to mapOf(
                             "navn" to melding.søker.formatertNavn(),
-                            "fødselsnummer" to melding.søker.fødselsnummer,
-                            "relasjonTilBarnet" to melding.relasjonTilBarnet
-                        ),
-                        "barn" to mapOf(
-                            "navn" to barnetsNavn,
-                            "id" to barnetsIdent?.getValue(),
-                            "fødselsdato" to melding.barn.fødselsdato
-                        ),
-                        "sammeAddresse" to melding.sammeAdresse,
-                        "kroniskEllerFunksjonshemming" to melding.kroniskEllerFunksjonshemming,
-                        "arbeidssituasjon" to melding.arbeidssituasjon,
-                        "medlemskap" to mapOf(
-                            "har_bodd_i_utlandet_siste_12_mnd" to melding.medlemskap.harBoddIUtlandetSiste12Mnd,
-                            "utenlandsopphold_siste_12_mnd" to melding.medlemskap.utenlandsoppholdSiste12Mnd.somMapUtenlandsopphold(),
-                            "skal_bo_i_utlandet_neste_12_mnd" to melding.medlemskap.skalBoIUtlandetNeste12Mnd,
-                            "utenlandsopphold_neste_12_mnd" to melding.medlemskap.utenlandsoppholdNeste12Mnd.somMapUtenlandsopphold()
+                            "fødselsnummer" to melding.søker.fødselsnummer
                         ),
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,
@@ -107,8 +88,7 @@ internal class PdfV1Generator {
                         ),
                         "hjelp" to mapOf(
                             "språk" to melding.språk?.sprakTilTekst()
-                        ),
-                        "harIkkeLastetOppLegeerklæring" to melding.harIkkeLastetOppLegeerklæring()
+                        )
                     )
                 )
                 .resolver(MapValueResolver.INSTANCE)
@@ -156,17 +136,6 @@ internal class PdfV1Generator {
             )
 }
 
-private fun List<Utenlandsopphold>.somMapUtenlandsopphold(): List<Map<String, Any?>> {
-    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.of("Europe/Oslo"))
-    return map {
-        mapOf<String, Any?>(
-            "landnavn" to it.landnavn,
-            "fraOgMed" to dateFormatter.format(it.fraOgMed),
-            "tilOgMed" to dateFormatter.format(it.tilOgMed)
-        )
-    }
-}
-
 private fun Søker.formatertNavn() = if (mellomnavn != null) "$fornavn $mellomnavn $etternavn" else "$fornavn $etternavn"
 
 private fun String.sprakTilTekst() = when (this.toLowerCase()) {
@@ -174,5 +143,3 @@ private fun String.sprakTilTekst() = when (this.toLowerCase()) {
     "nn" -> "nynorsk"
     else -> this
 }
-
-private fun MeldingV1.harIkkeLastetOppLegeerklæring() : Boolean = !legeerklæring.isNotEmpty()

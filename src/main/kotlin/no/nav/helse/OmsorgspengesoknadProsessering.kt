@@ -18,7 +18,6 @@ import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.aktoer.AktoerGateway
 import no.nav.helse.aktoer.AktoerService
 import no.nav.helse.auth.AccessTokenClientResolver
-import no.nav.helse.barn.BarnOppslag
 import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.dusseldorf.ktor.auth.clients
@@ -85,8 +84,7 @@ fun Application.omsorgspengesoknadProsessering() {
     val preprosseseringV1Service = PreprosseseringV1Service(
         aktoerService = aktoerService,
         pdfV1Generator = PdfV1Generator(),
-        dokumentService = dokumentService,
-        barnOppslag = BarnOppslag(tpsProxyV1Gateway)
+        dokumentService = dokumentService
     )
     val joarkGateway = JoarkGateway(
         baseUrl = configuration.getk9JoarkBaseUrl(),
