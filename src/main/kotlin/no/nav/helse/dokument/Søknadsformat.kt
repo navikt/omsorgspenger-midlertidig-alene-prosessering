@@ -18,8 +18,6 @@ class Søknadsformat {
             meldingV1: MeldingV1
         ): ByteArray {
             val node = objectMapper.valueToTree<ObjectNode>(meldingV1)
-            node.remove("legeerklæring")
-            node.remove("samværsavtale")
             return objectMapper.writeValueAsBytes(node)
         }
 

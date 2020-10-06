@@ -7,11 +7,12 @@ import com.github.jknack.handlebars.context.MapValueResolver
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
-import no.nav.helse.aktoer.NorskIdent
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.time.DayOfWeek
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -142,4 +143,14 @@ private fun String.sprakTilTekst() = when (this.toLowerCase()) {
     "nb" -> "bokmål"
     "nn" -> "nynorsk"
     else -> this
+}
+
+private fun ZonedDateTime.norskDag() = when(dayOfWeek) {
+    DayOfWeek.MONDAY -> "Mandag"
+    DayOfWeek.TUESDAY -> "Tirsdag"
+    DayOfWeek.WEDNESDAY -> "Onsdag"
+    DayOfWeek.THURSDAY -> "Torsdag"
+    DayOfWeek.FRIDAY -> "Fredag"
+    DayOfWeek.SATURDAY -> "Lørdag"
+    else -> "Søndag"
 }

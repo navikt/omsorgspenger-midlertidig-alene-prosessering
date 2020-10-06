@@ -44,12 +44,12 @@ internal class PreprosseseringStream(
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
-                        logger.info("Preprosesserer søknad.")
+                        logger.info("Preprosesserer søknad med ID = {}", soknadId)
                         val preprossesertMelding = preprosseseringV1Service.preprosseser(
                             melding = entry.data,
                             metadata = entry.metadata
                         )
-                        logger.info("Preprossesering ferdig.")
+                        logger.trace("Preprossesering ferdig.")
                         preprossesertMelding
                     }
                 }

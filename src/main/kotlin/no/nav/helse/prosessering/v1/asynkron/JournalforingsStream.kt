@@ -1,19 +1,13 @@
 package no.nav.helse.prosessering.v1.asynkron
 
 import no.nav.helse.CorrelationId
-import no.nav.helse.aktoer.AktørId
 import no.nav.helse.joark.JoarkGateway
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
+import no.nav.helse.prosessering.AktørId
 import no.nav.helse.prosessering.v1.PreprossesertMeldingV1
-import no.nav.helse.prosessering.v1.PreprossesertSøker
-import no.nav.k9.søknad.felles.Barn
-import no.nav.k9.søknad.felles.NorskIdentitetsnummer
-import no.nav.k9.søknad.felles.Søker
-import no.nav.k9.søknad.felles.SøknadId
-import no.nav.k9.søknad.omsorgspenger.OmsorgspengerSøknad
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.Consumed
@@ -52,9 +46,10 @@ internal class JournalforingsStream(
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
+                        logger.info("Journalfører søknad med ID = {}", soknadId)
 
                         val dokumenter = entry.data.dokumentUrls
-                        logger.info("Journalfører dokumenter: {}", dokumenter)
+                        logger.trace("Journalfører dokumenter: {}", dokumenter)
                         val journaPostId = joarkGateway.journalfør(
                             mottatt = entry.data.mottatt,
                             aktørId = AktørId(entry.data.søker.aktørId),

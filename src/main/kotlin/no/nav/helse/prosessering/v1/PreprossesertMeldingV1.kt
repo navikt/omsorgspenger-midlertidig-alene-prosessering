@@ -1,14 +1,11 @@
 package no.nav.helse.prosessering.v1
 
-import no.nav.helse.aktoer.AktørId
-import no.nav.helse.aktoer.Fodselsnummer
-import no.nav.helse.aktoer.NorskIdent
+import no.nav.helse.prosessering.AktørId
 import java.net.URI
-import java.time.LocalDate
 import java.time.ZonedDateTime
 
 data class PreprossesertMeldingV1(
-    val soknadId: String,
+    val søknadId: String,
     val mottatt: ZonedDateTime,
     val språk: String?,
     val dokumentUrls: List<List<URI>>,
@@ -22,7 +19,7 @@ data class PreprossesertMeldingV1(
         søkerAktørId: AktørId
     ) : this(
         språk = melding.språk,
-        soknadId = melding.søknadId,
+        søknadId = melding.søknadId,
         mottatt = melding.mottatt,
         dokumentUrls = dokumentUrls,
         søker = PreprossesertSøker(melding.søker, søkerAktørId),

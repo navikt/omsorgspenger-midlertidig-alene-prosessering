@@ -38,7 +38,6 @@ class OmsorgspengesoknadProsesseringTest {
         private val logger: Logger = LoggerFactory.getLogger(OmsorgspengesoknadProsesseringTest::class.java)
 
         private val wireMockServer: WireMockServer = WireMockBuilder()
-            .withNaisStsSupport()
             .withAzureSupport()
             .navnOppslagConfig()
             .build()
@@ -47,13 +46,11 @@ class OmsorgspengesoknadProsesseringTest {
             .stubJournalfor()
             .stubLagreDokument()
             .stubSlettDokument()
-            .stubAktørRegister("29099012345", "123456")
 
         private val kafkaEnvironment = KafkaWrapper.bootstrap()
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
 
         private val journalføringsKonsumer = kafkaEnvironment.journalføringsKonsumer()
-
 
         private val cleanupKonsumer = kafkaEnvironment.cleanupKonsumer()
         private val preprossesertKonsumer = kafkaEnvironment.preprossesertKonsumer()
