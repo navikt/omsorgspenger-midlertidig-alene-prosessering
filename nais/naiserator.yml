@@ -32,6 +32,8 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
+  envFrom:
+    - secret: omsorgspenger-midlertidig-alene-prosessering.sts-credentials
   env:
   {{#each env}}
      - name: {{@key}}
