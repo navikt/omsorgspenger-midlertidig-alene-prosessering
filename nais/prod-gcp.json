@@ -1,16 +1,10 @@
 {
-  "app": "omsorgspengesoknad-prosessering",
-  "cluster": "prod-fss",
-  "namespace": "default",
+  "app": "omsorgspenger-midlertidig-alene-prosessering",
+  "cluster": "prod-gcp",
+  "namespace": "dusseldorf",
   "team": "dusseldorf",
   "minReplicas": "1",
   "maxReplicas": "2",
-  "ingresses": [
-    "https://omsorgspengesoknad-prosessering.nais.adeo.no"
-  ],
-  "vaultKvPath": "/kv/prod/fss/omsorgspengesoknad-prosessering/default",
-  "azureadKvPath": "/azuread/data/prod/creds/omsorgspengesoknad-prosessering",
-  "serviceuserKvPath": "/serviceuser/data/prod/srvomsorgspeng-prs",
   "env": {
     "K9_JOARK_BASE_URL": "https://k9-joark.nais.adeo.no",
     "K9_DOKUMENT_BASE_URL": "https://k9-dokument.nais.adeo.no",
@@ -23,6 +17,6 @@
     "JOURNALFORE_SCOPES": "cb751642-883c-48d3-9f82-06cc72c3e4b9/.default",
     "KAFKA_BOOTSTRAP_SERVERS": "a01apvl00145.adeo.no:8443,a01apvl00146.adeo.no:8443,a01apvl00147.adeo.no:8443,a01apvl00148.adeo.no:8443,a01apvl00149.adeo.no:8443,a01apvl00150.adeo.no:8443"
   },
-  "slack-channel": "sif-alerts",
-  "slack-notify-type": "<!channel> | omsorgspengesoknad-prosessering | "
+  "slack-channel": "",
+  "slack-notify-type": "<!channel> | omsorgspenger-midlertidig-alene-prosessering | "
 }
