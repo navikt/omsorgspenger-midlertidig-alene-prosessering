@@ -1,0 +1,84 @@
+{
+  "topics": [
+    {
+      "topicName": "privat-omsorgspenger-midlertidig-alene-mottatt",
+      "configEntries": {
+        "retention.ms": -1
+      },
+      "members": [
+        {
+          "member": "srv-oms-alene-mtk",
+          "role": "PRODUCER"
+        },
+        {
+          "member": "srv-oms-alene-prs",
+          "role": "CONSUMER"
+        },
+        {
+          "member": "O158190",
+          "role": "MANAGER"
+        }
+      ],
+      "numPartitions": 3
+    },
+    {
+      "topicName": "privat-omsorgspenger-midlertidig-alene-preprossesert",
+      "configEntries": {
+        "retention.ms": -1
+      },
+      "members": [
+        {
+          "member": "srv-oms-alene-prs",
+          "role": "PRODUCER"
+        },
+        {
+          "member": "srv-oms-alene-prs",
+          "role": "CONSUMER"
+        },
+        {
+          "member": "O158190",
+          "role": "MANAGER"
+        }
+      ],
+      "numPartitions": 3
+    },
+    {
+      "topicName": "privat-omsorgspenger-midlertidig-alene-cleanup",
+      "configEntries": {
+        "retention.ms": -1
+      },
+      "members": [
+        {
+          "member": "srv-oms-alene-prs",
+          "role": "PRODUCER"
+        },
+        {
+          "member": "srv-oms-alene-prs",
+          "role": "CONSUMER"
+        },
+        {
+          "member": "O158190",
+          "role": "MANAGER"
+        }
+      ],
+      "numPartitions": 3
+    },
+    {
+      "topicName": "privat-omsorgspenger-midlertidig-alene-journalfort",
+      "configEntries": {
+        "retention.ms": -1
+      },
+      "members": [
+        {
+          "member": "srv-oms-alene-prs",
+          "role": "PRODUCER"
+        },
+        {
+          "member": "O158190",
+          "role": "MANAGER"
+        }
+      ],
+      "numPartitions": 3
+    }
+  ]
+}
