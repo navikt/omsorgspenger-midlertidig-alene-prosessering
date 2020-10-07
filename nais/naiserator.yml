@@ -11,6 +11,12 @@ spec:
     application:
       enabled: true
   port: 8080
+  accessPolicy:
+    outbound:
+      external:
+        - host: api-gw-q1.oera.no
+        - host: oauth2.googleapis.com
+        - host: login.microsoftonline.com
   liveness:
     path: isalive
     initialDelay: 20
