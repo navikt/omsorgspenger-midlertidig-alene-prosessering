@@ -55,6 +55,7 @@ fun Application.omsorgspengesoknadProsessering() {
     }
 
     val configuration = Configuration(environment.config)
+    val apiGatewayApiKey = configuration.getApiGatewayApiKey()
 
     val accessTokenClientResolver = AccessTokenClientResolver(environment.config.clients())
 
@@ -62,6 +63,7 @@ fun Application.omsorgspengesoknadProsessering() {
         baseUrl = configuration.getK9DokumentBaseUrl(),
         accessTokenClient = accessTokenClientResolver.dokumentAccessTokenClient(),
         lagreDokumentScopes = configuration.getLagreDokumentScopes(),
+        apiGatewayApiKey = apiGatewayApiKey,
         sletteDokumentScopes = configuration.getSletteDokumentScopes()
     )
 

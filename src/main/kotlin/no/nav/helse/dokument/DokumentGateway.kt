@@ -15,6 +15,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import no.nav.helse.CorrelationId
 import no.nav.helse.HttpError
+import no.nav.helse.auth.ApiGatewayApiKey
 import no.nav.helse.dusseldorf.ktor.client.buildURL
 import no.nav.helse.dusseldorf.ktor.core.Retry
 import no.nav.helse.dusseldorf.ktor.health.HealthCheck
@@ -35,6 +36,7 @@ class DokumentGateway(
     private val accessTokenClient: AccessTokenClient,
     private val lagreDokumentScopes: Set<String>,
     private val sletteDokumentScopes: Set<String>,
+    private val apiGatewayApiKey: ApiGatewayApiKey,
     baseUrl : URI
 ) : HealthCheck {
 
@@ -138,7 +140,8 @@ class DokumentGateway(
             .httpDelete()
             .header(
                 HttpHeaders.Authorization to authorizationHeader,
-                HttpHeaders.XCorrelationId to correlationId.value
+                HttpHeaders.XCorrelationId to correlationId.value,
+                apiGatewayApiKey.headerKey to apiGatewayApiKey.value
             )
 
         val (request, _, result) = Operation.monitored(
@@ -190,6 +193,7 @@ class DokumentGateway(
                     .header(
                         HttpHeaders.Authorization to authorizationHeader,
                         HttpHeaders.XCorrelationId to correlationId.value,
+                        apiGatewayApiKey.headerKey to apiGatewayApiKey.value,
                         HttpHeaders.ContentType to "application/json"
                     )
                     .awaitStringResponseResult()
