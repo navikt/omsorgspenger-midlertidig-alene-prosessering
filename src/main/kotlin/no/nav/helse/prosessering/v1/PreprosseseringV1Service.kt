@@ -32,7 +32,7 @@ internal class PreprosseseringV1Service(
         logger.trace("Genererer Oppsummerings-PDF av søknaden.")
         val soknadOppsummeringPdf = pdfV1Generator.generateSoknadOppsummeringPdf(melding)
         logger.trace("Generering av Oppsummerings-PDF OK.")
-/*
+
         logger.trace("Mellomlagrer Oppsummerings-PDF.")
         val soknadOppsummeringPdfUrl = dokumentService.lagreSoknadsOppsummeringPdf(
             pdf = soknadOppsummeringPdf,
@@ -57,8 +57,6 @@ internal class PreprosseseringV1Service(
                 soknadJsonUrl
             )
         )
-*/
-        val komplettDokumentUrls = mutableListOf(listOf<URI>()) //TODO FJERNE, KUN FOR TEST
 
         logger.trace("Totalt ${komplettDokumentUrls.size} dokumentbolker.")
 
