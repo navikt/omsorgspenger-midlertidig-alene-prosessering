@@ -51,7 +51,7 @@ internal class JournalforingsStream(
 
                         val dokumenter = entry.data.dokumentUrls
                         logger.trace("Journalfører dokumenter: {}", dokumenter)
-
+                        /*
                         val journaPostId = joarkGateway.journalfør(
                             mottatt = entry.data.mottatt,
                             aktørId = AktørId(entry.data.søker.aktørId),
@@ -59,7 +59,9 @@ internal class JournalforingsStream(
                             correlationId = CorrelationId(entry.metadata.correlationId),
                             dokumenter = dokumenter
                         )
-
+                        */ //TODO FJERNE
+                        logger.info("HOPPER OVER JOURNALFØRING MOT JOARK")
+                        val journaPostId = JournalPostId("1234")
                         logger.info("Dokumenter journalført med ID = ${journaPostId.journalpostId}.")
                         val journalfort = Journalfort(
                             journalpostId = journaPostId.journalpostId,
