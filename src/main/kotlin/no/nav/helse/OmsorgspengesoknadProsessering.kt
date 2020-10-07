@@ -76,7 +76,8 @@ fun Application.omsorgspengesoknadProsessering() {
     val joarkGateway = JoarkGateway(
         baseUrl = configuration.getk9JoarkBaseUrl(),
         accessTokenClient = accessTokenClientResolver.joarkAccessTokenClient(),
-        journalforeScopes = configuration.getJournalforeScopes()
+        journalforeScopes = configuration.getJournalforeScopes(),
+        apiGatewayApiKey = apiGatewayApiKey
     )
 
     val asynkronProsesseringV1Service = AsynkronProsesseringV1Service(

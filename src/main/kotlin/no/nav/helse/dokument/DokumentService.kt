@@ -66,11 +66,14 @@ class DokumentService(
         urlBolks.forEach { urls.addAll(it) }
 
         logger.trace("Sletter ${urls.size} dokumenter")
+        /*
         dokumentGateway.slettDokmenter(
             urls = urls,
             aktørId = aktørId,
             correlationId = correlationId
         )
+
+         */ //TODO: FJERNE
     }
 }
 

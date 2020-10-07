@@ -34,12 +34,14 @@ internal class PreprosseseringV1Service(
         logger.trace("Generering av Oppsummerings-PDF OK.")
 
         logger.trace("Mellomlagrer Oppsummerings-PDF.")
+        /*
         val soknadOppsummeringPdfUrl = dokumentService.lagreSoknadsOppsummeringPdf(
             pdf = soknadOppsummeringPdf,
             correlationId = correlationId,
             aktørId = søkerAktørId,
             dokumentbeskrivelse = "Søknad om omsorgspenger"
         )
+
         logger.trace("Mellomlagring av Oppsummerings-PDF OK")
 
         logger.trace("Mellomlagrer Oppsummerings-JSON")
@@ -60,7 +62,11 @@ internal class PreprosseseringV1Service(
 
         logger.trace("Totalt ${komplettDokumentUrls.size} dokumentbolker.")
 
-
+         */
+        logger.info("HOPPER OVER LAGRING AV DOKUMENTER FOR TEST") //TODO FJERNE
+        val komplettDokumentUrls = mutableListOf(
+            listOf<URI>()
+        )
         val preprossesertMeldingV1 = PreprossesertMeldingV1(
             melding = melding,
             dokumentUrls = komplettDokumentUrls.toList(),
