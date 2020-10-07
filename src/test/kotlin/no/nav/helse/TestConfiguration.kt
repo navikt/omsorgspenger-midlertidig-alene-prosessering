@@ -19,8 +19,9 @@ object TestConfiguration {
     ) : Map<String, String>{
         val map = mutableMapOf(
             Pair("ktor.deployment.port","$port"),
-            Pair("nav.K9_JOARK_BASE_URL","$omsorgspengerJoarkBaseUrl"),
-            Pair("nav.k9_dokument_base_url","$k9DokumentBaseUrl")
+            Pair("nav.gateways.k9_joark_url","$omsorgspengerJoarkBaseUrl"),
+            Pair("nav.gateways.k9_dokument_url","$k9DokumentBaseUrl"),
+            Pair("nav.authorization.api_gateway.api_key", "verysecret")
         )
 
         // Clients

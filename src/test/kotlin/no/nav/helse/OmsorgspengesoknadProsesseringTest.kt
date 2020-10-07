@@ -90,13 +90,6 @@ class OmsorgspengesoknadProsesseringTest {
             engine.start(wait = true)
         }
 
-        @BeforeClass
-        @JvmStatic
-        fun buildUp() {
-            wireMockServer.stubAktørRegister(gyldigFodselsnummerA, "666666666")
-            wireMockServer.stubAktørRegister(gyldigFodselsnummerB, "777777777")
-        }
-
         @AfterClass
         @JvmStatic
         fun tearDown() {

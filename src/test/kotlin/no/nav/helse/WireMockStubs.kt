@@ -8,105 +8,12 @@ import io.ktor.http.HttpHeaders
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import java.util.*
 
-private const val aktoerRegisterBasePath = "/aktoerregister-mock"
-private const val tpsProxyBasePath = "/tps-proxy-mock"
-private const val omsorgspengerJoarkBaseUrl = "/omsorgspenger-joark-mock"
-private const val k9DokumentBasePath = "/k9-dokument-mock"
+private const val omsorgspengerJoarkBaseUrl = "/helse-reverse-proxy/omsorgspenger-joark-mock"
+private const val k9DokumentBasePath = "/helse-reverse-proxy/k9-dokument-mock"
 
 fun WireMockBuilder.navnOppslagConfig() = wireMockConfiguration {
 
 }
-
-internal fun WireMockServer.stubAktoerRegisterGetAktoerIdNotFound(
-    fnr: String
-): WireMockServer {
-    WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$aktoerRegisterBasePath/.*")).withHeader(
-            "Nav-Personidenter",
-            EqualToPattern(fnr)
-        ).willReturn(
-            WireMock.aResponse()
-                .withHeader("Content-Type", "application/json")
-                .withBody(
-                    """
-                    {
-                      "$fnr": {
-                        "identer": null,
-                        "feilmelding": "Den angitte personidenten finnes ikke"
-                      }
-                    }
-                    """.trimIndent()
-                )
-                .withStatus(200)
-        )
-    )
-    return this
-}
-
-
-internal fun WireMockServer.stubAktørRegister(
-    identNummer: String,
-    aktoerId: String
-): WireMockServer {
-    WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$aktoerRegisterBasePath/.*"))
-            .withQueryParam("gjeldende", EqualToPattern("true"))
-            .withQueryParam("identgruppe", EqualToPattern("AktoerId"))
-            .withHeader("Nav-Personidenter", EqualToPattern(identNummer))
-            .willReturn(
-                WireMock.aResponse()
-                    .withHeader("Content-Type", "application/json")
-                    .withBody(
-                        """
-                    {
-                      "$identNummer": {
-                        "identer": [
-                          {
-                            "ident": "$aktoerId",
-                            "identgruppe": "AktoerId",
-                            "gjeldende": true
-                          }
-                        ],
-                        "feilmelding": null
-                      }
-                    }
-                    """.trimIndent()
-                    )
-                    .withStatus(200)
-            )
-    )
-
-    WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$aktoerRegisterBasePath/.*"))
-            .withQueryParam("gjeldende", EqualToPattern("true"))
-            .withQueryParam("identgruppe", EqualToPattern("NorskIdent"))
-            .withHeader("Nav-Personidenter", EqualToPattern(aktoerId))
-            .willReturn(
-                WireMock.aResponse()
-                    .withHeader("Content-Type", "application/json")
-                    .withStatus(200)
-                    .withBody(
-                        """
-                        {
-                          "$aktoerId": {
-                            "identer": [
-                              {
-                                "ident": "$identNummer",
-                                "identgruppe": "NorskIdent",
-                                "gjeldende": true
-                              }
-                            ],
-                            "feilmelding": null
-                          }
-                        }
-                        """.trimIndent()
-                    )
-            )
-    )
-    return this
-}
-
-
 
 internal fun WireMockServer.stubLagreDokument(): WireMockServer {
     WireMock.stubFor(
@@ -148,28 +55,6 @@ internal fun WireMockServer.stubJournalfor(responseCode: Int = 201): WireMockSer
     return this
 }
 
-internal fun WireMockServer.stubTpsProxyGetNavn(fornavn: String, mellomNavn: String, etterNavn: String): WireMockServer {
-    WireMock.stubFor(
-        WireMock.get(WireMock.urlPathMatching(".*$tpsProxyBasePath/navn"))
-            .withHeader(HttpHeaders.Authorization, AnythingPattern())
-            .willReturn(
-                WireMock.aResponse()
-                    .withHeader("Content-Type", "application/json")
-                    .withStatus(200)
-                    .withBody(
-                        """  
-                            {
-                                "fornavn": "$fornavn",
-                                "mellomnavn": "$mellomNavn",
-                                "etternavn": "$etterNavn"
-                            }
-                        """.trimIndent()
-                    )
-            )
-    )
-    return this
-}
-
 private fun WireMockServer.stubHealthEndpoint(
     path: String
 ): WireMockServer {
@@ -185,7 +70,5 @@ private fun WireMockServer.stubHealthEndpoint(
 internal fun WireMockServer.stubK9DokumentHealth() = stubHealthEndpoint("$k9DokumentBasePath/health")
 internal fun WireMockServer.stubOmsorgspengerJoarkHealth() = stubHealthEndpoint("$omsorgspengerJoarkBaseUrl/health")
 
-internal fun WireMockServer.getAktoerRegisterBaseUrl() = baseUrl() + aktoerRegisterBasePath
-internal fun WireMockServer.getTpsProxyBaseUrl() = baseUrl() + tpsProxyBasePath
 internal fun WireMockServer.getOmsorgspengerJoarkBaseUrl() = baseUrl() + omsorgspengerJoarkBaseUrl
 internal fun WireMockServer.getK9DokumentBaseUrl() = baseUrl() + k9DokumentBasePath
