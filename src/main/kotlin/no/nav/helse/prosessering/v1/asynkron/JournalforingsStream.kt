@@ -50,6 +50,7 @@ internal class JournalforingsStream(
                         logger.info("Journalfører søknad med ID = {}", soknadId)
 
                         val dokumenter = entry.data.dokumentUrls
+                        /*
                         logger.trace("Journalfører dokumenter: {}", dokumenter)
                         val journaPostId = joarkGateway.journalfør(
                             mottatt = entry.data.mottatt,
@@ -60,6 +61,8 @@ internal class JournalforingsStream(
                         )
 
                         logger.info("Dokumenter journalført med ID = ${journaPostId.journalpostId}.")
+                        */
+                        val journaPostId = JournalPostId("12345")
                         val journalfort = Journalfort(
                             journalpostId = journaPostId.journalpostId,
                             søknad = entry.data
