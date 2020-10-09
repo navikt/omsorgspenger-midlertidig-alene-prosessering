@@ -30,6 +30,7 @@ class DokumentService(
         correlationId: CorrelationId,
         dokumentbeskrivelse: String
     ) : URI {
+        logger.info("Forsøker å lagre i K9-dokument")
         return lagreDokument(
             dokument = DokumentGateway.Dokument(
                 content = pdf,
