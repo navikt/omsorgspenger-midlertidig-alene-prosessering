@@ -45,6 +45,9 @@ internal class PdfV1Generator {
                     Handlebars.SafeString(text)
                 }
             })
+            registerHelper("jaNeiSvar", Helper<Boolean> { context, _ ->
+                if (context == true) "Ja" else "Nei"
+            })
 
             infiniteLoops(true)
         }
@@ -76,9 +79,9 @@ internal class PdfV1Generator {
             Context
                 .newBuilder(
                     mapOf(
-                        "soknad_id" to melding.søknadId,
-                        "soknad_mottatt_dag" to melding.mottatt.withZoneSameInstant(ZONE_ID).norskDag(),
-                        "soknad_mottatt" to DATE_TIME_FORMATTER.format(melding.mottatt),
+                        "søknadId" to melding.søknadId,
+                        "søknadMottattDag" to melding.mottatt.withZoneSameInstant(ZONE_ID).norskDag(),
+                        "søknadMottatt" to DATE_TIME_FORMATTER.format(melding.mottatt),
                         "søker" to mapOf(
                             "navn" to melding.søker.formatertNavn(),
                             "fødselsnummer" to melding.søker.fødselsnummer
@@ -99,6 +102,7 @@ internal class PdfV1Generator {
 
             PdfRendererBuilder()
                 .useFastMode()
+                .usePdfUaAccessbility(true)
                 .withHtmlContent(html, "")
                 .medFonter()
                 .toStream(outputStream)
