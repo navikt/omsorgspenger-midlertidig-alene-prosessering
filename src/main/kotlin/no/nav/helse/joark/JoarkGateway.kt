@@ -77,7 +77,7 @@ class JoarkGateway(
 
         val body = objectMapper.writeValueAsBytes(joarkRequest)
         val contentStream = { ByteArrayInputStream(body) }
-
+        logger.info("SENDER POST TIL JOARK") //TODO: FJERNE
         val httpRequest = completeUrl
             .httpPost()
             .body(contentStream)
