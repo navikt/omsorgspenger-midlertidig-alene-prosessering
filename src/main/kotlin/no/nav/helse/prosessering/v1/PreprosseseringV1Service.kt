@@ -34,7 +34,7 @@ internal class PreprosseseringV1Service(
         val soknadOppsummeringPdf = pdfV1Generator.generateSoknadOppsummeringPdf(melding)
         logger.trace("Generering av Oppsummerings-PDF OK.")
 
-        /*
+
         logger.trace("Mellomlagrer Oppsummerings-PDF.")
         val soknadOppsummeringPdfUrl = dokumentService.lagreSoknadsOppsummeringPdf(
             pdf = soknadOppsummeringPdf,
@@ -60,11 +60,7 @@ internal class PreprosseseringV1Service(
                 soknadJsonUrl
             )
         )
-         */
-        logger.info("HOPPER OVER LAGRING AV DOKUMENTER")
-        val komplettDokumentUrls = mutableListOf(
-            listOf<URI>()
-        )
+
         logger.trace("Totalt ${komplettDokumentUrls.size} dokumentbolker.")
 
         val preprossesertMeldingV1 = PreprossesertMeldingV1(

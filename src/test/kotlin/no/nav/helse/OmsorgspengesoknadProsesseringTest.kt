@@ -133,7 +133,6 @@ class OmsorgspengesoknadProsesseringTest {
     }
 
     @Test
-    @Ignore //TODO
     fun `En feilprosessert melding vil bli prosessert etter at tjenesten restartes`() {
         val melding = gyldigMelding(
             fødselsnummerSoker = gyldigFodselsnummerA
