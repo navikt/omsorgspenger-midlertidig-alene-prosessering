@@ -107,10 +107,10 @@ class DokumentGateway(
         correlationId: CorrelationId
     ) {
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(sletteDokumentScopes).asAuthoriationHeader()
-
         coroutineScope {
             val deferred = mutableListOf<Deferred<Unit>>()
             urls.forEach {
+                logger.info("DEBUG --> Forsøker å slette med url: {}", it) //TODO KUN FOR DEBUG
                 deferred.add(async {
                     requestSlettDokument(
                         url = it,

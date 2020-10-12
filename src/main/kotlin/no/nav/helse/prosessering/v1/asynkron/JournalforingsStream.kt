@@ -60,7 +60,7 @@ internal class JournalforingsStream(
                             dokumenter = dokumenter
                         )
 
-                        logger.info("Dokumenter journalført med ID = ${journaPostId.journalpostId}.")
+                        logger.trace("Dokumenter journalført med ID = ${journaPostId.journalpostId}.")
                         val journalfort = Journalfort(
                             journalpostId = journaPostId.journalpostId,
                             søknad = entry.data
