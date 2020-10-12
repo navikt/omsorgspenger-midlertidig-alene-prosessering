@@ -110,10 +110,9 @@ class DokumentGateway(
         coroutineScope {
             val deferred = mutableListOf<Deferred<Unit>>()
             urls.forEach {
-                logger.info("DEBUG --> Forsøker å slette med url: {}", it) //TODO KUN FOR DEBUG
                 deferred.add(async {
                     requestSlettDokument(
-                        url = it,
+                        url = it.tilHelseReverseProxyUrl(),
                         correlationId = correlationId,
                         aktørId = aktørId,
                         authorizationHeader = authorizationHeader
@@ -130,12 +129,11 @@ class DokumentGateway(
         correlationId: CorrelationId,
         authorizationHeader: String
     ) {
-
         val urlMedEier = Url.buildURL(
             baseUrl = url,
             queryParameters = mapOf("eier" to listOf(aktørId.id))
         ).toString()
-
+        logger.info("Forsøker å slette med URL: {}", url) //TODO FJERNE FRA PROD
         val httpRequest = urlMedEier
             .httpDelete()
             .header(
@@ -220,4 +218,20 @@ class DokumentGateway(
         @JsonProperty("content_type") val contentType: String,
         val title: String
     )
+    private fun URI.tilHelseReverseProxyUrl(): URI {
+        /*
+        K9-dokument returnerer direktelenke til dokumentet. Fordi vi skal gjennom Helse-Reverse-Proxy og api-gw
+        så må vi tilpasse url.
+        Feks i dev blir denne url returnert: https://k9-dokument.nais.preprod.local/v1/dokument/xxx.xxx,
+        mens vi ønsker https://api-gw-q1.oera.no/helse-reverse-proxy/k9-dokument/v1/dokument/xxx.xxx
+         */
+        val idFraUrl = this.path.substringAfterLast("/")
+        val nyUrl = Url.buildURL(
+            baseUrl = completeUrl,
+            pathParts = listOf(idFraUrl)
+        )
+        return nyUrl
+    }
 }
+
+

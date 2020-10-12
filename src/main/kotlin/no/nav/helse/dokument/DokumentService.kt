@@ -1,5 +1,6 @@
 package no.nav.helse.dokument
 
+import no.nav.helse.Configuration
 import no.nav.helse.CorrelationId
 import no.nav.helse.prosessering.AktørId
 import no.nav.helse.prosessering.v1.MeldingV1
@@ -64,7 +65,6 @@ class DokumentService(
     ) {
         val urls = mutableListOf<URI>()
         urlBolks.forEach { urls.addAll(it) }
-
         logger.trace("Sletter ${urls.size} dokumenter")
         dokumentGateway.slettDokmenter(
             urls = urls,
@@ -73,5 +73,6 @@ class DokumentService(
         )
 
     }
+
 }
 

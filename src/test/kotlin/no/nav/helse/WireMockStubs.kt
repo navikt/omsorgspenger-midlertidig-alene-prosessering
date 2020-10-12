@@ -20,7 +20,7 @@ internal fun WireMockServer.stubLagreDokument(): WireMockServer {
         WireMock.post(WireMock.urlPathMatching(".*$k9DokumentBasePath.*")).willReturn(
             WireMock.aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withHeader("Location", "${getK9DokumentBaseUrl()}/v1/dokument/${UUID.randomUUID()}")
+                .withHeader("Location", "http://localhost/k9-dokument/v1/dokument/${UUID.randomUUID()}")
                 .withStatus(201)
         )
     )
