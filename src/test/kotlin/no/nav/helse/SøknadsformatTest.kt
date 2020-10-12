@@ -12,13 +12,12 @@ import kotlin.test.Test
 class SøknadsformatTest {
 
     @Test
-    fun `Soknaden journalfoeres som JSON uten vedlegg`() {
+    fun `Søknaden journalføres som JSON uten vedlegg`() {
         val søknadId = UUID.randomUUID().toString()
         val json = Søknadsformat.somJson(melding(søknadId))
         println(String(json))
         JSONAssert.assertEquals(
             """{
-                  "nyVersjon": false,
                   "søknadId": "$søknadId",
                   "mottatt": "2018-01-02T03:04:05.000000006Z",
                   "språk": "nb",
