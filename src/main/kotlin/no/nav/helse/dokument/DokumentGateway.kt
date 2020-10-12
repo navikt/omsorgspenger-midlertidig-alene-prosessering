@@ -230,6 +230,9 @@ class DokumentGateway(
             baseUrl = completeUrl,
             pathParts = listOf(idFraUrl)
         )
+        logger.info("DEBUG: Gjør om URL")
+        logger.info("DEBUG: Gammel URL: {}", this)
+        logger.info("DEBUG: Ny URL: {}", nyUrl)
         return nyUrl
     }
 }

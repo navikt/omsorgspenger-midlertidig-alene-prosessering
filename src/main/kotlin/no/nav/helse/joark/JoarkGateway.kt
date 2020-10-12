@@ -41,7 +41,7 @@ class JoarkGateway(
 
     private val completeUrl = Url.buildURL(
         baseUrl = baseUrl,
-        pathParts = listOf("v1", "omsorgspenge", "journalforing")
+        pathParts = listOf("v1", "omsorgspenge", "journalforing") //TODO Skal det eget endepunkt her?
     ).toString()
 
     private val objectMapper = configuredObjectMapper()
