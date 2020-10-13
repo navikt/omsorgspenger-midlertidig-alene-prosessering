@@ -229,6 +229,8 @@ class DokumentGateway(
             baseUrl = completeUrl,
             pathParts = listOf(idFraUrl)
         )
+        logger.info("Gammel url - {}", this) //TODO FJERN
+        logger.info("Ny url - {}", nyUrl)
         return nyUrl
     }
 }
