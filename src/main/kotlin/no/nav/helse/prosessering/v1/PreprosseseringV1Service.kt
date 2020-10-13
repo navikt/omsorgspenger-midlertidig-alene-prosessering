@@ -61,10 +61,7 @@ internal class PreprosseseringV1Service(
         )
 
         logger.trace("Totalt ${komplettDokumentUrls.size} dokumentbolker.")
-        logger.info("DEBUG --> Lagret med url;") //TODO KUN FOR DEBUG
-        komplettDokumentUrls.toList().forEach {
-            logger.info("-----> {}", it)
-        }
+
         val preprossesertMeldingV1 = PreprossesertMeldingV1(
             melding = melding,
             dokumentUrls = komplettDokumentUrls.toList(),

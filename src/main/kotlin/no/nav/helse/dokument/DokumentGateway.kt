@@ -133,7 +133,7 @@ class DokumentGateway(
             baseUrl = url,
             queryParameters = mapOf("eier" to listOf(aktørId.id))
         ).toString()
-        logger.info("Forsøker å slette med URL: {}", url) //TODO FJERNE FRA PROD
+
         val httpRequest = urlMedEier
             .httpDelete()
             .header(
@@ -229,8 +229,6 @@ class DokumentGateway(
             baseUrl = completeUrl,
             pathParts = listOf(idFraUrl)
         )
-        logger.info("Gammel url - {}", this) //TODO FJERN
-        logger.info("Ny url - {}", nyUrl)
         return nyUrl
     }
 }
