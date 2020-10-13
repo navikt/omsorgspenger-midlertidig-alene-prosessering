@@ -112,7 +112,7 @@ class DokumentGateway(
             urls.forEach {
                 deferred.add(async {
                     requestSlettDokument(
-                        url = it,
+                        url = it.tilServiceDiscoveryUrl(),
                         correlationId = correlationId,
                         aktørId = aktørId,
                         authorizationHeader = authorizationHeader
@@ -218,21 +218,17 @@ class DokumentGateway(
         @JsonProperty("content_type") val contentType: String,
         val title: String
     )
-    private fun URI.tilHelseReverseProxyUrl(): URI {
+    private fun URI.tilServiceDiscoveryUrl(): URI {
         /*
-        K9-dokument returnerer direktelenke til dokumentet. Fordi vi skal gjennom Helse-Reverse-Proxy og api-gw
-        så må vi tilpasse url.
+        K9-mellomlagring returnerer direktelenke til dokumentet. Prosessering bruker service-discovery, så må gjøres om.
         Feks i dev blir denne url returnert: https://k9-dokument.nais.preprod.local/v1/dokument/xxx.xxx,
-        mens vi ønsker https://api-gw-q1.oera.no/helse-reverse-proxy/k9-dokument/v1/dokument/xxx.xxx
+        mens vi ønsker http://k9-dokument/v1/dokument/xxx.xxx
          */
         val idFraUrl = this.path.substringAfterLast("/")
         val nyUrl = Url.buildURL(
             baseUrl = completeUrl,
             pathParts = listOf(idFraUrl)
         )
-        logger.info("DEBUG: Gjør om URL")
-        logger.info("DEBUG: Gammel URL: {}", this)
-        logger.info("DEBUG: Ny URL: {}", nyUrl)
         return nyUrl
     }
 }
