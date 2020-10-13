@@ -19,7 +19,7 @@ spec:
       external:
         - host: api-gw-q1.oera.no
         - host: oauth2.googleapis.com
-        - host: https://k9-mellomlagring.dev.nav.no
+        - host: k9-mellomlagring.dev.nav.no
   liveness:
     path: isalive
     initialDelay: 20
