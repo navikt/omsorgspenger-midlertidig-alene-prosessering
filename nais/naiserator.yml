@@ -14,6 +14,8 @@ spec:
   port: 8080
   accessPolicy:
     outbound:
+      rules:
+        - application: k9-mellomlagring
       external:
         - host: api-gw-q1.oera.no
         - host: oauth2.googleapis.com
