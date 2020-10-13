@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit
 data class Configuration(private val config : ApplicationConfig) {
 
     fun getk9JoarkBaseUrl() = URI(config.getRequiredString("nav.gateways.k9_joark_url", secret = false))
-    fun getK9DokumentBaseUrl() = URI(config.getRequiredString("nav.gateways.k9_dokument_url", secret = false))
+    fun getK9MellomlagringServiceDiscovery() = URI(config.getRequiredString("nav.gateways.k9_mellomlagring_service_discovery", secret = false))
 
     internal fun getApiGatewayApiKey() : ApiGatewayApiKey {
         val apiKey = config.getRequiredString(key = "nav.authorization.api_gateway.api_key", secret = true)

@@ -17,7 +17,6 @@ import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.prosessering.v1.*
 import org.junit.AfterClass
-import org.junit.BeforeClass
 import org.junit.Ignore
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -42,7 +41,7 @@ class OmsorgspengesoknadProsesseringTest {
             .withAzureSupport()
             .navnOppslagConfig()
             .build()
-            .stubK9DokumentHealth()
+            .stubK9MellomlagringHealth()
             .stubOmsorgspengerJoarkHealth()
             .stubJournalfor()
             .stubLagreDokument()
