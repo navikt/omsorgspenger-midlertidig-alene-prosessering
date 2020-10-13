@@ -112,7 +112,7 @@ class DokumentGateway(
             urls.forEach {
                 deferred.add(async {
                     requestSlettDokument(
-                        url = it.tilHelseReverseProxyUrl(),
+                        url = it,
                         correlationId = correlationId,
                         aktørId = aktørId,
                         authorizationHeader = authorizationHeader

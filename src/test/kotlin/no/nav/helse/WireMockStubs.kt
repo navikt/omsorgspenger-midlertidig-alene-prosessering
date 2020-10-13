@@ -9,7 +9,7 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import java.util.*
 
 private const val omsorgspengerJoarkBaseUrl = "/helse-reverse-proxy/omsorgspenger-joark-mock"
-private const val k9DokumentBasePath = "/helse-reverse-proxy/k9-dokument-mock"
+private const val k9DokumentBasePath = "/k9-mellomlagring-mock"
 
 fun WireMockBuilder.navnOppslagConfig() = wireMockConfiguration {
 
@@ -20,7 +20,7 @@ internal fun WireMockServer.stubLagreDokument(): WireMockServer {
         WireMock.post(WireMock.urlPathMatching(".*$k9DokumentBasePath.*")).willReturn(
             WireMock.aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withHeader("Location", "http://localhost/k9-dokument/v1/dokument/${UUID.randomUUID()}")
+                .withHeader("Location", "${getK9DokumentBaseUrl()}/v1/dokument/${UUID.randomUUID()}")
                 .withStatus(201)
         )
     )
