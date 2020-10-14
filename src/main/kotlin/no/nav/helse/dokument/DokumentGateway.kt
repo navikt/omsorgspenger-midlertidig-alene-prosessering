@@ -36,7 +36,6 @@ class DokumentGateway(
     private val accessTokenClient: AccessTokenClient,
     private val lagreDokumentScopes: Set<String>,
     private val sletteDokumentScopes: Set<String>,
-    private val apiGatewayApiKey: ApiGatewayApiKey,
     baseUrl : URI
 ) : HealthCheck {
 
@@ -138,8 +137,7 @@ class DokumentGateway(
             .httpDelete()
             .header(
                 HttpHeaders.Authorization to authorizationHeader,
-                HttpHeaders.XCorrelationId to correlationId.value,
-                apiGatewayApiKey.headerKey to apiGatewayApiKey.value
+                HttpHeaders.XCorrelationId to correlationId.value
             )
 
         val (request, _, result) = Operation.monitored(
@@ -191,7 +189,6 @@ class DokumentGateway(
                     .header(
                         HttpHeaders.Authorization to authorizationHeader,
                         HttpHeaders.XCorrelationId to correlationId.value,
-                        apiGatewayApiKey.headerKey to apiGatewayApiKey.value,
                         HttpHeaders.ContentType to "application/json"
                     )
                     .awaitStringResponseResult()

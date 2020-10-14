@@ -63,7 +63,6 @@ fun Application.omsorgspengesoknadProsessering() {
         baseUrl = configuration.getK9MellomlagringServiceDiscovery(),
         accessTokenClient = accessTokenClientResolver.dokumentAccessTokenClient(),
         lagreDokumentScopes = configuration.getLagreDokumentScopes(),
-        apiGatewayApiKey = apiGatewayApiKey,
         sletteDokumentScopes = configuration.getSletteDokumentScopes()
     )
 
