@@ -1,6 +1,7 @@
 package no.nav.helse.prosessering.v1.asynkron
 
 import no.nav.helse.CorrelationId
+import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
@@ -48,7 +49,7 @@ internal class CleanupStream(
 
                         dokumentService.slettDokumeter(
                             urlBolks = entry.data.melding.dokumentUrls,
-                            aktørId = AktørId(entry.data.melding.søker.aktørId),
+                            dokumentEier = DokumentGateway.DokumentEier(entry.data.melding.søker.fødselsnummer),
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
                         logger.trace("Dokumenter slettet.")

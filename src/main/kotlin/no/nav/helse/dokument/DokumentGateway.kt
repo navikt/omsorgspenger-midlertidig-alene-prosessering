@@ -79,7 +79,6 @@ class DokumentGateway(
 
     internal suspend fun lagreDokmenter(
         dokumenter: Set<Dokument>,
-        aktørId: AktørId,
         correlationId: CorrelationId
     ) : List<URI> {
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(lagreDokumentScopes).asAuthoriationHeader()
@@ -91,7 +90,6 @@ class DokumentGateway(
                     requestLagreDokument(
                         dokument = dokument,
                         correlationId = correlationId,
-                        aktørId = aktørId,
                         authorizationHeader = authorizationHeader
                     )
                 })
@@ -102,7 +100,7 @@ class DokumentGateway(
 
     internal suspend fun slettDokmenter(
         urls: List<URI>,
-        aktørId: AktørId,
+        dokumentEier: DokumentEier,
         correlationId: CorrelationId
     ) {
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(sletteDokumentScopes).asAuthoriationHeader()
@@ -113,7 +111,7 @@ class DokumentGateway(
                     requestSlettDokument(
                         url = it.tilServiceDiscoveryUrl(baseUrl = completeUrl),
                         correlationId = correlationId,
-                        aktørId = aktørId,
+                        dokumentEier = dokumentEier,
                         authorizationHeader = authorizationHeader
                     )
                 })
@@ -124,17 +122,16 @@ class DokumentGateway(
 
     private suspend fun requestSlettDokument(
         url: URI,
-        aktørId: AktørId,
+        dokumentEier: DokumentEier,
         correlationId: CorrelationId,
         authorizationHeader: String
     ) {
-        val urlMedEier = Url.buildURL(
-            baseUrl = url,
-            queryParameters = mapOf("eier" to listOf(aktørId.id))
-        ).toString()
+        val body = objectMapper.writeValueAsBytes(dokumentEier)
+        val contentStream = { ByteArrayInputStream(body) }
 
-        val httpRequest = urlMedEier
-            .httpDelete()
+        val httpRequest = url.toString()
+            .httpPost()
+            .body(contentStream)
             .header(
                 HttpHeaders.Authorization to authorizationHeader,
                 HttpHeaders.XCorrelationId to correlationId.value
@@ -160,15 +157,9 @@ class DokumentGateway(
 
     private suspend fun requestLagreDokument(
         dokument: Dokument,
-        aktørId: AktørId,
         correlationId: CorrelationId,
         authorizationHeader: String
     ) : URI {
-
-        val urlMedEier = Url.buildURL(
-            baseUrl = completeUrl,
-            queryParameters = mapOf("eier" to listOf(aktørId.id))
-        ).toString()
 
         val body = objectMapper.writeValueAsBytes(dokument)
         val contentStream = { ByteArrayInputStream(body) }
@@ -183,7 +174,7 @@ class DokumentGateway(
                 operation = LAGRE_DOKUMENT_OPERATION,
                 resultResolver = { 201 == it.second.statusCode }
             ) {
-                urlMedEier
+                completeUrl.toString()
                     .httpPost()
                     .body(contentStream)
                     .header(
@@ -211,9 +202,14 @@ class DokumentGateway(
     }
 
     data class Dokument(
+        val eier: DokumentEier,
         val content: ByteArray,
         @JsonProperty("content_type") val contentType: String,
         val title: String
+    )
+
+    data class DokumentEier(
+        val fødselsnummer: String
     )
 
 }
@@ -231,5 +227,3 @@ fun URI.tilServiceDiscoveryUrl(baseUrl: URI): URI {
     )
     return nyUrl
 }
-
-
