@@ -130,7 +130,7 @@ class DokumentGateway(
         val contentStream = { ByteArrayInputStream(body) }
 
         val httpRequest = url.toString()
-            .httpPost()
+            .httpDelete()
             .body(contentStream)
             .header(
                 HttpHeaders.Authorization to authorizationHeader,
@@ -209,7 +209,7 @@ class DokumentGateway(
     )
 
     data class DokumentEier(
-        val fødselsnummer: String
+        val eiersFødselsnummer: String
     )
 
 }
