@@ -209,7 +209,7 @@ class DokumentGateway(
     )
 
     data class DokumentEier(
-        val eiersFødselsnummer: String
+        @JsonProperty("eiers_fødselsnummer") val eiersFødselsnummer: String
     )
 
 }
