@@ -15,9 +15,10 @@ class SøknadsformatTest {
     fun `Søknaden journalføres som JSON uten vedlegg`() {
         val søknadId = UUID.randomUUID().toString()
         val json = Søknadsformat.somJson(melding(søknadId))
-        println(String(json))
-        JSONAssert.assertEquals(
-            """{
+
+        val forventetSøknad =
+            """
+            {
                   "søknadId": "$søknadId",
                   "mottatt": "2018-01-02T03:04:05.000000006Z",
                   "språk": "nb",
@@ -32,10 +33,9 @@ class SøknadsformatTest {
                   "harBekreftetOpplysninger": true,
                   "harForståttRettigheterOgPlikter": true
                 }
+        """.trimIndent()
 
-        """.trimIndent(), String(json), true
-        )
-
+        JSONAssert.assertEquals(forventetSøknad, String(json), true)
     }
 
     private fun melding(soknadId: String): MeldingV1 = MeldingV1(

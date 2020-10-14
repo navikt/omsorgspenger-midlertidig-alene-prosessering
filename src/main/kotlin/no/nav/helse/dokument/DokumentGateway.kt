@@ -112,7 +112,7 @@ class DokumentGateway(
             urls.forEach {
                 deferred.add(async {
                     requestSlettDokument(
-                        url = it.tilServiceDiscoveryUrl(),
+                        url = it.tilServiceDiscoveryUrl(baseUrl = completeUrl),
                         correlationId = correlationId,
                         aktørId = aktørId,
                         authorizationHeader = authorizationHeader
@@ -218,19 +218,21 @@ class DokumentGateway(
         @JsonProperty("content_type") val contentType: String,
         val title: String
     )
-    private fun URI.tilServiceDiscoveryUrl(): URI {
-        /*
-        K9-mellomlagring returnerer direktelenke til dokumentet. Prosessering bruker service-discovery, så må gjøres om.
-        Feks i dev blir denne url returnert: https://k9-dokument.nais.preprod.local/v1/dokument/xxx.xxx,
-        mens vi ønsker http://k9-dokument/v1/dokument/xxx.xxx
-         */
-        val idFraUrl = this.path.substringAfterLast("/")
-        val nyUrl = Url.buildURL(
-            baseUrl = completeUrl,
-            pathParts = listOf(idFraUrl)
-        )
-        return nyUrl
-    }
+
+}
+
+fun URI.tilServiceDiscoveryUrl(baseUrl: URI): URI {
+    /*
+    K9-mellomlagring returnerer direktelenke til dokumentet. Prosessering bruker service-discovery, så må gjøres om.
+    Feks i dev blir denne url returnert: https://k9-dokument.nais.preprod.local/v1/dokument/xxx.xxx,
+    mens vi ønsker http://k9-dokument/v1/dokument/xxx.xxx
+     */
+    val idFraUrl = this.path.substringAfterLast("/")
+    val nyUrl = Url.buildURL(
+        baseUrl = baseUrl,
+        pathParts = listOf(idFraUrl)
+    )
+    return nyUrl
 }
 
 
