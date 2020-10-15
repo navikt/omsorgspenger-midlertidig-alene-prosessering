@@ -134,7 +134,8 @@ class DokumentGateway(
             .body(contentStream)
             .header(
                 HttpHeaders.Authorization to authorizationHeader,
-                HttpHeaders.XCorrelationId to correlationId.value
+                HttpHeaders.XCorrelationId to correlationId.value,
+                HttpHeaders.ContentType to "application/json"
             )
 
         val (request, _, result) = Operation.monitored(
