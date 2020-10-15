@@ -8,6 +8,7 @@
 
     <logger name="no.nav" level="TRACE"/>
     <logger name="nav" level="TRACE"/>
+    <logger name="com.openhtmltopdf.load" level="ERROR"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

@@ -7,6 +7,7 @@ import com.github.jknack.handlebars.context.MapValueResolver
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
+import com.openhtmltopdf.util.XRLog
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -24,7 +25,6 @@ internal class PdfV1Generator {
         private val REGULAR_FONT = "$ROOT/fonts/SourceSansPro-Regular.ttf".fromResources().readBytes()
         private val BOLD_FONT = "$ROOT/fonts/SourceSansPro-Bold.ttf".fromResources().readBytes()
         private val ITALIC_FONT = "$ROOT/fonts/SourceSansPro-Italic.ttf".fromResources().readBytes()
-
 
         private val images = loadImages()
         private val handlebars = Handlebars(ClassPathTemplateLoader("/$ROOT")).apply {
@@ -75,6 +75,7 @@ internal class PdfV1Generator {
     }
 
     internal fun generateSoknadOppsummeringPdf(melding: MeldingV1): ByteArray {
+        XRLog.setLoggingEnabled(false) //TODO Finnes det en måte å kun justere logg level, ikke skru den helt av?
         soknadTemplate.apply(
             Context
                 .newBuilder(
@@ -91,7 +92,7 @@ internal class PdfV1Generator {
                             "harBekreftetOpplysninger" to melding.harBekreftetOpplysninger
                         ),
                         "hjelp" to mapOf(
-                            "språk" to melding.språk?.sprakTilTekst()
+                            "språk" to melding.språk?.språkTilTekst()
                         )
                     )
                 )
@@ -108,7 +109,6 @@ internal class PdfV1Generator {
                 .toStream(outputStream)
                 .buildPdfRenderer()
                 .createPDF()
-
             return outputStream.use {
                 it.toByteArray()
             }
@@ -143,7 +143,7 @@ internal class PdfV1Generator {
 
 private fun Søker.formatertNavn() = if (mellomnavn != null) "$fornavn $mellomnavn $etternavn" else "$fornavn $etternavn"
 
-private fun String.sprakTilTekst() = when (this.toLowerCase()) {
+private fun String.språkTilTekst() = when (this.toLowerCase()) {
     "nb" -> "bokmål"
     "nn" -> "nynorsk"
     else -> this
