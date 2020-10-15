@@ -108,7 +108,7 @@ fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
     MOTTATT.serDes
 )
 
-fun KafkaConsumer<String, String>.hentJournalførtMelding(
+fun KafkaConsumer<String, String>.hentJournalførtSøknad(
     soknadId: String,
     maxWaitInSeconds: Long = 20
 ): String {

@@ -16,8 +16,10 @@ import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.helse.prosessering.v1.*
+import org.json.JSONObject
 import org.junit.AfterClass
 import org.junit.Ignore
+import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
@@ -27,6 +29,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 
 @KtorExperimentalAPI
@@ -51,14 +54,11 @@ class OmsorgspengesoknadProsesseringTest {
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
 
         private val journalføringsKonsumer = kafkaEnvironment.journalføringsKonsumer()
-
         private val cleanupKonsumer = kafkaEnvironment.cleanupKonsumer()
         private val preprossesertKonsumer = kafkaEnvironment.preprossesertKonsumer()
 
         // Se https://github.com/navikt/dusseldorf-ktor#f%C3%B8dselsnummer
         private val gyldigFodselsnummerA = "02119970078"
-        private val gyldigFodselsnummerB = "19066672169"
-        private val gyldigFodselsnummerC = "20037473937"
         private val dNummerA = "55125314561"
 
         private var engine = newEngine(kafkaEnvironment).apply {
@@ -121,71 +121,53 @@ class OmsorgspengesoknadProsesseringTest {
     }
 
     @Test
-    fun `Gylding melding blir prosessert av journalføringskonsumer`() {
-        val melding = gyldigMelding(
+    fun `Gylding søknad blir prosessert av journalføringskonsumer`() {
+        val søknad = gyldigSøknad(
             fødselsnummerSoker = gyldigFodselsnummerA
         )
 
-        kafkaTestProducer.leggTilMottak(melding)
+        kafkaTestProducer.leggTilMottak(søknad)
         journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
+            .hentJournalførtSøknad(søknad.søknadId)
+            .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
     }
 
     @Test
     @Ignore //TODO FJERN ignore når journalføring fungerer.
-    fun `En feilprosessert melding vil bli prosessert etter at tjenesten restartes`() {
-        val melding = gyldigMelding(
+    fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
+        val søknad = gyldigSøknad(
             fødselsnummerSoker = gyldigFodselsnummerA
         )
 
         wireMockServer.stubJournalfor(500) // Simulerer feil ved journalføring
 
-        kafkaTestProducer.leggTilMottak(melding)
+        kafkaTestProducer.leggTilMottak(søknad)
         ventPaaAtRetryMekanismeIStreamProsessering()
         readyGir200HealthGir503()
 
         wireMockServer.stubJournalfor(201) // Simulerer journalføring fungerer igjen
         restartEngine()
         journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-    }
+            .hentJournalførtSøknad(søknad.søknadId)
+            .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
 
-    private fun readyGir200HealthGir503() {
-        with(engine) {
-            handleRequest(HttpMethod.Get, "/isready") {}.apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-                handleRequest(HttpMethod.Get, "/health") {}.apply {
-                    assertEquals(HttpStatusCode.ServiceUnavailable, response.status())
-                }
-            }
-        }
     }
 
     @Test
-    fun `Melding som gjeder søker med D-nummer`() {
-        val melding = gyldigMelding(
+    fun `Sende søknad hvor søker har D-nummer`() {
+        val søknad = gyldigSøknad(
             fødselsnummerSoker = dNummerA
         )
 
-        kafkaTestProducer.leggTilMottak(melding)
+        kafkaTestProducer.leggTilMottak(søknad)
         journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
+            .hentJournalførtSøknad(søknad.søknadId)
+            .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
     }
 
-    @Test
-    fun `Forvent riktig format på journalført melding`() {
-        val melding = gyldigMelding(
-            fødselsnummerSoker = gyldigFodselsnummerA
-        )
-
-        kafkaTestProducer.leggTilMottak(melding)
-        journalføringsKonsumer
-            .hentJournalførtMelding(melding.søknadId)
-    }
-
-    private fun gyldigMelding(
+    private fun gyldigSøknad(
         fødselsnummerSoker: String,
-        sprak: String? = null
+        sprak: String? = "nb"
     ): MeldingV1 = MeldingV1(
         språk = sprak,
         søknadId = UUID.randomUUID().toString(),
@@ -203,4 +185,32 @@ class OmsorgspengesoknadProsesseringTest {
     )
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
+
+    private fun readyGir200HealthGir503() {
+        with(engine) {
+            handleRequest(HttpMethod.Get, "/isready") {}.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+                handleRequest(HttpMethod.Get, "/health") {}.apply {
+                    assertEquals(HttpStatusCode.ServiceUnavailable, response.status())
+                }
+            }
+        }
+    }
+
+    private infix fun String.validerJournalførtSøknad(innsendtSøknad: JSONObject) {
+        val rawJson = JSONObject(this)
+
+        val metadata = rawJson.getJSONObject("metadata")
+        assertNotNull(metadata)
+        assertNotNull(metadata.getString("correlationId"))
+        assertNotNull(metadata.getString("requestId"))
+
+        val journalførtSøknad = rawJson.getJSONObject("data").getJSONObject("søknad")
+        assertNotNull(journalførtSøknad)
+        assertEquals(innsendtSøknad.getString("søknadId"), journalførtSøknad.getString("søknadId"))
+
+        val søkerJournalført = journalførtSøknad.getJSONObject("søker")
+        val søkerInnsendt = innsendtSøknad.getJSONObject("søker")
+        JSONAssert.assertEquals(søkerJournalført, søkerInnsendt, true)
+    }
 }
