@@ -6,16 +6,9 @@
 # Innholdsoversikt
 * [1. Kontekst](#1-kontekst)
 * [2. Funksjonelle Krav](#2-funksjonelle-krav)
-* [2.1 Feil ved prosessering](#feil-i-prosessering)
-* [3. Begrensninger](#3-begrensninger)
-* [4. Prinsipper](#4-prinsipper)
-* [5. Programvarearkitektur](#5-programvarearkitektur)
-* [6. Kode](#6-kode)
-* [7. Data](#7-data)
-* [8. Infrastrukturarkitektur](#8-infrastrukturarkitektur)
-* [9. Distribusjon av tjenesten (deployment)](#9-distribusjon-av-tjenesten-deployment)
-* [10. Utviklingsmiljø](#10-utviklingsmilj)
-* [11. Drift og støtte](#11-drift-og-sttte)
+* [2.1 Feil i prosessering](#feil-i-prosessering)
+* [3. Utviklingsmiljø](#10-utviklingsmilj)
+* [4. Drift og støtte](#11-drift-og-sttte)
 
 # 1. Kontekst
 Prosesseringstjeneste for søknad om å bli regnet som midlertidig alene.
