@@ -21,7 +21,7 @@ class OmsorgspengesoknadProsesseringWithMocks {
                 .withAzureSupport()
                 .navnOppslagConfig()
                 .build()
-                .stubK9DokumentHealth()
+                .stubK9MellomlagringHealth()
                 .stubOmsorgspengerJoarkHealth()
                 .stubJournalfor()
                 .stubLagreDokument()

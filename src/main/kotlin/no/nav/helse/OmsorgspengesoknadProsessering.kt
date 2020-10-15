@@ -60,10 +60,9 @@ fun Application.omsorgspengesoknadProsessering() {
     val accessTokenClientResolver = AccessTokenClientResolver(environment.config.clients())
 
     val dokumentGateway = DokumentGateway(
-        baseUrl = configuration.getK9DokumentBaseUrl(),
+        baseUrl = configuration.getK9MellomlagringServiceDiscovery(),
         accessTokenClient = accessTokenClientResolver.dokumentAccessTokenClient(),
         lagreDokumentScopes = configuration.getLagreDokumentScopes(),
-        apiGatewayApiKey = apiGatewayApiKey,
         sletteDokumentScopes = configuration.getSletteDokumentScopes()
     )
 
@@ -111,7 +110,7 @@ fun Application.omsorgspengesoknadProsessering() {
                     joarkGateway,
                     HttpRequestHealthCheck(
                         mapOf(
-                            Url.healthURL(configuration.getK9DokumentBaseUrl()) to HttpRequestHealthConfig(
+                            Url.healthURL(configuration.getK9MellomlagringServiceDiscovery()) to HttpRequestHealthConfig(
                                 expectedStatus = HttpStatusCode.OK
                             ),
                             Url.healthURL(configuration.getk9JoarkBaseUrl()) to HttpRequestHealthConfig(

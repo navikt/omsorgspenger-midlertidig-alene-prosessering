@@ -36,7 +36,6 @@ class DokumentGateway(
     private val accessTokenClient: AccessTokenClient,
     private val lagreDokumentScopes: Set<String>,
     private val sletteDokumentScopes: Set<String>,
-    private val apiGatewayApiKey: ApiGatewayApiKey,
     baseUrl : URI
 ) : HealthCheck {
 
@@ -80,7 +79,6 @@ class DokumentGateway(
 
     internal suspend fun lagreDokmenter(
         dokumenter: Set<Dokument>,
-        aktørId: AktørId,
         correlationId: CorrelationId
     ) : List<URI> {
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(lagreDokumentScopes).asAuthoriationHeader()
@@ -92,7 +90,6 @@ class DokumentGateway(
                     requestLagreDokument(
                         dokument = dokument,
                         correlationId = correlationId,
-                        aktørId = aktørId,
                         authorizationHeader = authorizationHeader
                     )
                 })
@@ -103,7 +100,7 @@ class DokumentGateway(
 
     internal suspend fun slettDokmenter(
         urls: List<URI>,
-        aktørId: AktørId,
+        dokumentEier: DokumentEier,
         correlationId: CorrelationId
     ) {
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(sletteDokumentScopes).asAuthoriationHeader()
@@ -112,9 +109,9 @@ class DokumentGateway(
             urls.forEach {
                 deferred.add(async {
                     requestSlettDokument(
-                        url = it.tilHelseReverseProxyUrl(),
+                        url = it.tilServiceDiscoveryUrl(baseUrl = completeUrl),
                         correlationId = correlationId,
-                        aktørId = aktørId,
+                        dokumentEier = dokumentEier,
                         authorizationHeader = authorizationHeader
                     )
                 })
@@ -125,21 +122,20 @@ class DokumentGateway(
 
     private suspend fun requestSlettDokument(
         url: URI,
-        aktørId: AktørId,
+        dokumentEier: DokumentEier,
         correlationId: CorrelationId,
         authorizationHeader: String
     ) {
-        val urlMedEier = Url.buildURL(
-            baseUrl = url,
-            queryParameters = mapOf("eier" to listOf(aktørId.id))
-        ).toString()
-        logger.info("Forsøker å slette med URL: {}", url) //TODO FJERNE FRA PROD
-        val httpRequest = urlMedEier
+        val body = objectMapper.writeValueAsBytes(dokumentEier)
+        val contentStream = { ByteArrayInputStream(body) }
+
+        val httpRequest = url.toString()
             .httpDelete()
+            .body(contentStream)
             .header(
                 HttpHeaders.Authorization to authorizationHeader,
                 HttpHeaders.XCorrelationId to correlationId.value,
-                apiGatewayApiKey.headerKey to apiGatewayApiKey.value
+                HttpHeaders.ContentType to "application/json"
             )
 
         val (request, _, result) = Operation.monitored(
@@ -162,15 +158,9 @@ class DokumentGateway(
 
     private suspend fun requestLagreDokument(
         dokument: Dokument,
-        aktørId: AktørId,
         correlationId: CorrelationId,
         authorizationHeader: String
     ) : URI {
-
-        val urlMedEier = Url.buildURL(
-            baseUrl = completeUrl,
-            queryParameters = mapOf("eier" to listOf(aktørId.id))
-        ).toString()
 
         val body = objectMapper.writeValueAsBytes(dokument)
         val contentStream = { ByteArrayInputStream(body) }
@@ -185,13 +175,12 @@ class DokumentGateway(
                 operation = LAGRE_DOKUMENT_OPERATION,
                 resultResolver = { 201 == it.second.statusCode }
             ) {
-                urlMedEier
+                completeUrl.toString()
                     .httpPost()
                     .body(contentStream)
                     .header(
                         HttpHeaders.Authorization to authorizationHeader,
                         HttpHeaders.XCorrelationId to correlationId.value,
-                        apiGatewayApiKey.headerKey to apiGatewayApiKey.value,
                         HttpHeaders.ContentType to "application/json"
                     )
                     .awaitStringResponseResult()
@@ -214,27 +203,28 @@ class DokumentGateway(
     }
 
     data class Dokument(
+        val eier: DokumentEier,
         val content: ByteArray,
         @JsonProperty("content_type") val contentType: String,
         val title: String
     )
-    private fun URI.tilHelseReverseProxyUrl(): URI {
-        /*
-        K9-dokument returnerer direktelenke til dokumentet. Fordi vi skal gjennom Helse-Reverse-Proxy og api-gw
-        så må vi tilpasse url.
-        Feks i dev blir denne url returnert: https://k9-dokument.nais.preprod.local/v1/dokument/xxx.xxx,
-        mens vi ønsker https://api-gw-q1.oera.no/helse-reverse-proxy/k9-dokument/v1/dokument/xxx.xxx
-         */
-        val idFraUrl = this.path.substringAfterLast("/")
-        val nyUrl = Url.buildURL(
-            baseUrl = completeUrl,
-            pathParts = listOf(idFraUrl)
-        )
-        logger.info("DEBUG: Gjør om URL")
-        logger.info("DEBUG: Gammel URL: {}", this)
-        logger.info("DEBUG: Ny URL: {}", nyUrl)
-        return nyUrl
-    }
+
+    data class DokumentEier(
+        @JsonProperty("eiers_fødselsnummer") val eiersFødselsnummer: String
+    )
+
 }
 
-
+fun URI.tilServiceDiscoveryUrl(baseUrl: URI): URI {
+    /*
+    K9-mellomlagring returnerer direktelenke til dokumentet. Prosessering bruker service-discovery, så må gjøres om.
+    Feks i dev blir denne url returnert: https://k9-dokument.nais.preprod.local/v1/dokument/xxx.xxx,
+    mens vi ønsker http://k9-dokument/v1/dokument/xxx.xxx
+     */
+    val idFraUrl = this.path.substringAfterLast("/")
+    val nyUrl = Url.buildURL(
+        baseUrl = baseUrl,
+        pathParts = listOf(idFraUrl)
+    )
+    return nyUrl
+}

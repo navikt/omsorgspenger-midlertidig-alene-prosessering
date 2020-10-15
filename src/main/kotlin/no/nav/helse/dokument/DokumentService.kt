@@ -1,6 +1,5 @@
 package no.nav.helse.dokument
 
-import no.nav.helse.Configuration
 import no.nav.helse.CorrelationId
 import no.nav.helse.prosessering.AktørId
 import no.nav.helse.prosessering.v1.MeldingV1
@@ -15,52 +14,50 @@ class DokumentService(
 ) {
     private suspend fun lagreDokument(
         dokument: DokumentGateway.Dokument,
-        aktørId: AktørId,
         correlationId: CorrelationId
     ) : URI {
         return dokumentGateway.lagreDokmenter(
             dokumenter = setOf(dokument),
-            correlationId = correlationId,
-            aktørId = aktørId
+            correlationId = correlationId
         ).first()
     }
 
     internal suspend fun lagreSoknadsOppsummeringPdf(
         pdf : ByteArray,
-        aktørId: AktørId,
+        dokumentEier: DokumentGateway.DokumentEier,
         correlationId: CorrelationId,
         dokumentbeskrivelse: String
     ) : URI {
         return lagreDokument(
             dokument = DokumentGateway.Dokument(
+                eier = dokumentEier,
                 content = pdf,
                 contentType = "application/pdf",
                 title = dokumentbeskrivelse
             ),
-            aktørId = aktørId,
             correlationId = correlationId
         )
     }
 
     internal suspend fun lagreSoknadsMelding(
         melding: MeldingV1,
-        aktørId: AktørId,
+        dokumentEier: DokumentGateway.DokumentEier,
         correlationId: CorrelationId
     ) : URI {
         return lagreDokument(
             dokument = DokumentGateway.Dokument(
+                eier = dokumentEier,
                 content = Søknadsformat.somJson(melding),
                 contentType = "application/json",
                 title = "Søknad om omsorgspenger midlertidig alene som JSON"
             ),
-            aktørId = aktørId,
             correlationId = correlationId
         )
     }
 
     internal suspend fun slettDokumeter(
         urlBolks: List<List<URI>>,
-        aktørId: AktørId,
+        dokumentEier: DokumentGateway.DokumentEier,
         correlationId : CorrelationId
     ) {
         val urls = mutableListOf<URI>()
@@ -68,7 +65,7 @@ class DokumentService(
         logger.trace("Sletter ${urls.size} dokumenter")
         dokumentGateway.slettDokmenter(
             urls = urls,
-            aktørId = aktørId,
+            dokumentEier = dokumentEier,
             correlationId = correlationId
         )
 
