@@ -46,13 +46,13 @@ internal class CleanupStream(
                     process(NAME, soknadId, entry) {
                         logger.info("Cleanup for søknad med ID = {}", soknadId)
                         logger.trace("Sletter dokumenter.")
-                        /*
+
                         dokumentService.slettDokumeter(
                             urlBolks = entry.data.melding.dokumentUrls,
                             dokumentEier = DokumentGateway.DokumentEier(entry.data.melding.søker.fødselsnummer),
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
-                        */
+
                         logger.trace("Dokumenter slettet.")
                         logger.info("Videresender journalført søknad med ID = {}", soknadId)
                         entry.data.journalførtMelding
