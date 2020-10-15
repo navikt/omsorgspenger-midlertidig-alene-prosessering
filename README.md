@@ -22,10 +22,15 @@ Prosesseringstjeneste for søknad om å bli regnet som midlertidig alene.
 
 # 2. Funksjonelle krav
 Tjenesten konsumerer meldinger fra topicen "privat-omsorgspenger-midlertidig-alene-mottatt" som 
-[omsorgspenger-midlertidig-alene-api](https://github.com/navikt/omsorgspenger-midlertidig-alene-api) har produsert
+[omsorgspenger-midlertidig-alene-api](https://github.com/navikt/omsorgspenger-midlertidig-alene-api) har produsert. 
 
-Tjenesten journalfører mot [K9-Joark](https://github.com/navikt/k9-joark) og legger til slutt søknaden
-på topic "" som k9-fordel/omsorgspenger-rammemeldinger konsumerer.
+Videre blir søknaden preprosessert, pdf generert og lagret i [K9-mellomlagring](https://github.com/navikt/k9-mellomlagring). 
+
+Tjenesten journalfører så søknaden mot [K9-Joark](https://github.com/navikt/k9-joark). Deretter blir pdf og andre dokumenter som ble lagret 
+i k9-mellomlagring slettet og til slutt legges søknaden på topic "" som 
+k9-fordel/omsorgspenger-rammemeldinger konsumerer.
+
+All kontakt med K9-mellomlagring går gjennom [service-discovery](https://doc.nais.io/clusters/team-namespaces#service-discovery-in-kubernetes), i.e "http://k9-mellomlagring"
 
 ## Feil i prosessering
 Ved feil i en av streamene som håndterer prosesseringen vil streamen stoppe, og tjenesten gi 503 response på liveness etter 15 minutter.
