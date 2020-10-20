@@ -1,6 +1,5 @@
 package no.nav.helse.prosessering.v1
 
-import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -35,10 +34,10 @@ data class Søker(
 }
 
 enum class Arbeidssituasjon(){
-    @JsonAlias("selvstendigNæringsdrivende") SELVSTENDIG_NÆRINGSDRIVENDE,
-    @JsonAlias("arbeidstaker") ARBEIDSTAKER,
-    @JsonAlias("frilanser") FRILANSER,
-    @JsonAlias("annen") ANNEN
+    SELVSTENDIG_NÆRINGSDRIVENDE,
+    ARBEIDSTAKER,
+    FRILANSER,
+    ANNEN
 }
 
 data class AnnenForelder(
@@ -46,23 +45,23 @@ data class AnnenForelder(
     val fnr: String,
     val situasjon: Situasjon,
     val situasjonBeskrivelse: String,
-    val periodeOver6Måneder: Boolean? = null, //Settes til null for å unngå default false
+    val periodeOver6Måneder: Boolean,
     @JsonFormat(pattern = "yyyy-MM-dd") val periodeFraOgMed: LocalDate,
     @JsonFormat(pattern = "yyyy-MM-dd") val periodeTilOgMed: LocalDate
 )
 
 enum class Situasjon(){
-    @JsonAlias("innlagtIHelseinstitusjon") INNLAGT_I_HELSEINSTITUSJON,
-    @JsonAlias("utøverVerneplikt") UTØVER_VERNEPLIKT,
-    @JsonAlias("fengsel") FENGSEL,
-    @JsonAlias("sykdom") SYKDOM,
-    @JsonAlias("annet") ANNET
+    INNLAGT_I_HELSEINSTITUSJON,
+    UTØVER_VERNEPLIKT,
+    FENGSEL,
+    SYKDOM,
+    ANNET
 }
 
 data class Medlemskap(
-    val harBoddIUtlandetSiste12Mnd: Boolean? = null, //Settes til null for å unngå default false
+    val harBoddIUtlandetSiste12Mnd: Boolean,
     val utenlandsoppholdSiste12Mnd: List<Utenlandsopphold> = listOf(),
-    val skalBoIUtlandetNeste12Mnd: Boolean? = null, //Settes til null for å unngå default false
+    val skalBoIUtlandetNeste12Mnd: Boolean,
     val utenlandsoppholdNeste12Mnd: List<Utenlandsopphold> = listOf()
 )
 
@@ -74,6 +73,6 @@ data class Utenlandsopphold(
 )
 
 data class UtenlandsoppholdIPerioden(
-    val skalOppholdeSegIUtlandetIPerioden: Boolean? = null, //Settes til null for å unngå default false
+    val skalOppholdeSegIUtlandetIPerioden: Boolean,
     val opphold: List<Utenlandsopphold> = listOf() //TODO Sender frontend null eller tom liste?
 )

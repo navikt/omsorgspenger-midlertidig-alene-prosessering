@@ -179,5 +179,12 @@ class OmsorgspengesoknadProsesseringTest {
         val søkerJournalført = journalførtSøknad.getJSONObject("søker")
         val søkerInnsendt = innsendtSøknad.getJSONObject("søker")
         JSONAssert.assertEquals(søkerJournalført, søkerInnsendt, true)
+        /*
+        journalførtSøknad.remove("dokumentUrls")
+        journalførtSøknad.remove("mottatt")
+        innsendtSøknad.remove("mottatt")
+
+        JSONAssert.assertEquals(innsendtSøknad, journalførtSøknad, true)
+         */
     }
 }
