@@ -3,11 +3,11 @@ package no.nav.helse.prosessering.v1.asynkron
 import no.nav.helse.CorrelationId
 import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
+import no.nav.helse.dokument.Søknadsformat
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.helse.prosessering.AktørId
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.Consumed
@@ -55,6 +55,8 @@ internal class CleanupStream(
 
                         logger.trace("Dokumenter slettet.")
                         logger.info("Videresender journalført søknad med ID = {}", soknadId)
+
+                        logger.info("Søknad sendt til journalføring: {}", String(Søknadsformat.somJson(entry.data.journalførtMelding)))
                         entry.data.journalførtMelding
                     }
                 }
