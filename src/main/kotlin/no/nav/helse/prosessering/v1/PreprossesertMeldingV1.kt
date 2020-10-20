@@ -12,8 +12,15 @@ data class PreprossesertMeldingV1(
     val språk: String?,
     val dokumentUrls: List<List<URI>>,
     val søker: PreprossesertSøker,
-    val harBekreftetOpplysninger: Boolean,
-    val harForståttRettigheterOgPlikter: Boolean
+    val id: String,
+    val arbeidssituasjon: List<Arbeidssituasjon>,
+    val annenForelder: AnnenForelder,
+    val antallBarn: Int,
+    val alderAvAlleBarn: List<Int>,
+    val medlemskap: Medlemskap,
+    val utenlandsoppholdIPerioden: UtenlandsoppholdIPerioden?,
+    val harForståttRettigheterOgPlikter: Boolean,
+    val harBekreftetOpplysninger: Boolean
 ) {
     internal constructor(
         melding: MeldingV1,
@@ -25,6 +32,13 @@ data class PreprossesertMeldingV1(
         mottatt = melding.mottatt,
         dokumentUrls = dokumentUrls,
         søker = PreprossesertSøker(melding.søker, søkerAktørId),
+        id = melding.id,
+        arbeidssituasjon = melding.arbeidssituasjon,
+        annenForelder = melding.annenForelder,
+        antallBarn = melding.antallBarn,
+        alderAvAlleBarn = melding.alderAvAlleBarn,
+        medlemskap = melding.medlemskap,
+        utenlandsoppholdIPerioden = melding.utenlandsoppholdIPerioden,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger
     )

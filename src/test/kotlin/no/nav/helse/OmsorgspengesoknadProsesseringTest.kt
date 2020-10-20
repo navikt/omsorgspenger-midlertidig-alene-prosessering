@@ -2,20 +2,15 @@ package no.nav.helse
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.typesafe.config.ConfigFactory
-import io.ktor.config.ApplicationConfig
-import io.ktor.config.HoconApplicationConfig
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.engine.stop
-import io.ktor.server.testing.TestApplicationEngine
-import io.ktor.server.testing.createTestEnvironment
-import io.ktor.server.testing.handleRequest
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.config.*
+import io.ktor.http.*
+import io.ktor.server.engine.*
+import io.ktor.server.testing.*
+import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
-import no.nav.helse.prosessering.v1.*
 import org.json.JSONObject
 import org.junit.AfterClass
 import org.junit.Ignore
@@ -23,9 +18,6 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
-import java.time.LocalDate
-import java.time.ZonedDateTime
-import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -122,9 +114,7 @@ class OmsorgspengesoknadProsesseringTest {
 
     @Test
     fun `Gylding søknad blir prosessert av journalføringskonsumer`() {
-        val søknad = gyldigSøknad(
-            fødselsnummerSoker = gyldigFodselsnummerA
-        )
+        val søknad = SøknadUtils.gyldigSøknad()
 
         kafkaTestProducer.leggTilMottak(søknad)
         journalføringsKonsumer
@@ -135,9 +125,7 @@ class OmsorgspengesoknadProsesseringTest {
     @Test
     @Ignore //TODO FJERN ignore når journalføring fungerer.
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
-        val søknad = gyldigSøknad(
-            fødselsnummerSoker = gyldigFodselsnummerA
-        )
+        val søknad = SøknadUtils.gyldigSøknad()
 
         wireMockServer.stubJournalfor(500) // Simulerer feil ved journalføring
 
@@ -155,34 +143,13 @@ class OmsorgspengesoknadProsesseringTest {
 
     @Test
     fun `Sende søknad hvor søker har D-nummer`() {
-        val søknad = gyldigSøknad(
-            fødselsnummerSoker = dNummerA
-        )
+        val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
         journalføringsKonsumer
             .hentJournalførtSøknad(søknad.søknadId)
             .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
     }
-
-    private fun gyldigSøknad(
-        fødselsnummerSoker: String,
-        sprak: String? = "nb"
-    ): MeldingV1 = MeldingV1(
-        språk = sprak,
-        søknadId = UUID.randomUUID().toString(),
-        mottatt = ZonedDateTime.now(),
-        søker = Søker(
-            aktørId = "123456",
-            fødselsnummer = fødselsnummerSoker,
-            fødselsdato = LocalDate.now().minusDays(1000),
-            etternavn = "Nordmann",
-            mellomnavn = "Mellomnavn",
-            fornavn = "Ola"
-        ),
-        harBekreftetOpplysninger = true,
-        harForståttRettigheterOgPlikter = true
-    )
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
 
