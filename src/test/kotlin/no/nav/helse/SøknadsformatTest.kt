@@ -1,7 +1,7 @@
 package no.nav.helse
 
 import no.nav.helse.dokument.Søknadsformat
-import no.nav.helse.prosessering.v1.*
+import no.nav.helse.prosessering.v1.søknad.*
 import org.skyscreamer.jsonassert.JSONAssert
 import java.time.LocalDate
 import java.time.ZoneId

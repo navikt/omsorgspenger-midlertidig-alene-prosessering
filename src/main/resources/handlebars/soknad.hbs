@@ -23,11 +23,38 @@
         {{søknadMottattDag}} {{ søknadMottatt }}
     </p>
     <div class="innholdscontainer">
+
         <div class="person" id="søker">
             <p class="navn">{{ søker.navn }}</p>
             <p>{{ søker.fødselsnummer }}</p>
             <br />
         </div>
+
+        <!-- ANDRE_FORELDER -->
+        <section id="andre_forelderen">
+            <h2>Den andre forelderen</h2>
+            <p class="sporsmalstekst">Hva er navnet til den andre forelderen?</p>
+            <p>{{andreForelder.navn}}</p>
+            <p class="sporsmalstekst">Hva er fødselsnummeret til den andre forelderen?</p>
+            <p>{{andreForelder.fnr}}</p>
+            <p class="sporsmalstekst">Hva er situasjonen til den andre forelderen?</p>
+            <p>{{andreForelder.situasjon}}</p>
+            <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
+            <p class="fritekst">{{andreForelder.beskrivelse}}</p>
+            <p class="sporsmalstekst">Perioden fra og med?</p>
+            <p>{{andreForelder.periodeFraOgMed}}</p>
+            <p class="sporsmalstekst">Perioden til og med?</p>
+            <p>{{andreForelder.periodeTilOgMed}}</p>
+            <p class="sporsmalstekst">Er perioden over 6 måneder?</p>
+            <p>{{ jaNeiSvar andreForelder.periodeOver6Måneder}}</p>
+        </section>
+
+        <!-- Medlemskap -->
+        <section>
+            <h2>Medlemskap</h2>
+            <p class="sporsmalstekst">Har du bodd i utlandet de siste 12 månedene?</p>
+            <p>{{ jaNeiSvar medlemskap.harBoddIUtlandetSiste12Mnd}}</p>
+        </section>
 
         <!-- SAMTYKKE -->
         <section id="samtykke">

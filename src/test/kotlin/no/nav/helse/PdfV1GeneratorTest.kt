@@ -1,6 +1,7 @@
 package no.nav.helse
 
-import no.nav.helse.prosessering.v1.*
+import no.nav.helse.prosessering.v1.PdfV1Generator
+import no.nav.helse.prosessering.v1.søknad.*
 import java.io.File
 import java.time.LocalDate
 import java.time.ZonedDateTime

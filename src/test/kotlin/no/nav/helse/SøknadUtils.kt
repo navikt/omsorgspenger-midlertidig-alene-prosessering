@@ -1,6 +1,6 @@
 package no.nav.helse
 
-import no.nav.helse.prosessering.v1.*
+import no.nav.helse.prosessering.v1.søknad.*
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.*

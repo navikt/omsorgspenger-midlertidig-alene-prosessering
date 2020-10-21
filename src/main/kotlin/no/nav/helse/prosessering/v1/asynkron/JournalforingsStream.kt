@@ -1,14 +1,12 @@
 package no.nav.helse.prosessering.v1.asynkron
 
-import no.nav.helse.CorrelationId
 import no.nav.helse.joark.JoarkGateway
 import no.nav.helse.joark.JournalPostId
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.helse.prosessering.AktørId
-import no.nav.helse.prosessering.v1.PreprossesertMeldingV1
+import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.Consumed

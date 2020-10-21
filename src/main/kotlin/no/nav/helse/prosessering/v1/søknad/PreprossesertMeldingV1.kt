@@ -1,4 +1,4 @@
-package no.nav.helse.prosessering.v1
+package no.nav.helse.prosessering.v1.søknad
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.helse.prosessering.AktørId

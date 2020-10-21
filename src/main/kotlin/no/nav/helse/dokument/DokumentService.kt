@@ -1,8 +1,7 @@
 package no.nav.helse.dokument
 
 import no.nav.helse.CorrelationId
-import no.nav.helse.prosessering.AktørId
-import no.nav.helse.prosessering.v1.MeldingV1
+import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URI

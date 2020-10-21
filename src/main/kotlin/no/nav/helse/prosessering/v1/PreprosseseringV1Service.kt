@@ -6,8 +6,9 @@ import no.nav.helse.dokument.DokumentService
 import no.nav.helse.prosessering.AktørId
 import no.nav.helse.prosessering.Metadata
 import no.nav.helse.prosessering.SøknadId
+import no.nav.helse.prosessering.v1.søknad.MeldingV1
+import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
 import org.slf4j.LoggerFactory
-import java.net.URI
 
 internal class PreprosseseringV1Service(
     private val pdfV1Generator: PdfV1Generator,
