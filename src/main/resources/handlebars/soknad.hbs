@@ -10,6 +10,8 @@
           content="Søknad om omsorgspenger midlertidig alene {{søknadMottattDag}} {{ søknadMottatt }}" />
     <bookmarks>
         <bookmark name="Søker" href="#søker" />
+        <bookmark name="Din situasjon" href="#din_situasjon" />
+        <bookmark name="Den andre forelderen" href="#andre_forelderen" />
         <bookmark name="Samtykke" href="#samtykke" />
     </bookmarks>
     {{#block 'style-common' }}
@@ -29,6 +31,25 @@
             <p>{{ søker.fødselsnummer }}</p>
             <br />
         </div>
+
+        <section id="din_situasjon">
+            <h2>Din situasjon</h2>
+            <p class="sporsmalstekst">Hva er din arbeidssituasjon?</p>
+            <ul>
+                {{# each arbeidssituasjon as |situasjon|~}}
+                    <li>{{situasjon.utskriftvennlig}}</li>
+                {{/each}}
+            </ul>
+            <p class="sporsmalstekst">Hvor mange felles barn har dere? Inkludert eventuelle fosterbarn</p>
+            <p> {{antallBarn}}</p>
+            <p class="sporsmalstekst">Hva er alderen på alle barna?</p>
+            <p> {{alderAvAlleBarn.alder}}</p>
+            <ul>
+                {{# each alderAvAlleBarn as |barn|~}}
+                    <li>{{barn.alder}}</li>
+                {{/each}}
+            </ul>
+        </section>
 
         <!-- ANDRE_FORELDER -->
         <section id="andre_forelderen">

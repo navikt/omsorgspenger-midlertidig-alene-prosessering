@@ -28,7 +28,11 @@ class PdfV1GeneratorTest {
                 fødselsdato = fødselsdato
             ),
             id = "123456789",
-            arbeidssituasjon = listOf(Arbeidssituasjon.FRILANSER),
+            arbeidssituasjon = listOf(
+                Arbeidssituasjon.FRILANSER,
+                Arbeidssituasjon.SELVSTENDIG_NÆRINGSDRIVENDE,
+                Arbeidssituasjon.ANNEN
+            ),
             annenForelder = AnnenForelder(
                 navn = "Berit",
                 fnr = "02119970078",

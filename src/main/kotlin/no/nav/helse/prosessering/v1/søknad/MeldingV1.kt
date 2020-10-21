@@ -34,11 +34,11 @@ data class Søker(
     }
 }
 
-enum class Arbeidssituasjon(){
-    SELVSTENDIG_NÆRINGSDRIVENDE,
-    ARBEIDSTAKER,
-    FRILANSER,
-    ANNEN
+enum class Arbeidssituasjon(val utskriftvennlig: String){
+    SELVSTENDIG_NÆRINGSDRIVENDE("Selvstendig næringsdrivende"),
+    ARBEIDSTAKER("Arbeidstaker"),
+    FRILANSER("Frilanser"),
+    ANNEN("Annen")
 }
 
 data class AnnenForelder(
@@ -104,5 +104,21 @@ data class Utenlandsopphold(
 private fun List<Utenlandsopphold>.somMapTilPdf(): List<Map<String, Any?>> {
     return map {
         it.somMapTilPdf()
+    }
+}
+
+internal fun List<Arbeidssituasjon>.somMapTilPdfArbeidssituasjon(): List<Map<String, Any?>> {
+    return map {
+        mapOf<String, Any?>(
+            "utskriftvennlig" to it.utskriftvennlig
+        )
+    }
+}
+
+internal fun List<Int>.somMapTilPdfAlder(): List<Map<String, Any?>> {
+    return map {
+        mapOf<String, Any?>(
+            "alder" to it
+        )
     }
 }
