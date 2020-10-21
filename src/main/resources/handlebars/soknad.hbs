@@ -12,6 +12,7 @@
         <bookmark name="Søker" href="#søker" />
         <bookmark name="Din situasjon" href="#din_situasjon" />
         <bookmark name="Den andre forelderen" href="#andre_forelderen" />
+        <bookmark name="Medlemskap" href="#medlemskap" />
         <bookmark name="Samtykke" href="#samtykke" />
     </bookmarks>
     {{#block 'style-common' }}
@@ -19,7 +20,7 @@
 </head>
 
 <body>
-    <h1 id="header">Søknad om omsorgspenger midlertidig alene</h1>
+    <h1 id="header">Søknad om omsorgspenger regnet som midlertidig alene</h1>
     <p class="nokkelinfo">
         <strong>Sendt til NAV</strong>
         {{søknadMottattDag}} {{ søknadMottatt }}
@@ -71,10 +72,32 @@
         </section>
 
         <!-- Medlemskap -->
-        <section>
+        <section id="medlemskap">
             <h2>Medlemskap</h2>
             <p class="sporsmalstekst">Har du bodd i utlandet de siste 12 månedene?</p>
             <p>{{ jaNeiSvar medlemskap.harBoddIUtlandetSiste12Mnd}}</p>
+            {{#if medlemskap.harBoddIUtlandetSiste12Mnd}}
+            <p class="sporsmalstekst">Utenlandsopphold de siste 12 måneder: </p>
+                <ul>
+                    {{# each medlemskap.utenlandsoppholdSiste12Mnd as |utenlandsopphold|~}}
+                        <li>
+                            <p>Landnavn: {{utenlandsopphold.landnavn}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+            <p class="sporsmalstekst">Skal du bo i utlandet de neste 12 månedene?</p>
+            <p>{{ jaNeiSvar medlemskap.skalBoIUtlandetNeste12Mnd}}</p>
+            {{#if medlemskap.skalBoIUtlandetNeste12Mnd}}
+                <p class="sporsmalstekst">Utenlandsopphold de neste 12 måneder: </p>
+                <ul>
+                    {{# each medlemskap.utenlandsoppholdNeste12Mnd as |utenlandsopphold|~}}
+                        <li>
+                            <p>Landnavn: {{utenlandsopphold.landnavn}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/if}}
         </section>
 
         <!-- SAMTYKKE -->
