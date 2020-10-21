@@ -76,23 +76,6 @@ class SøknadsformatTest {
                   }
                 ]
               },
-              "utenlandsoppholdIPerioden": {
-                "skalOppholdeSegIUtlandetIPerioden": true,
-                "opphold": [
-                  {
-                    "fraOgMed": "2020-01-11",
-                    "tilOgMed": "2020-01-12",
-                    "landkode": "BR",
-                    "landnavn": "Brasil"
-                  },
-                  {
-                    "fraOgMed": "2020-01-01",
-                    "tilOgMed": "2020-01-10",
-                    "landkode": "SWE",
-                    "landnavn": "Sverige"
-                  }
-                ]
-              },
               "harForståttRettigheterOgPlikter": true,
               "harBekreftetOpplysninger": true
             }
@@ -148,23 +131,6 @@ class SøknadsformatTest {
                     tilOgMed = LocalDate.parse("2020-10-10"),
                     landnavn = "Brasil",
                     landkode = "BR"
-                )
-            )
-        ),
-        utenlandsoppholdIPerioden = UtenlandsoppholdIPerioden(
-            skalOppholdeSegIUtlandetIPerioden = true,
-            opphold = listOf(
-                Utenlandsopphold(
-                    fraOgMed = LocalDate.parse("2020-01-11"),
-                    tilOgMed = LocalDate.parse("2020-01-12"),
-                    landnavn = "Brasil",
-                    landkode = "BR"
-                ),
-                Utenlandsopphold(
-                    fraOgMed = LocalDate.parse("2020-01-01"),
-                    tilOgMed = LocalDate.parse("2020-01-10"),
-                    landnavn = "Sverige",
-                    landkode = "SWE"
                 )
             )
         ),

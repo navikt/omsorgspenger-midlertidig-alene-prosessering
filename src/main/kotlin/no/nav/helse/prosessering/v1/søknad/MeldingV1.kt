@@ -17,7 +17,6 @@ data class MeldingV1(
     val antallBarn: Int,
     val alderAvAlleBarn: List<Int>,
     val medlemskap: Medlemskap,
-    val utenlandsoppholdIPerioden: UtenlandsoppholdIPerioden?,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 )
@@ -98,18 +97,6 @@ data class Utenlandsopphold(
         val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.of("Europe/Oslo"))
         return mapOf(
             "landnavn" to landnavn
-        )
-    }
-}
-
-
-data class UtenlandsoppholdIPerioden(
-    val skalOppholdeSegIUtlandetIPerioden: Boolean,
-    val opphold: List<Utenlandsopphold> = listOf()
-){
-    fun somMapTilPdf(): Map<String, Any?>{
-        return mapOf(
-            "opphold" to opphold.somMapTilPdf()
         )
     }
 }

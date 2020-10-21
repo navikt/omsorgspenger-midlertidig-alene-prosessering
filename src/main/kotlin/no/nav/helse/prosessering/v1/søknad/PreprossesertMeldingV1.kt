@@ -18,7 +18,6 @@ data class PreprossesertMeldingV1(
     val antallBarn: Int,
     val alderAvAlleBarn: List<Int>,
     val medlemskap: Medlemskap,
-    val utenlandsoppholdIPerioden: UtenlandsoppholdIPerioden?,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 ) {
@@ -38,7 +37,6 @@ data class PreprossesertMeldingV1(
         antallBarn = melding.antallBarn,
         alderAvAlleBarn = melding.alderAvAlleBarn,
         medlemskap = melding.medlemskap,
-        utenlandsoppholdIPerioden = melding.utenlandsoppholdIPerioden,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger
     )
