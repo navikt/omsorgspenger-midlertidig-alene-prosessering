@@ -59,7 +59,6 @@ internal class PdfV1Generator {
         private val soknadTemplate = handlebars.compile(SOKNAD)
 
         private val ZONE_ID = ZoneId.of("Europe/Oslo")
-        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZONE_ID)
         private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm").withZone(ZONE_ID)
 
         private fun loadPng(name: String): String {
@@ -91,6 +90,7 @@ internal class PdfV1Generator {
                             "navn" to melding.søker.formatertNavn(),
                             "fødselsnummer" to melding.søker.fødselsnummer
                         ),
+                        "id" to melding.id,
                         "arbeidssituasjon" to melding.arbeidssituasjon.somMapTilPdfArbeidssituasjon(),
                         "antallBarn" to melding.antallBarn,
                         "alderAvAlleBarn" to melding.alderAvAlleBarn.somMapTilPdfAlder(),
