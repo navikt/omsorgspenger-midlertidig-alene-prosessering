@@ -8,8 +8,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.httpPost
-import io.ktor.http.HttpHeaders
-import io.ktor.http.Url
+import io.ktor.http.*
 import no.nav.helse.CorrelationId
 import no.nav.helse.HttpError
 import no.nav.helse.auth.ApiGatewayApiKey
@@ -68,6 +67,10 @@ class JoarkGateway(
 
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(journalforeScopes).asAuthoriationHeader()
 
+        logger.info("FOR DEBUG: Forsøker å journalføre disse dokumentene;") //TODO FJerne
+        dokumenter.forEach {
+            logger.info("----> {}", it.toString())
+        }
         val joarkRequest = JoarkRequest(
             aktoerId = aktørId.id,
             norskIdent = norskIdent,
