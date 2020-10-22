@@ -13,6 +13,7 @@ import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import org.json.JSONObject
 import org.junit.AfterClass
+import org.junit.Ignore
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
