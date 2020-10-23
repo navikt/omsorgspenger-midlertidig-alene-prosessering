@@ -39,7 +39,7 @@ internal class PreprosseseringV1Service(
             pdf = soknadOppsummeringPdf,
             correlationId = correlationId,
             dokumentEier = dokumentEier,
-            dokumentbeskrivelse = "Søknad om omsorgspenger"
+            dokumentbeskrivelse = "Søknad om omsorgspenger midlertidig alene"
         )
 
         logger.trace("Mellomlagring av Oppsummerings-PDF OK")
