@@ -39,7 +39,7 @@ class JoarkGateway(
 
     private val completeUrl = Url.buildURL(
         baseUrl = baseUrl,
-        pathParts = listOf("v1", "omsorgspengemidlertidigalene", "journalforing")
+        pathParts = listOf("v1", "omsorgspenger", "midlertidig-alene","journalforing")
     ).toString()
 
     private val objectMapper = configuredObjectMapper()
