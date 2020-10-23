@@ -39,7 +39,7 @@ class JoarkGateway(
 
     private val completeUrl = Url.buildURL(
         baseUrl = baseUrl,
-        pathParts = listOf("v1", "omsorgspenge", "journalforing") //TODO Skal det eget endepunkt her?
+        pathParts = listOf("v1", "omsorgspengemidlertidigalene", "journalforing")
     ).toString()
 
     private val objectMapper = configuredObjectMapper()
@@ -59,6 +59,7 @@ class JoarkGateway(
     suspend fun journalfør(
         norskIdent: String,
         mottatt: ZonedDateTime,
+        navn: Navn,
         dokumenter: List<List<URI>>,
         correlationId: CorrelationId
     ): JournalPostId {
@@ -72,7 +73,8 @@ class JoarkGateway(
         val joarkRequest = JoarkRequest(
             norskIdent = norskIdent,
             mottatt = mottatt,
-            dokumenter = dokumenter
+            dokumenter = dokumenter,
+            søkerNavn = navn
         )
 
         val body = objectMapper.writeValueAsBytes(joarkRequest)
@@ -114,8 +116,15 @@ class JoarkGateway(
 
 private data class JoarkRequest(
     @JsonProperty("norsk_ident") val norskIdent: String,
+    @JsonProperty("soker_navn") val søkerNavn: Navn,
     val mottatt: ZonedDateTime,
     val dokumenter: List<List<URI>>
+)
+
+data class Navn(
+    val fornavn: String,
+    val mellomnavn: String? = null,
+    val etternavn: String
 )
 
 data class JournalPostId(@JsonProperty("journal_post_id") val journalpostId: String)
