@@ -48,7 +48,7 @@ class DokumentService(
                 eier = dokumentEier,
                 content = Søknadsformat.somJson(melding),
                 contentType = "application/json",
-                title = "Søknad om omsorgspenger midlertidig alene som JSON"
+                title = "Søknad om å bli regnet som alene som JSON"
             ),
             correlationId = correlationId
         )
