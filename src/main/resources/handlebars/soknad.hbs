@@ -64,10 +64,12 @@
             <p>{{andreForelder.situasjon}}</p>
             <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
             <p class="fritekst">{{andreForelder.beskrivelse}}</p>
-            <p class="sporsmalstekst">Perioden fra og med?</p>
-            <p>{{andreForelder.periodeFraOgMed}}</p>
-            <p class="sporsmalstekst">Perioden til og med?</p>
-            <p>{{andreForelder.periodeTilOgMed}}</p>
+            {{#if andreForelder.periodeFraOgMed}}
+                <p class="sporsmalstekst">Perioden fra og med?</p>
+                <p>{{andreForelder.periodeFraOgMed}}</p>
+                <p class="sporsmalstekst">Perioden til og med?</p>
+                <p>{{andreForelder.periodeTilOgMed}}</p>
+            {{/if}}
             <p class="sporsmalstekst">Er perioden over 6 måneder?</p>
             <p>{{ jaNeiSvar andreForelder.periodeOver6Måneder}}</p>
         </section>

@@ -7,10 +7,10 @@ data class AnnenForelder(
     val navn: String,
     val fnr: String,
     val situasjon: Situasjon,
-    val situasjonBeskrivelse: String,
-    val periodeOver6Måneder: Boolean,
-    @JsonFormat(pattern = "yyyy-MM-dd") val periodeFraOgMed: LocalDate,
-    @JsonFormat(pattern = "yyyy-MM-dd") val periodeTilOgMed: LocalDate
+    val situasjonBeskrivelse: String?,
+    val periodeOver6Måneder: Boolean?,
+    @JsonFormat(pattern = "yyyy-MM-dd") val periodeFraOgMed: LocalDate?,
+    @JsonFormat(pattern = "yyyy-MM-dd") val periodeTilOgMed: LocalDate?
 ) {
     fun somMapTilPdf(): Map<String, Any?> {
         return mapOf(

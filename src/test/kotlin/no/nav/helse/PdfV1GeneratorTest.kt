@@ -39,8 +39,8 @@ class PdfV1GeneratorTest {
                 situasjon = Situasjon.FENGSEL,
                 situasjonBeskrivelse = "Sitter i fengsel..",
                 periodeOver6Måneder = false,
-                periodeFraOgMed = LocalDate.parse("2020-01-01"),
-                periodeTilOgMed = LocalDate.parse("2020-10-01")
+                periodeFraOgMed = null,
+                periodeTilOgMed = null
             ),
             antallBarn = 2,
             alderAvAlleBarn = listOf(5, 3),
