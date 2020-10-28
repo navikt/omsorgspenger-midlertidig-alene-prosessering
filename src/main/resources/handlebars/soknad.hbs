@@ -44,10 +44,9 @@
             </ul>
             <p class="sporsmalstekst">Hvor mange felles barn har dere? Inkludert eventuelle fosterbarn</p>
             <p> {{antallBarn}}</p>
-            <p class="sporsmalstekst">Hva er alderen på alle barna?</p>
-            <p> {{alderAvAlleBarn.alder}}</p>
+            <p class="sporsmalstekst">Hva er fødselsåret på alle barna?</p>
             <ul>
-                {{# each alderAvAlleBarn as |barn|~}}
+                {{# each fødselsårBarn as |barn|~}}
                     <li>{{barn.alder}}</li>
                 {{/each}}
             </ul>

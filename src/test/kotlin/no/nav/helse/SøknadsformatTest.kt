@@ -107,7 +107,7 @@ class SøknadsformatTest {
             periodeTilOgMed = LocalDate.parse("2020-10-01")
         ),
         antallBarn = 2,
-        alderAvAlleBarn = listOf(5, 3),
+        fødselsårBarn = listOf(5, 3),
         medlemskap = Medlemskap(
             harBoddIUtlandetSiste12Mnd = true,
             utenlandsoppholdSiste12Mnd = listOf(

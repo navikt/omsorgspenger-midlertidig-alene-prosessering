@@ -43,7 +43,7 @@ class PdfV1GeneratorTest {
                 periodeTilOgMed = null
             ),
             antallBarn = 2,
-            alderAvAlleBarn = listOf(5, 3),
+            fødselsårBarn = listOf(5, 3),
             medlemskap = Medlemskap(
                 harBoddIUtlandetSiste12Mnd = true,
                 utenlandsoppholdSiste12Mnd = listOf(

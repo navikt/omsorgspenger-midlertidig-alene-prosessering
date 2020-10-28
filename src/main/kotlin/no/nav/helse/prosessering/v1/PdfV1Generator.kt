@@ -93,7 +93,7 @@ internal class PdfV1Generator {
                         "id" to melding.id,
                         "arbeidssituasjon" to melding.arbeidssituasjon.somMapTilPdfArbeidssituasjon(),
                         "antallBarn" to melding.antallBarn,
-                        "alderAvAlleBarn" to melding.alderAvAlleBarn.somMapTilPdfAlder(),
+                        "fødselsårBarn" to melding.fødselsårBarn.somMapTilPdfAlder(),
                         "andreForelder" to melding.annenForelder.somMapTilPdf(),
                         "medlemskap" to melding.medlemskap.somMapTilPdf(),
                         "samtykke" to mapOf(

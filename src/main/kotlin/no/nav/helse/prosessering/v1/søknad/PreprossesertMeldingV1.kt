@@ -35,7 +35,7 @@ data class PreprossesertMeldingV1(
         arbeidssituasjon = melding.arbeidssituasjon,
         annenForelder = melding.annenForelder,
         antallBarn = melding.antallBarn,
-        alderAvAlleBarn = melding.alderAvAlleBarn,
+        alderAvAlleBarn = melding.fødselsårBarn,
         medlemskap = melding.medlemskap,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger

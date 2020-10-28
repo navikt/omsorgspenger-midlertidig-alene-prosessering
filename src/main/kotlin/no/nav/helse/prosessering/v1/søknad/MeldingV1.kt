@@ -13,7 +13,7 @@ data class MeldingV1(
     val arbeidssituasjon: List<Arbeidssituasjon>,
     val annenForelder: AnnenForelder,
     val antallBarn: Int,
-    val alderAvAlleBarn: List<Int>,
+    val fødselsårBarn: List<Int>,
     val medlemskap: Medlemskap,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
