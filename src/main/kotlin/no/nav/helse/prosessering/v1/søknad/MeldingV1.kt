@@ -1,5 +1,6 @@
 package no.nav.helse.prosessering.v1.søknad
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -13,7 +14,7 @@ data class MeldingV1(
     val arbeidssituasjon: List<Arbeidssituasjon>,
     val annenForelder: AnnenForelder,
     val antallBarn: Int,
-    val fødselsårBarn: List<Int>,
+    @JsonAlias("alderAvAlleBarn") val fødselsårBarn: List<Int>,
     val medlemskap: Medlemskap,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean

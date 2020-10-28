@@ -16,7 +16,7 @@ data class PreprossesertMeldingV1(
     val arbeidssituasjon: List<Arbeidssituasjon>,
     val annenForelder: AnnenForelder,
     val antallBarn: Int,
-    val alderAvAlleBarn: List<Int>,
+    val fødselsårBarn: List<Int>,
     val medlemskap: Medlemskap,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
@@ -35,7 +35,7 @@ data class PreprossesertMeldingV1(
         arbeidssituasjon = melding.arbeidssituasjon,
         annenForelder = melding.annenForelder,
         antallBarn = melding.antallBarn,
-        alderAvAlleBarn = melding.fødselsårBarn,
+        fødselsårBarn = melding.fødselsårBarn,
         medlemskap = melding.medlemskap,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger
