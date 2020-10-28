@@ -66,10 +66,6 @@ class JoarkGateway(
 
         val authorizationHeader = cachedAccessTokenClient.getAccessToken(journalforeScopes).asAuthoriationHeader()
 
-        logger.info("FOR DEBUG: Forsøker å journalføre disse dokumentene;") //TODO FJerne
-        dokumenter.forEach {
-            logger.info("----> {}", it.toString())
-        }
         val joarkRequest = JoarkRequest(
             norskIdent = norskIdent,
             mottatt = mottatt,

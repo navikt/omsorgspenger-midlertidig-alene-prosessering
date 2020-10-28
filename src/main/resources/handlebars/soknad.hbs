@@ -62,16 +62,20 @@
             <p>{{andreForelder.fnr}}</p>
             <p class="sporsmalstekst">Hva er situasjonen til den andre forelderen?</p>
             <p>{{andreForelder.situasjon}}</p>
-            <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
-            <p class="fritekst">{{andreForelder.beskrivelse}}</p>
+            {{#if andreForelder.beskrivelse}}
+                <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
+                <p class="fritekst">{{andreForelder.beskrivelse}}</p>
+            {{/if}}
             {{#if andreForelder.periodeFraOgMed}}
                 <p class="sporsmalstekst">Perioden fra og med?</p>
                 <p>{{andreForelder.periodeFraOgMed}}</p>
                 <p class="sporsmalstekst">Perioden til og med?</p>
                 <p>{{andreForelder.periodeTilOgMed}}</p>
             {{/if}}
-            <p class="sporsmalstekst">Er perioden over 6 måneder?</p>
-            <p>{{ jaNeiSvar andreForelder.periodeOver6Måneder}}</p>
+            {{#if andreForelder.periodeOver6Måneder}}
+                <p class="sporsmalstekst">Er perioden over 6 måneder?</p>
+                <p>{{ jaNeiSvar andreForelder.periodeOver6Måneder}}</p>
+            {{/if}}
         </section>
 
         <!-- Medlemskap -->
