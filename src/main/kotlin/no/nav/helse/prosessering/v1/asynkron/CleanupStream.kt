@@ -8,6 +8,7 @@ import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
+import no.nav.helse.prosessering.v1.statusLoggFormat
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.Consumed
@@ -44,7 +45,7 @@ internal class CleanupStream(
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
-                        logger.info("Cleanup for søknad med ID = {}", soknadId)
+                        logger.info(statusLoggFormat("Cleanup for søknad med ID:", soknadId))
                         logger.trace("Sletter dokumenter.")
 
                         dokumentService.slettDokumeter(
@@ -54,9 +55,9 @@ internal class CleanupStream(
                         )
 
                         logger.trace("Dokumenter slettet.")
-                        logger.info("Videresender journalført søknad med ID = {}", soknadId)
+                        logger.info(statusLoggFormat("Videresender journalført søknad med ID:", soknadId))
 
-                        logger.info("Søknad sendt til journalføring: {}", String(Søknadsformat.somJson(entry.data.journalførtMelding)))
+                        logger.info("DEBUG - Søknad sendt til journalføring: {}", String(Søknadsformat.somJson(entry.data.journalførtMelding))) //TODO Fjerne
                         entry.data.journalførtMelding
                     }
                 }

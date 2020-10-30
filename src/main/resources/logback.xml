@@ -9,9 +9,6 @@
     <logger name="nav" level="INFO"/>
     <logger name="no.nav" level="INFO"/>
     <logger name="io.ktor.auth.jwt" level="TRACE" />
-    <logger name="org.apache.pdfbox.pdmodel.font" level="ERROR" />
-    <logger name="com.openhtmltopdf.general" level="ERROR" />
-    <logger name="com.openhtmltopdf.load" level="ERROR" />
 
     <root level="INFO">
         <appender-ref ref="STDOUT_JSON"/>

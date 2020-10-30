@@ -122,7 +122,6 @@ class OmsorgspengesoknadProsesseringTest {
     }
 
     @Test
-    //@Ignore //TODO FJERN ignore når journalføring fungerer.
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
         val søknad = SøknadUtils.gyldigSøknad()
 
