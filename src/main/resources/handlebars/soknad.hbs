@@ -56,24 +56,24 @@
         <section id="andre_forelderen">
             <h2>Den andre forelderen</h2>
             <p class="sporsmalstekst">Hva er navnet til den andre forelderen?</p>
-            <p>{{andreForelder.navn}}</p>
+            <p>{{annenForelder.navn}}</p>
             <p class="sporsmalstekst">Hva er fødselsnummeret til den andre forelderen?</p>
-            <p>{{andreForelder.fnr}}</p>
+            <p>{{annenForelder.fnr}}</p>
             <p class="sporsmalstekst">Hva er situasjonen til den andre forelderen?</p>
-            <p>{{andreForelder.situasjon}}</p>
-            {{#if andreForelder.beskrivelse}}
+            <p>{{annenForelder.situasjon}}</p>
+            {{#if annenForelder.beskrivelse}}
                 <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
-                <p class="fritekst">{{andreForelder.beskrivelse}}</p>
+                <p class="fritekst">{{annenForelder.beskrivelse}}</p>
             {{/if}}
-            {{#if andreForelder.periodeFraOgMed}}
+            {{#if annenForelder.periodeFraOgMed}}
                 <p class="sporsmalstekst">Perioden fra og med?</p>
-                <p>{{andreForelder.periodeFraOgMed}}</p>
+                <p>{{annenForelder.periodeFraOgMed}}</p>
                 <p class="sporsmalstekst">Perioden til og med?</p>
-                <p>{{andreForelder.periodeTilOgMed}}</p>
+                <p>{{annenForelder.periodeTilOgMed}}</p>
             {{/if}}
-            {{#if andreForelder.periodeOver6Måneder}}
+            {{#if annenForelder.periodeOver6Måneder}}
                 <p class="sporsmalstekst">Er perioden over 6 måneder?</p>
-                <p>{{ jaNeiSvar andreForelder.periodeOver6Måneder}}</p>
+                <p>{{ jaNeiSvar annenForelder.periodeOver6Måneder}}</p>
             {{/if}}
         </section>
 

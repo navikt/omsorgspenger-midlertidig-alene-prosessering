@@ -94,7 +94,7 @@ internal class PdfV1Generator {
                         "arbeidssituasjon" to melding.arbeidssituasjon.somMapTilPdfArbeidssituasjon(),
                         "antallBarn" to melding.antallBarn,
                         "fødselsårBarn" to melding.fødselsårBarn.somMapTilPdfAlder(),
-                        "andreForelder" to melding.annenForelder.somMapTilPdf(),
+                        "annenForelder" to melding.annenForelder.somMapTilPdf(),
                         "medlemskap" to melding.medlemskap.somMapTilPdf(),
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,
@@ -109,7 +109,6 @@ internal class PdfV1Generator {
                 .build()
         ).let { html ->
             val outputStream = ByteArrayOutputStream()
-
             PdfRendererBuilder()
                 .useFastMode()
                 .usePdfUaAccessbility(true)
