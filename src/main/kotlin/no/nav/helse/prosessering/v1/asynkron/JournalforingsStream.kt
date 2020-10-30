@@ -47,7 +47,7 @@ internal class JournalforingsStream(
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
-                        logger.info(statusLoggFormat("Journalfører søknad med ID = {}", soknadId))
+                        logger.info(statusLoggFormat("Journalfører søknad med ID:", soknadId))
 
                         val dokumenter = entry.data.dokumentUrls
                         logger.trace("Journalfører dokumenter: {}", dokumenter)
