@@ -7,7 +7,7 @@ import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.helse.prosessering.v1.statusLoggFormat
+import no.nav.helse.prosessering.v1.formaterStatuslogging
 import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
@@ -47,7 +47,7 @@ internal class JournalforingsStream(
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
-                        logger.info(statusLoggFormat("Journalfører søknad med ID:", soknadId))
+                        logger.info(formaterStatuslogging(soknadId, "journalføres"))
 
                         val dokumenter = entry.data.dokumentUrls
                         logger.trace("Journalfører dokumenter: {}", dokumenter)
