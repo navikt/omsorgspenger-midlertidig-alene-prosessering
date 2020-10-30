@@ -1,3 +1,3 @@
-package no.nav.helse.prosessering
+package no.nav.helse.felles
 
 data class SøknadId(val id: String)

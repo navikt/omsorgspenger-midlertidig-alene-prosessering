@@ -1,7 +1,7 @@
 package no.nav.helse.prosessering.v1.søknad
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import no.nav.helse.prosessering.AktørId
+import no.nav.helse.felles.AktørId
 import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime

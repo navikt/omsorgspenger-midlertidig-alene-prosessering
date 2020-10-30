@@ -1,4 +1,4 @@
-package no.nav.helse.prosessering.v1
+package no.nav.helse.felles
 
 //Brukes når man logger status i flyten. Formaterer slik at loggen er mer lesbar
 internal fun formaterStatuslogging(id: String, melding: String): String {

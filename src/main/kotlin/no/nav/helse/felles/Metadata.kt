@@ -1,4 +1,4 @@
-package no.nav.helse.prosessering
+package no.nav.helse.felles
 
 data class Metadata(
     val version : Int,

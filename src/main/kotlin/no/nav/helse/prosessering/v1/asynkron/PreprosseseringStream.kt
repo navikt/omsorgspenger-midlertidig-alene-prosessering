@@ -5,7 +5,7 @@ import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
 import no.nav.helse.prosessering.v1.PreprosseseringV1Service
-import no.nav.helse.prosessering.v1.formaterStatuslogging
+import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology

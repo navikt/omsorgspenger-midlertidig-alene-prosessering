@@ -1,11 +1,11 @@
 package no.nav.helse.prosessering.v1
 
-import no.nav.helse.CorrelationId
+import no.nav.helse.felles.CorrelationId
 import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
-import no.nav.helse.prosessering.AktørId
-import no.nav.helse.prosessering.Metadata
-import no.nav.helse.prosessering.SøknadId
+import no.nav.helse.felles.AktørId
+import no.nav.helse.felles.Metadata
+import no.nav.helse.felles.SøknadId
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
 import org.slf4j.LoggerFactory
