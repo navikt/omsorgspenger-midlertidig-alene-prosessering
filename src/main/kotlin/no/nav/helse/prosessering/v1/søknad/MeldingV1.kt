@@ -48,7 +48,7 @@ internal fun List<Arbeidssituasjon>.somMapTilPdfArbeidssituasjon(): List<Map<Str
     }
 }
 
-internal fun List<Int>.somMapTilPdfAlder(): List<Map<String, Any?>> {
+internal fun List<Int>.somMapTilPdfFødselsår(): List<Map<String, Any?>> {
     return map {
         mapOf<String, Any?>(
             "alder" to it

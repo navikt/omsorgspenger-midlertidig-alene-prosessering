@@ -30,13 +30,13 @@ internal class PreprosseseringV1Service(
         val dokumentEier = DokumentGateway.DokumentEier(melding.søker.fødselsnummer)
 
         logger.trace("Genererer Oppsummerings-PDF av søknaden.")
-        val soknadOppsummeringPdf = pdfV1Generator.generateSoknadOppsummeringPdf(melding)
+        val søknadOppsummeringPdf = pdfV1Generator.generateSoknadOppsummeringPdf(melding)
         logger.trace("Generering av Oppsummerings-PDF OK.")
 
         logger.trace("Mellomlagrer Oppsummerings-PDF.")
 
         val soknadOppsummeringPdfUrl = dokumentService.lagreSoknadsOppsummeringPdf(
-            pdf = soknadOppsummeringPdf,
+            pdf = søknadOppsummeringPdf,
             correlationId = correlationId,
             dokumentEier = dokumentEier,
             dokumentbeskrivelse = "Søknad om å bli regnet som alene"
@@ -46,7 +46,7 @@ internal class PreprosseseringV1Service(
 
         logger.trace("Mellomlagrer Oppsummerings-JSON")
 
-        val soknadJsonUrl = dokumentService.lagreSoknadsMelding(
+        val søknadJsonUrl = dokumentService.lagreSoknadsMelding(
             melding = melding,
             dokumentEier = dokumentEier,
             correlationId = correlationId
@@ -56,7 +56,7 @@ internal class PreprosseseringV1Service(
         val komplettDokumentUrls = mutableListOf(
             listOf(
                 soknadOppsummeringPdfUrl,
-                soknadJsonUrl
+                søknadJsonUrl
             )
         )
 

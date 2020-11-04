@@ -11,7 +11,7 @@ import com.openhtmltopdf.util.XRLog
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.Søker
-import no.nav.helse.prosessering.v1.søknad.somMapTilPdfAlder
+import no.nav.helse.prosessering.v1.søknad.somMapTilPdfFødselsår
 import no.nav.helse.prosessering.v1.søknad.somMapTilPdfArbeidssituasjon
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -93,7 +93,7 @@ internal class PdfV1Generator {
                         "id" to melding.id,
                         "arbeidssituasjon" to melding.arbeidssituasjon.somMapTilPdfArbeidssituasjon(),
                         "antallBarn" to melding.antallBarn,
-                        "fødselsårBarn" to melding.fødselsårBarn.somMapTilPdfAlder(),
+                        "fødselsårBarn" to melding.fødselsårBarn.somMapTilPdfFødselsår(),
                         "annenForelder" to melding.annenForelder.somMapTilPdf(),
                         "medlemskap" to melding.medlemskap.somMapTilPdf(),
                         "samtykke" to mapOf(

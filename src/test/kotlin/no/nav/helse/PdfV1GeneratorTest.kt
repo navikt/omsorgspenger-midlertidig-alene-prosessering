@@ -43,7 +43,7 @@ class PdfV1GeneratorTest {
                 periodeTilOgMed = null
             ),
             antallBarn = 2,
-            fødselsårBarn = listOf(5, 3),
+            fødselsårBarn = listOf(2005, 2019),
             medlemskap = Medlemskap(
                 harBoddIUtlandetSiste12Mnd = true,
                 utenlandsoppholdSiste12Mnd = listOf(
@@ -77,13 +77,13 @@ class PdfV1GeneratorTest {
 
     private fun genererOppsummeringsPdfer(writeBytes: Boolean) {
 
-        var id = "1-full-søknad-123456789"
+        var id = "1-full-søknad"
         var pdf = generator.generateSoknadOppsummeringPdf(
             melding = fullGyldigMelding(soknadsId = id)
         )
         if (writeBytes) File(pdfPath(soknadId = id)).writeBytes(pdf)
 
-        id = "2-søknad-tomt-medlemskap-1234"
+        id = "2-søknad-tomt-medlemskap"
         pdf = generator.generateSoknadOppsummeringPdf(
             melding = fullGyldigMelding(soknadsId = id).copy(
                 medlemskap = Medlemskap(

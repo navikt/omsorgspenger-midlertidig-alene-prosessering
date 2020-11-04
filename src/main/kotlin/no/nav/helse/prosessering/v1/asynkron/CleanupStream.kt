@@ -55,9 +55,8 @@ internal class CleanupStream(
                         )
 
                         logger.trace("Dokumenter slettet.")
-                        logger.info(formaterStatuslogging(soknadId, "er journalført og sendes videre"))
+                        logger.info(formaterStatuslogging(soknadId, "er journalført og sendes videre til topic ${tilJournalfort.name}"))
 
-                        logger.info("DEBUG - Søknad sendt til journalføring: {}", String(Søknadsformat.somJson(entry.data.journalførtMelding))) //TODO Fjerne
                         entry.data.journalførtMelding
                     }
                 }

@@ -81,26 +81,6 @@ fun KafkaEnvironment.journalføringsKonsumer(): KafkaConsumer<String, String> {
     return consumer
 }
 
-fun KafkaEnvironment.cleanupKonsumer(): KafkaConsumer<String, TopicEntry<Cleanup>> {
-    val consumer = KafkaConsumer(
-        testConsumerProperties("OmsorgspengesøknadCleanupKonsumer"),
-        StringDeserializer(),
-        CLEANUP.serDes
-    )
-    consumer.subscribe(listOf(CLEANUP.name))
-    return consumer
-}
-
-fun KafkaEnvironment.preprossesertKonsumer(): KafkaConsumer<String, TopicEntry<PreprossesertMeldingV1>> {
-    val consumer = KafkaConsumer(
-        testConsumerProperties("OmsorgspengesøknadPreprossesertKonsumer"),
-        StringDeserializer(),
-        PREPROSSESERT.serDes
-    )
-    consumer.subscribe(listOf(PREPROSSESERT.name))
-    return consumer
-}
-
 fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
     testProducerProperties("OmsorgspengesoknadProsesseringTestProducer"),
     MOTTATT.keySerializer,
@@ -116,44 +96,6 @@ fun KafkaConsumer<String, String>.hentJournalførtSøknad(
         seekToBeginning(assignment())
         val entries = poll(Duration.ofSeconds(1))
             .records(JOURNALFORT.name)
-            .filter { it.key() == soknadId }
-
-        if (entries.isNotEmpty()) {
-            assertEquals(1, entries.size)
-            return entries.first().value()
-        }
-    }
-    throw IllegalStateException("Fant ikke opprettet oppgave for søknad $soknadId etter $maxWaitInSeconds sekunder.")
-}
-
-fun KafkaConsumer<String, TopicEntry<PreprossesertMeldingV1>>.hentPreprossesertMelding(
-    soknadId: String,
-    maxWaitInSeconds: Long = 20
-): TopicEntry<PreprossesertMeldingV1> {
-    val end = System.currentTimeMillis() + Duration.ofSeconds(maxWaitInSeconds).toMillis()
-    while (System.currentTimeMillis() < end) {
-        seekToBeginning(assignment())
-        val entries = poll(Duration.ofSeconds(1))
-            .records(PREPROSSESERT.name)
-            .filter { it.key() == soknadId }
-
-        if (entries.isNotEmpty()) {
-            assertEquals(1, entries.size)
-            return entries.first().value()
-        }
-    }
-    throw IllegalStateException("Fant ikke opprettet oppgave for søknad $soknadId etter $maxWaitInSeconds sekunder.")
-}
-
-fun KafkaConsumer<String, TopicEntry<Cleanup>>.hentCleanupMelding(
-    soknadId: String,
-    maxWaitInSeconds: Long = 20
-): TopicEntry<Cleanup> {
-    val end = System.currentTimeMillis() + Duration.ofSeconds(maxWaitInSeconds).toMillis()
-    while (System.currentTimeMillis() < end) {
-        seekToBeginning(assignment())
-        val entries = poll(Duration.ofSeconds(1))
-            .records(CLEANUP.name)
             .filter { it.key() == soknadId }
 
         if (entries.isNotEmpty()) {

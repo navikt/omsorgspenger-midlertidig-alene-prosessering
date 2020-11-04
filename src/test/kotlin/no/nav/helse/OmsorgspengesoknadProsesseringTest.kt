@@ -45,11 +45,7 @@ class OmsorgspengesoknadProsesseringTest {
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
 
         private val journalføringsKonsumer = kafkaEnvironment.journalføringsKonsumer()
-        private val cleanupKonsumer = kafkaEnvironment.cleanupKonsumer()
-        private val preprossesertKonsumer = kafkaEnvironment.preprossesertKonsumer()
 
-        // Se https://github.com/navikt/dusseldorf-ktor#f%C3%B8dselsnummer
-        private val gyldigFodselsnummerA = "02119970078"
         private val dNummerA = "55125314561"
 
         private var engine = newEngine(kafkaEnvironment).apply {
@@ -177,12 +173,15 @@ class OmsorgspengesoknadProsesseringTest {
         val søkerJournalført = journalførtSøknad.getJSONObject("søker")
         val søkerInnsendt = innsendtSøknad.getJSONObject("søker")
         JSONAssert.assertEquals(søkerJournalført, søkerInnsendt, true)
-        /*
+
         journalførtSøknad.remove("dokumentUrls")
         journalførtSøknad.remove("mottatt")
         innsendtSøknad.remove("mottatt")
 
-        JSONAssert.assertEquals(innsendtSøknad, journalførtSøknad, true)
-         */
+        JSONAssert.assertEquals(innsendtSøknad.toString(), journalførtSøknad.toString(), true)
+
+        println(innsendtSøknad.toString())
+        println(journalførtSøknad.toString())
     }
+
 }
