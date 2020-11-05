@@ -179,9 +179,6 @@ class OmsorgspengesoknadProsesseringTest {
         innsendtSøknad.remove("mottatt")
 
         JSONAssert.assertEquals(innsendtSøknad.toString(), journalførtSøknad.toString(), true)
-
-        println(innsendtSøknad.toString())
-        println(journalførtSøknad.toString())
     }
 
 }
