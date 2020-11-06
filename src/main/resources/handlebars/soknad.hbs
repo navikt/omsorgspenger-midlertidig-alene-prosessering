@@ -66,10 +66,8 @@
                 <p class="fritekst">{{annenForelder.beskrivelse}}</p>
             {{/if}}
             {{#if annenForelder.periodeFraOgMed}}
-                <p class="sporsmalstekst">Perioden fra og med?</p>
-                <p>{{annenForelder.periodeFraOgMed}}</p>
-                <p class="sporsmalstekst">Perioden til og med?</p>
-                <p>{{annenForelder.periodeTilOgMed}}</p>
+                <p class="sporsmalstekst">Periode</p>
+                <p>{{annenForelder.periodeFraOgMed}} - {{annenForelder.periodeTilOgMed}}</p>
             {{/if}}
             {{#if annenForelder.periodeOver6Måneder}}
                 <p class="sporsmalstekst">Er perioden over 6 måneder?</p>

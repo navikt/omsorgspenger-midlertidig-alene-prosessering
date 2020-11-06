@@ -36,11 +36,11 @@ class PdfV1GeneratorTest {
             annenForelder = AnnenForelder(
                 navn = "Berit",
                 fnr = "02119970078",
-                situasjon = Situasjon.FENGSEL,
-                situasjonBeskrivelse = "Sitter i fengsel..",
+                situasjon = Situasjon.INNLAGT_I_HELSEINSTITUSJON,
+                situasjonBeskrivelse = "Beskrivelse blabla",
                 periodeOver6Måneder = false,
-                periodeFraOgMed = null,
-                periodeTilOgMed = null
+                periodeFraOgMed = LocalDate.parse("2020-01-01"),
+                periodeTilOgMed = LocalDate.parse("2020-10-01")
             ),
             antallBarn = 2,
             fødselsårBarn = listOf(2005, 2019),
