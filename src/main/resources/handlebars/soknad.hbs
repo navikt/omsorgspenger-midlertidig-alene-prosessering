@@ -87,10 +87,7 @@
                 <ul>
                     {{# each medlemskap.utenlandsoppholdSiste12Mnd as |utenlandsopphold|~}}
                         <li>
-                            <p>Landnavn: {{utenlandsopphold.landnavn}}</p>
-                            <p>Landkode: {{utenlandsopphold.landkode}}</p>
-                            <p>Fra og med: {{utenlandsopphold.fraOgMed}}</p>
-                            <p>Til og med: {{utenlandsopphold.tilOgMed}}</p>
+                            {{utenlandsopphold.landnavn}} ({{utenlandsopphold.fraOgMed}} - {{utenlandsopphold.tilOgMed}})
                         </li>
                     {{/each}}
                 </ul>
@@ -102,10 +99,7 @@
                 <ul>
                     {{# each medlemskap.utenlandsoppholdNeste12Mnd as |utenlandsopphold|~}}
                         <li>
-                            <p>Landnavn: {{utenlandsopphold.landnavn}}</p>
-                            <p>Landkode: {{utenlandsopphold.landkode}}</p>
-                            <p>Fra og med: {{utenlandsopphold.fraOgMed}}</p>
-                            <p>Til og med: {{utenlandsopphold.tilOgMed}}</p>
+                            {{utenlandsopphold.landnavn}} ({{utenlandsopphold.fraOgMed}} - {{utenlandsopphold.tilOgMed}})
                         </li>
                     {{/each}}
                 </ul>
