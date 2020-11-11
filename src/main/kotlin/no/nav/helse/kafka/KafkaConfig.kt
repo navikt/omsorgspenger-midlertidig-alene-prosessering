@@ -25,7 +25,7 @@ internal class KafkaConfig(
     private val streams = Properties().apply {
         put(BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
         put(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndFailExceptionHandler::class.java)
-        put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+        put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest") //TODO Konfe opp none som offset
         medCredentials(credentials)
         medTrustStore(trustStore)
         medProcessingGuarantee(exactlyOnce)
