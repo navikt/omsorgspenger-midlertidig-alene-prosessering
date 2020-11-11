@@ -1,11 +1,9 @@
 package no.nav.helse
 
-import com.github.kittinunf.fuel.httpGet
 import com.github.tomakehurst.wiremock.WireMockServer
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.jws.ClientCredentials
 import no.nav.helse.dusseldorf.testsupport.wiremock.getAzureV2WellKnownUrl
-import org.json.JSONObject
 
 object TestConfiguration {
 
