@@ -10,7 +10,7 @@ data class AnnenForelder(
     val fnr: String,
     val situasjon: Situasjon,
     val situasjonBeskrivelse: String? = null,
-    val periodeOver6Måneder: Boolean?,
+    val periodeOver6Måneder: Boolean? = null,
     @JsonFormat(pattern = "yyyy-MM-dd") val periodeFraOgMed: LocalDate? = null,
     @JsonFormat(pattern = "yyyy-MM-dd") val periodeTilOgMed: LocalDate? = null
 ) {
@@ -20,13 +20,13 @@ data class AnnenForelder(
         "situasjon" to situasjon.utskriftvennlig,
         "beskrivelse" to situasjonBeskrivelse,
         "periodeOver6Måneder" to periodeOver6Måneder,
-        "periodeFraOgMed" to periodeFraOgMed.formaterFormat(),
-        "periodeTilOgMed" to periodeTilOgMed.formaterFormat()
+        "periodeFraOgMed" to periodeFraOgMed.formaterDato(),
+        "periodeTilOgMed" to periodeTilOgMed.formaterDato()
     )
 }
 
 
-private fun LocalDate?.formaterFormat(): String?{
+private fun LocalDate?.formaterDato(): String?{
     val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.of("Europe/Oslo"))
     return if(this == null) null else dateFormatter.format(this)
 }

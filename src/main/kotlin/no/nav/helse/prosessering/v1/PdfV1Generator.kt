@@ -13,6 +13,7 @@ import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.Søker
 import no.nav.helse.prosessering.v1.søknad.somMapTilPdfFødselsår
 import no.nav.helse.prosessering.v1.søknad.somMapTilPdfArbeidssituasjon
+import org.apache.kafka.common.protocol.types.Field
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.time.DayOfWeek
@@ -101,7 +102,8 @@ internal class PdfV1Generator {
                             "harBekreftetOpplysninger" to melding.harBekreftetOpplysninger
                         ),
                         "hjelp" to mapOf(
-                            "språk" to melding.språk?.språkTilTekst()
+                            "språk" to melding.språk?.språkTilTekst(),
+                            "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt()
                         )
                     )
                 )
@@ -150,6 +152,8 @@ internal class PdfV1Generator {
 }
 
 private fun Søker.formatertNavn() = if (mellomnavn != null) "$fornavn $mellomnavn $etternavn" else "$fornavn $etternavn"
+
+private fun Boolean?.erSatt() = this != null
 
 private fun String.språkTilTekst() = when (this.toLowerCase()) {
     "nb" -> "bokmål"
