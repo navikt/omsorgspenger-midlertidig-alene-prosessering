@@ -14,26 +14,21 @@ data class AnnenForelder(
     @JsonFormat(pattern = "yyyy-MM-dd") val periodeFraOgMed: LocalDate? = null,
     @JsonFormat(pattern = "yyyy-MM-dd") val periodeTilOgMed: LocalDate? = null
 ) {
-    fun somMapTilPdf(): Map<String, Any?> {
-        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.of("Europe/Oslo"))
-
-        return mapOf(
-            "navn" to navn,
-            "fnr" to fnr,
-            "situasjon" to situasjon.utskriftvennlig,
-            "beskrivelse" to situasjonBeskrivelse,
-            "periodeOver6Måneder" to periodeOver6Måneder,
-            "periodeFraOgMed" to periodeFraOgMed.formaterFormat(),
-            "periodeTilOgMed" to periodeTilOgMed.formaterFormat()
-        )
-    }
+    fun somMapTilPdf(): Map<String, Any?> = mapOf(
+        "navn" to navn,
+        "fnr" to fnr,
+        "situasjon" to situasjon.utskriftvennlig,
+        "beskrivelse" to situasjonBeskrivelse,
+        "periodeOver6Måneder" to periodeOver6Måneder,
+        "periodeFraOgMed" to periodeFraOgMed.formaterFormat(),
+        "periodeTilOgMed" to periodeTilOgMed.formaterFormat()
+    )
 }
+
 
 private fun LocalDate?.formaterFormat(): String?{
     val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.of("Europe/Oslo"))
-
-    if(this == null) return null
-    return dateFormatter.format(this)
+    return if(this == null) null else dateFormatter.format(this)
 }
 
 enum class Situasjon(val utskriftvennlig: String){
