@@ -1,16 +1,13 @@
 package no.nav.helse.prosessering.v1.asynkron
 
+import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
 import no.nav.helse.prosessering.v1.PreprosseseringV1Service
-import no.nav.helse.felles.formaterStatuslogging
-import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
-import org.apache.kafka.streams.kstream.Consumed
-import org.apache.kafka.streams.kstream.Produced
 import org.slf4j.LoggerFactory
 
 internal class PreprosseseringStream(
@@ -38,23 +35,22 @@ internal class PreprosseseringStream(
             val tilPreprossesert = Topics.PREPROSSESERT
 
             builder
-                .stream<String, TopicEntry<MeldingV1>>(
-                    fromMottatt.name,
-                    Consumed.with(fromMottatt.keySerde, fromMottatt.valueSerde)
-                )
+                .stream(fromMottatt.name, fromMottatt.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
                         logger.info(formaterStatuslogging(soknadId, "preprosesseres"))
+
                         val preprossesertMelding = preprosseseringV1Service.preprosseser(
-                            melding = entry.data,
+                            melding = entry.deserialiserTilMeldingDeleOmsorgsdager(),
                             metadata = entry.metadata
                         )
                         logger.trace("Preprossesering ferdig.")
-                        preprossesertMelding
+
+                        preprossesertMelding.serialiserTilData()
                     }
                 }
-                .to(tilPreprossesert.name, Produced.with(tilPreprossesert.keySerde, tilPreprossesert.valueSerde))
+                .to(tilPreprossesert.name, tilPreprossesert.produced)
             return builder.build()
         }
     }

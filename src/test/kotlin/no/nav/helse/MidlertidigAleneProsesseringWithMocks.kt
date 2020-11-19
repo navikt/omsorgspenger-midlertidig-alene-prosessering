@@ -1,16 +1,16 @@
 package no.nav.helse
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import io.ktor.server.testing.withApplication
+import io.ktor.server.testing.*
 import no.nav.helse.dusseldorf.testsupport.asArguments
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
-class OmsorgspengesoknadProsesseringWithMocks {
+class MidlertidigAleneProsesseringWithMocks {
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(OmsorgspengesoknadProsesseringWithMocks::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(MidlertidigAleneProsesseringWithMocks::class.java)
 
         @JvmStatic
         fun main(args: Array<String>) {

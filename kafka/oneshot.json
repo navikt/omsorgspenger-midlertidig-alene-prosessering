@@ -62,23 +62,6 @@
         }
       ],
       "numPartitions": 3
-    },
-    {
-      "topicName": "privat-omsorgspenger-midlertidig-alene-journalfort",
-      "configEntries": {
-        "retention.ms": 2628000000
-      },
-      "members": [
-        {
-          "member": "srv-oms-alene-prs",
-          "role": "PRODUCER"
-        },
-        {
-          "member": "O158190",
-          "role": "MANAGER"
-        }
-      ],
-      "numPartitions": 3
     }
   ]
 }

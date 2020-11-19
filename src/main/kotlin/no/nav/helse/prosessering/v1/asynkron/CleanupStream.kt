@@ -1,18 +1,17 @@
 package no.nav.helse.prosessering.v1.asynkron
 
-import no.nav.helse.felles.CorrelationId
 import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
-import no.nav.helse.dokument.Søknadsformat
+import no.nav.helse.felles.CorrelationId
+import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.helse.felles.formaterStatuslogging
+import no.nav.k9.rapid.behov.Behovssekvens
+import no.nav.k9.rapid.behov.MidlertidigAleneBehov
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
-import org.apache.kafka.streams.kstream.Consumed
-import org.apache.kafka.streams.kstream.Produced
 import org.slf4j.LoggerFactory
 
 internal class CleanupStream(
@@ -35,35 +34,67 @@ internal class CleanupStream(
 
         private fun topology(dokumentService: DokumentService): Topology {
             val builder = StreamsBuilder()
-            val fraCleanup: Topic<TopicEntry<Cleanup>> = Topics.CLEANUP
-            val tilJournalfort: Topic<TopicEntry<Journalfort>> = Topics.JOURNALFORT
+            val fraCleanup = Topics.CLEANUP
+            val tilK9Rapid = Topics.K9_RAPID_V2
 
             builder
-                .stream<String, TopicEntry<Cleanup>>(
-                    fraCleanup.name, Consumed.with(fraCleanup.keySerde, fraCleanup.valueSerde)
-                )
+                .stream(fraCleanup.name, fraCleanup.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
+                .selectKey{ _, value ->
+                    value.deserialiserTilCleanupDeleOmsorgsdager().melding.id
+                }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
-                        logger.info(formaterStatuslogging(soknadId, "kjører cleanup"))
+                        val cleanupMelding = entry.deserialiserTilCleanupDeleOmsorgsdager()
+
+                        logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "kjører cleanup"))
                         logger.trace("Sletter dokumenter.")
 
                         dokumentService.slettDokumeter(
-                            urlBolks = entry.data.melding.dokumentUrls,
-                            dokumentEier = DokumentGateway.DokumentEier(entry.data.melding.søker.fødselsnummer),
+                            urlBolks = cleanupMelding.melding.dokumentUrls,
+                            dokumentEier = DokumentGateway.DokumentEier(cleanupMelding.melding.søker.fødselsnummer),
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 
                         logger.trace("Dokumenter slettet.")
-                        logger.info(formaterStatuslogging(soknadId, "er journalført og sendes videre til topic ${tilJournalfort.name}"))
+                        logger.trace("Mapper om til Behovssekvens")
+                        val behovssekvens = cleanupMelding.tilK9Behovssekvens()
+                        val (id, løsning) = behovssekvens.keyValue
 
-                        entry.data.journalførtMelding
+                        logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "har behovssekvensID $id og sendes videre til topic ${tilK9Rapid.name}"))
+
+                        Data(løsning)
                     }
                 }
-                .to(tilJournalfort.name, Produced.with(tilJournalfort.keySerde, tilJournalfort.valueSerde))
+                .to(tilK9Rapid.name, tilK9Rapid.produced)
             return builder.build()
         }
     }
 
     internal fun stop() = stream.stop(becauseOfError = false)
+}
+
+internal fun Cleanup.tilK9Behovssekvens() : Behovssekvens{
+    val melding = this.melding
+
+    val correlationId = this.metadata.correlationId
+    val journalPostIdListe = listOf(this.journalførtMelding.journalpostId)
+    val søker = MidlertidigAleneBehov.Person(identitetsnummer = melding.søker.fødselsnummer)
+    val annenForelder = MidlertidigAleneBehov.Person(identitetsnummer = melding.annenForelder.fnr)
+
+    val behov = MidlertidigAleneBehov(
+        søker = søker,
+        annenForelder = annenForelder,
+        mottatt = melding.mottatt,
+        journalpostIder = journalPostIdListe
+    )
+
+    return Behovssekvens(
+        id = melding.id,
+        correlationId = correlationId,
+        behov = *arrayOf(
+            behov
+        )
+    )
+
 }

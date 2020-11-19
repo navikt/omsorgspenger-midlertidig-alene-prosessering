@@ -13,7 +13,6 @@ import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import org.json.JSONObject
 import org.junit.AfterClass
-import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
@@ -24,12 +23,12 @@ import kotlin.test.assertNotNull
 
 
 @KtorExperimentalAPI
-class OmsorgspengesoknadProsesseringTest {
+class MidlertidigAleneProsesseringTest {
 
     @KtorExperimentalAPI
     private companion object {
 
-        private val logger: Logger = LoggerFactory.getLogger(OmsorgspengesoknadProsesseringTest::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(MidlertidigAleneProsesseringTest::class.java)
 
         private val wireMockServer: WireMockServer = WireMockBuilder()
             .withAzureSupport()
@@ -44,7 +43,7 @@ class OmsorgspengesoknadProsesseringTest {
         private val kafkaEnvironment = KafkaWrapper.bootstrap()
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
 
-        private val journalføringsKonsumer = kafkaEnvironment.journalføringsKonsumer()
+        private val k9RapidKonsumer = kafkaEnvironment.k9RapidKonsumer()
 
         private val dNummerA = "55125314561"
 
@@ -81,7 +80,7 @@ class OmsorgspengesoknadProsesseringTest {
         fun tearDown() {
             logger.info("Tearing down")
             wireMockServer.stop()
-            journalføringsKonsumer.close()
+            k9RapidKonsumer.close()
             kafkaTestProducer.close()
             stopEngine()
             kafkaEnvironment.tearDown()
@@ -112,9 +111,9 @@ class OmsorgspengesoknadProsesseringTest {
         val søknad = SøknadUtils.gyldigSøknad()
 
         kafkaTestProducer.leggTilMottak(søknad)
-        journalføringsKonsumer
-            .hentJournalførtSøknad(søknad.søknadId)
-            .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
+        k9RapidKonsumer
+            .hentK9RapidMelding(søknad.id)
+            .validerK9RapidFormat(søknad.id)
     }
 
     @Test
@@ -129,9 +128,9 @@ class OmsorgspengesoknadProsesseringTest {
 
         wireMockServer.stubJournalfor(201) // Simulerer journalføring fungerer igjen
         restartEngine()
-        journalføringsKonsumer
-            .hentJournalførtSøknad(søknad.søknadId)
-            .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
+        k9RapidKonsumer
+            .hentK9RapidMelding(søknad.id)
+            .validerK9RapidFormat(søknad.id)
 
     }
 
@@ -140,9 +139,9 @@ class OmsorgspengesoknadProsesseringTest {
         val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
-        journalføringsKonsumer
-            .hentJournalførtSøknad(søknad.søknadId)
-            .validerJournalførtSøknad(innsendtSøknad = JSONObject(søknad))
+        k9RapidKonsumer
+            .hentK9RapidMelding(søknad.id)
+            .validerK9RapidFormat(søknad.id)
     }
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
@@ -158,27 +157,16 @@ class OmsorgspengesoknadProsesseringTest {
         }
     }
 
-    private infix fun String.validerJournalførtSøknad(innsendtSøknad: JSONObject) {
+    private infix fun String.validerK9RapidFormat(id: String) {
         val rawJson = JSONObject(this)
+        println(rawJson)
 
-        val metadata = rawJson.getJSONObject("metadata")
-        assertNotNull(metadata)
-        assertNotNull(metadata.getString("correlationId"))
-        assertNotNull(metadata.getString("requestId"))
+        assertEquals(rawJson.getJSONArray("@behovsrekkefølge").getString(0), "MidlertidigAlene")
+        assertEquals(rawJson.getString("@type"),"Behovssekvens")
+        assertEquals(rawJson.getString("@id"), id)
 
-        val journalførtSøknad = rawJson.getJSONObject("data").getJSONObject("søknad")
-        assertNotNull(journalførtSøknad)
-        assertEquals(innsendtSøknad.getString("søknadId"), journalførtSøknad.getString("søknadId"))
-
-        val søkerJournalført = journalførtSøknad.getJSONObject("søker")
-        val søkerInnsendt = innsendtSøknad.getJSONObject("søker")
-        JSONAssert.assertEquals(søkerJournalført, søkerInnsendt, true)
-
-        journalførtSøknad.remove("dokumentUrls")
-        journalførtSøknad.remove("mottatt")
-        innsendtSøknad.remove("mottatt")
-
-        JSONAssert.assertEquals(innsendtSøknad.toString(), journalførtSøknad.toString(), true)
+        assertNotNull(rawJson.getString("@correlationId"))
+        assertNotNull(rawJson.getJSONObject("@behov"))
     }
 
 }

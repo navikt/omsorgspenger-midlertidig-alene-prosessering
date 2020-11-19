@@ -2,7 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val dusseldorfKtorVersion = "1.4.1.4754df6"
-val k9FormatVersion = "3.0.0.f5ec313"
+val k9RapidBehovVersion = "1.91b665d"
+val k9RapidMidlertidigAleneVersion = "1.91b665d"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
@@ -12,7 +13,7 @@ val kafkaEmbeddedEnvVersion = "2.4.0"
 val kafkaVersion = "2.4.0" // Alligned med version fra kafka-embedded-env
 val handlebarsVersion = "4.1.2"
 
-val mainClass = "no.nav.helse.OmsorgspengesoknadProsesseringKt"
+val mainClass = "no.nav.helse.MidlertidigAleneProsesseringKt"
 
 plugins {
     kotlin("jvm") version "1.3.70"
@@ -31,7 +32,6 @@ dependencies {
     implementation ( "no.nav.helse:dusseldorf-ktor-metrics:$dusseldorfKtorVersion")
     implementation ( "no.nav.helse:dusseldorf-ktor-health:$dusseldorfKtorVersion")
     implementation ( "no.nav.helse:dusseldorf-ktor-auth:$dusseldorfKtorVersion")
-    implementation ( "no.nav.k9:soknad-omsorgspenger:$k9FormatVersion")
 
     implementation ( "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
     
@@ -57,6 +57,11 @@ dependencies {
     }
     testImplementation("org.skyscreamer:jsonassert:1.5.0")
     implementation(kotlin("stdlib-jdk8"))
+
+    //K9-Rapid
+    implementation("no.nav.k9.rapid:behov:$k9RapidBehovVersion")
+    implementation("no.nav.k9.rapid:midlertidig-alene:$k9RapidMidlertidigAleneVersion")
+
 }
 
 repositories {
@@ -78,10 +83,9 @@ repositories {
     mavenCentral()
 }
 
-
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_12
+    targetCompatibility = JavaVersion.VERSION_12
 }
 
 

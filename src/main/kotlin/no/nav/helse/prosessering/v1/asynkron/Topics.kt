@@ -1,5 +1,6 @@
 package no.nav.helse.prosessering.v1.asynkron
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -12,84 +13,91 @@ import org.apache.kafka.common.serialization.Deserializer
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.Serializer
 import org.apache.kafka.common.serialization.StringSerializer
+import org.apache.kafka.streams.kstream.Consumed
+import org.apache.kafka.streams.kstream.Produced
+import org.json.JSONObject
 
-data class TopicEntry<V>(val metadata: Metadata, val data: V)
-
+data class Data(val rawJson: String)
 data class Cleanup(val metadata: Metadata, val melding: PreprossesertMeldingV1, val journalførtMelding: Journalfort)
+data class Journalfort(val journalpostId: String)
 
-data class Journalfort(val journalpostId: String, val søknad: PreprossesertMeldingV1) //TODO Lage på formatet som k9 ønsker
-
-internal data class Topic<V>(
+internal data class Topic(
     val name: String,
-    val serDes : SerDes<V>
+    val serDes: SerDes
 ) {
     val keySerializer = StringSerializer()
-    val keySerde = Serdes.String()
-    val valueSerde = Serdes.serdeFrom(serDes, serDes)
+    private val keySerde = Serdes.String()
+    private val valueSerde = Serdes.serdeFrom(SerDes(), SerDes())
+    val consumed = Consumed.with(keySerde, valueSerde)
+    val produced = Produced.with(keySerde, valueSerde)
 }
 
 internal object Topics {
     val MOTTATT = Topic(
         name = "privat-omsorgspenger-midlertidig-alene-mottatt",
-        serDes = MottattSoknadSerDes()
+        serDes = SerDes()
     )
+
     val PREPROSSESERT = Topic(
         name = "privat-omsorgspenger-midlertidig-alene-preprossesert",
-        serDes = PreprossesertSerDes()
+        serDes = SerDes()
     )
+
     val CLEANUP = Topic(
         name = "privat-omsorgspenger-midlertidig-alene-cleanup",
-        serDes = CleanupSerDes()
-    )
-    val JOURNALFORT = Topic(
-        name = "privat-omsorgspenger-midlertidig-alene-journalfort",
-        serDes = JournalfortSerDes()
+        serDes = SerDes()
     )
 
+    val K9_RAPID_V2 = Topic(
+        name = "k9-rapid-v2",
+        serDes = SerDes()
+    )
 }
 
-internal abstract class SerDes<V> : Serializer<V>, Deserializer<V> {
-    protected val objectMapper = jacksonObjectMapper()
-        .dusseldorfConfigured()
-        .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
-        .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
-    override fun serialize(topic: String?, data: V): ByteArray? {
-        return data?.let {
-            objectMapper.writeValueAsBytes(it)
-        }
-    }
+internal fun TopicEntry.deserialiserTilCleanupDeleOmsorgsdager(): Cleanup  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilMeldingDeleOmsorgsdager(): MeldingV1 = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilPreprosessertDeleOmsorgsdager(): PreprossesertMeldingV1  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
+internal fun Any.serialiserTilData() = Data(midlertidigAleneKonfigurertMapper().writeValueAsString(this))
+
+class SerDes : Serializer<TopicEntry>, Deserializer<TopicEntry> {
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {}
     override fun close() {}
+    override fun serialize(topic: String, entry: TopicEntry): ByteArray = when (topic == Topics.K9_RAPID_V2.name) {
+        true -> entry.data.rawJson.toByteArray()
+        false -> entry.rawJson.toByteArray()
+    }
+    override fun deserialize(topic: String, entry: ByteArray): TopicEntry = TopicEntry(String(entry))
 }
 
-private class MottattSoknadSerDes: SerDes<TopicEntry<MeldingV1>>() {
-    override fun deserialize(topic: String?, data: ByteArray?): TopicEntry<MeldingV1>? {
-        return data?.let {
-            objectMapper.readValue<TopicEntry<MeldingV1>>(it)
-        }
-    }
+data class TopicEntry(val rawJson: String) {
+    constructor(metadata: Metadata, data: Data) : this(
+        JSONObject(
+            mapOf(
+                "metadata" to JSONObject(
+                    mapOf(
+                        "version" to metadata.version,
+                        "correlationId" to metadata.correlationId,
+                        "requestId" to metadata.requestId
+                    )
+                ),
+                "data" to JSONObject(data.rawJson)
+            )
+        ).toString()
+    )
+
+    private val entityJson = JSONObject(rawJson)
+    private val metadataJson = requireNotNull(entityJson.getJSONObject("metadata"))
+    private val dataJson = requireNotNull(entityJson.getJSONObject("data"))
+    val metadata = Metadata(
+        version = requireNotNull(metadataJson.getInt("version")),
+        correlationId = requireNotNull(metadataJson.getString("correlationId")),
+        requestId = requireNotNull(metadataJson.getString("requestId"))
+    )
+    val data = Data(dataJson.toString())
 }
 
-private class PreprossesertSerDes: SerDes<TopicEntry<PreprossesertMeldingV1>>() {
-    override fun deserialize(topic: String?, data: ByteArray?): TopicEntry<PreprossesertMeldingV1>? {
-        return data?.let {
-            objectMapper.readValue(it)
-        }
-    }
-}
-
-private class CleanupSerDes: SerDes<TopicEntry<Cleanup>>() {
-    override fun deserialize(topic: String?, data: ByteArray?): TopicEntry<Cleanup>? {
-        return data?.let {
-            objectMapper.readValue(it)
-        }
-    }
-}
-
-private class JournalfortSerDes: SerDes<TopicEntry<Journalfort>>() {
-    override fun deserialize(topic: String?, data: ByteArray?): TopicEntry<Journalfort>? {
-        return data?.let {
-            objectMapper.readValue(it)
-        }
-    }
+fun midlertidigAleneKonfigurertMapper(): ObjectMapper {
+    return jacksonObjectMapper().dusseldorfConfigured()
+        .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+        .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
 }

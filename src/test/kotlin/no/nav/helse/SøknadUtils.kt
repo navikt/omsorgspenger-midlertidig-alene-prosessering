@@ -23,7 +23,7 @@ object SøknadUtils {
             mellomnavn = "Mellomnavn",
             fornavn = "Ola"
         ),
-        id = "123456789",
+        id = "01ARZ3NDEKTSV4RRFFQ69G5FAV",
         arbeidssituasjon = listOf(Arbeidssituasjon.FRILANSER),
         annenForelder = AnnenForelder(
             navn = "Berit",
