@@ -11,9 +11,8 @@ import com.openhtmltopdf.util.XRLog
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.Søker
-import no.nav.helse.prosessering.v1.søknad.somMapTilPdfFødselsår
 import no.nav.helse.prosessering.v1.søknad.somMapTilPdfArbeidssituasjon
-import org.apache.kafka.common.protocol.types.Field
+import no.nav.helse.prosessering.v1.søknad.somMapTilPdfFødselsår
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.time.DayOfWeek
@@ -69,8 +68,6 @@ internal class PdfV1Generator {
         }
 
         private fun loadImages() = mapOf(
-            "Checkbox_off.png" to loadPng("Checkbox_off"),
-            "Checkbox_on.png" to loadPng("Checkbox_on"),
             "Hjelp.png" to loadPng("Hjelp"),
             "Navlogo.png" to loadPng("Navlogo"),
             "Personikon.png" to loadPng("Personikon"),
