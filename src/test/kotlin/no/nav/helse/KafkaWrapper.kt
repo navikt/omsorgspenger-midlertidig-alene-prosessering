@@ -1,5 +1,6 @@
 package no.nav.helse
 
+import junit.framework.Assert.assertEquals
 import no.nav.common.JAASCredential
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.felles.Metadata
@@ -87,7 +88,7 @@ fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
 )
 
 fun KafkaConsumer<String, String>.hentK9RapidMelding(
-    soknadId: String,
+    id: String,
     maxWaitInSeconds: Long = 20
 ): String {
     val end = System.currentTimeMillis() + Duration.ofSeconds(maxWaitInSeconds).toMillis()
@@ -95,14 +96,14 @@ fun KafkaConsumer<String, String>.hentK9RapidMelding(
         seekToBeginning(assignment())
         val entries = poll(Duration.ofSeconds(1))
             .records(K9_RAPID_V2.name)
-            .filter { it.key() == soknadId }
+            .filter { it.key() == id }
 
         if (entries.isNotEmpty()) {
-            //assertEquals(1, entries.size) //TODO Denne skal være på, sjekk hvorfor
+            assertEquals(1, entries.size)
             return entries.first().value()
         }
     }
-    throw IllegalStateException("Fant ikke opprettet oppgave for søknad $soknadId etter $maxWaitInSeconds sekunder.")
+    throw IllegalStateException("Fant ikke opprettet oppgave for søknad $id etter $maxWaitInSeconds sekunder.")
 }
 
 fun KafkaProducer<String, TopicEntry>.leggTilMottak(soknad: MeldingV1) {

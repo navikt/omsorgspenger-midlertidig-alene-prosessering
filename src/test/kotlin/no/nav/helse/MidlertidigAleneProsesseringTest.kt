@@ -118,7 +118,7 @@ class MidlertidigAleneProsesseringTest {
 
     @Test
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
-        val søknad = SøknadUtils.gyldigSøknad()
+        val søknad = SøknadUtils.gyldigSøknad().copy(id = "01ARZ3NDEKTSV4RRFFQ69G5FAA")
 
         wireMockServer.stubJournalfor(500) // Simulerer feil ved journalføring
 
