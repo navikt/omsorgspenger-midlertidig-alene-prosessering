@@ -1,9 +1,9 @@
 package no.nav.helse.prosessering.v1
 
-import no.nav.helse.felles.CorrelationId
 import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.felles.AktørId
+import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.Metadata
 import no.nav.helse.felles.SøknadId
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
@@ -67,8 +67,7 @@ internal class PreprosseseringV1Service(
             dokumentUrls = komplettDokumentUrls.toList(),
             søkerAktørId = AktørId(melding.søker.aktørId)
         )
-        //melding.reportMetrics() TODO Metrikker
-        //preprossesertMeldingV1.reportMetrics() TODO Metrikker
+        preprossesertMeldingV1.reportMetrics()
         return preprossesertMeldingV1
     }
 
