@@ -59,18 +59,18 @@
             <p>{{annenForelder.navn}}</p>
             <p class="sporsmalstekst">Hva er fødselsnummeret til den andre forelderen?</p>
             <p>{{annenForelder.fnr}}</p>
-            <p class="sporsmalstekst">Hva er situasjonen til den andre forelderen?</p>
+            <p class="sporsmalstekst">Hva er grunnen til at den andre forelderen ikke kan ta seg av barn?</p>
             <p>{{annenForelder.situasjon}}</p>
             {{#if annenForelder.beskrivelse}}
                 <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
                 <p class="fritekst">{{annenForelder.beskrivelse}}</p>
             {{/if}}
             {{#if annenForelder.periodeFraOgMed}}
-                <p class="sporsmalstekst">Periode</p>
+                <p class="sporsmalstekst">Perioden den andre forelderen ikke kan ta seg av barn</p>
                 <p>{{annenForelder.periodeFraOgMed}} - {{annenForelder.periodeTilOgMed}}</p>
             {{/if}}
             {{#if hjelp.periodeOver6MånederSatt}}
-                <p class="sporsmalstekst">Er perioden over 6 måneder?</p>
+                <p class="sporsmalstekst">Har perioden en varighet på minst 6 måneder?</p>
                 <p>{{ jaNeiSvar annenForelder.periodeOver6Måneder}}</p>
             {{/if}}
         </section>
@@ -81,7 +81,7 @@
             <p class="sporsmalstekst">Har du bodd i utlandet de siste 12 månedene?</p>
             <p>{{ jaNeiSvar medlemskap.harBoddIUtlandetSiste12Mnd}}</p>
             {{#if medlemskap.harBoddIUtlandetSiste12Mnd}}
-            <p class="sporsmalstekst">Utenlandsopphold de siste 12 måneder: </p>
+            <p class="sporsmalstekst">Utenlandsopphold de siste 12 månedene: </p>
                 <ul>
                     {{# each medlemskap.utenlandsoppholdSiste12Mnd as |utenlandsopphold|~}}
                         <li>
@@ -93,7 +93,7 @@
             <p class="sporsmalstekst">Skal du bo i utlandet de neste 12 månedene?</p>
             <p>{{ jaNeiSvar medlemskap.skalBoIUtlandetNeste12Mnd}}</p>
             {{#if medlemskap.skalBoIUtlandetNeste12Mnd}}
-                <p class="sporsmalstekst">Utenlandsopphold de neste 12 måneder: </p>
+                <p class="sporsmalstekst">Utenlandsopphold de neste 12 månedene: </p>
                 <ul>
                     {{# each medlemskap.utenlandsoppholdNeste12Mnd as |utenlandsopphold|~}}
                         <li>
@@ -110,7 +110,7 @@
             <p class="sporsmalstekst">Har du forstått rettigheter og plikter?</p>
             <p>{{ jaNeiSvar samtykke.harForståttRettigheterOgPlikter }}</p>
             <hr />
-            <p class="sporsmalstekst">Har du bekreftet at opplysninger som er gitt er riktige?</p>
+            <p class="sporsmalstekst">Har du bekreftet at opplysninger du har gitt er riktige?</p>
             <p>{{ jaNeiSvar samtykke.harBekreftetOpplysninger }}</p>
         </section>
 
