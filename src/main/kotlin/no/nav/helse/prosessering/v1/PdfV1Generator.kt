@@ -100,7 +100,8 @@ internal class PdfV1Generator {
                         ),
                         "hjelp" to mapOf(
                             "språk" to melding.språk?.språkTilTekst(),
-                            "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt()
+                            "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt(),
+                            "erPeriodenOver6Måneder" to melding.hjelperErPeriodenOver6Mnd()
                         )
                     )
                 )
@@ -156,6 +157,12 @@ private fun String.språkTilTekst() = when (this.toLowerCase()) {
     "nb" -> "bokmål"
     "nn" -> "nynorsk"
     else -> this
+}
+
+private fun MeldingV1.hjelperErPeriodenOver6Mnd(): Boolean? {
+    return if(annenForelder.periodeFraOgMed == null || annenForelder.periodeTilOgMed == null) null else {
+        annenForelder.periodeFraOgMed.plusMonths(6).isBefore(annenForelder.periodeTilOgMed)
+    }
 }
 
 private fun ZonedDateTime.norskDag() = when(dayOfWeek) {
