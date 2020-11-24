@@ -9,6 +9,16 @@ private val annenForelderSituasjonCounter = Counter.build()
     .labelNames("situasjon")
     .register()
 
+private val generelCounter = Counter.build()
+    .name("generel_counter")
+    .help("Generel counter")
+    .labelNames("spm", "svar")
+    .register()
+
 internal fun PreprossesertMeldingV1.reportMetrics(){
     annenForelderSituasjonCounter.labels(annenForelder.situasjon.name).inc()
+
+    if(annenForelder.periodeOver6Måneder != null && !annenForelder.periodeOver6Måneder){
+        generelCounter.labels("erPeriodenOver6MndSpørsmål", "Nei")
+    }
 }
