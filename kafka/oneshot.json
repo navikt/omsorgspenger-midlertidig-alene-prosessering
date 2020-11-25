@@ -73,6 +73,10 @@
           "role": "CONSUMER"
         },
         {
+          "member": "srv-sif-innsyn-mtk",
+          "role": "CONSUMER"
+        },
+        {
           "member": "O158190",
           "role": "MANAGER"
         },
