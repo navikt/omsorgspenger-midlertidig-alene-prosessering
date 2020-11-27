@@ -42,7 +42,7 @@ internal class PreprosseseringStream(
                         logger.info(formaterStatuslogging(soknadId, "preprosesseres"))
 
                         val preprossesertMelding = preprosseseringV1Service.preprosseser(
-                            melding = entry.deserialiserTilMeldingDeleOmsorgsdager(),
+                            melding = entry.deserialiserTilMelding(),
                             metadata = entry.metadata
                         )
                         logger.trace("Preprossesering ferdig.")

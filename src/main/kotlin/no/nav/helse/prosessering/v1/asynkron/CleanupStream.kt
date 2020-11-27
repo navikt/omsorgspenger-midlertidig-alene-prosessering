@@ -41,11 +41,11 @@ internal class CleanupStream(
                 .stream(fraCleanup.name, fraCleanup.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .selectKey{ _, value ->
-                    value.deserialiserTilCleanupDeleOmsorgsdager().melding.id
+                    value.deserialiserTilCleanup().melding.id
                 }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
-                        val cleanupMelding = entry.deserialiserTilCleanupDeleOmsorgsdager()
+                        val cleanupMelding = entry.deserialiserTilCleanup()
 
                         logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "kjører cleanup"))
                         logger.trace("Sletter dokumenter.")

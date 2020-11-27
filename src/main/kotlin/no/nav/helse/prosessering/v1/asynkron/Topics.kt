@@ -54,9 +54,9 @@ internal object Topics {
     )
 }
 
-internal fun TopicEntry.deserialiserTilCleanupDeleOmsorgsdager(): Cleanup  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
-internal fun TopicEntry.deserialiserTilMeldingDeleOmsorgsdager(): MeldingV1 = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
-internal fun TopicEntry.deserialiserTilPreprosessertDeleOmsorgsdager(): PreprossesertMeldingV1  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilCleanup(): Cleanup  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilMelding(): MeldingV1 = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilPreprosessertMelding(): PreprossesertMeldingV1  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
 internal fun Any.serialiserTilData() = Data(midlertidigAleneKonfigurertMapper().writeValueAsString(this))
 
 class SerDes : Serializer<TopicEntry>, Deserializer<TopicEntry> {
