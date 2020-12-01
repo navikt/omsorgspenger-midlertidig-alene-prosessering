@@ -39,8 +39,8 @@ class PdfV1GeneratorTest {
                 situasjon = Situasjon.INNLAGT_I_HELSEINSTITUSJON,
                 situasjonBeskrivelse = "Beskrivelse blabla",
                 periodeOver6Måneder = false,
-                periodeFraOgMed = LocalDate.parse("2020-01-01"),
-                periodeTilOgMed = LocalDate.parse("2020-10-01")
+                periodeFraOgMed = LocalDate.parse("2020-12-01"),
+                periodeTilOgMed = LocalDate.parse("2021-05-31")
             ),
             antallBarn = 2,
             fødselsårBarn = listOf(2005, 2019),

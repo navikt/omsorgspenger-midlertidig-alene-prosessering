@@ -19,6 +19,7 @@ import java.time.DayOfWeek
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 internal class PdfV1Generator {
@@ -101,7 +102,7 @@ internal class PdfV1Generator {
                         "hjelp" to mapOf(
                             "språk" to melding.språk?.språkTilTekst(),
                             "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt(),
-                            "erPeriodenOver6Måneder" to melding.hjelperErPeriodenOver6Mnd()
+                            "erPeriodenOver6Måneder" to melding.hjelperErPerioden6MndEllerOver()
                         )
                     )
                 )
@@ -159,9 +160,10 @@ private fun String.språkTilTekst() = when (this.toLowerCase()) {
     else -> this
 }
 
-private fun MeldingV1.hjelperErPeriodenOver6Mnd(): Boolean? {
+private fun MeldingV1.hjelperErPerioden6MndEllerOver(): Boolean? {
     return if(annenForelder.periodeFraOgMed == null || annenForelder.periodeTilOgMed == null) null else {
-        annenForelder.periodeFraOgMed.plusMonths(6).isBefore(annenForelder.periodeTilOgMed)
+        val differanse = ChronoUnit.DAYS.between(annenForelder.periodeFraOgMed, annenForelder.periodeTilOgMed.plusDays(1)) // plusDays(1) fordi den er eksklusiv i utregningen
+        differanse >= 182
     }
 }
 
