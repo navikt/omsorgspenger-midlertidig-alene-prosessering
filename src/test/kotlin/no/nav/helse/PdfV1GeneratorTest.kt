@@ -36,7 +36,7 @@ class PdfV1GeneratorTest {
             annenForelder = AnnenForelder(
                 navn = "Berit",
                 fnr = "02119970078",
-                situasjon = Situasjon.INNLAGT_I_HELSEINSTITUSJON,
+                situasjon = Situasjon.SYKDOM,
                 situasjonBeskrivelse = "Beskrivelse blabla",
                 periodeOver6Måneder = false,
                 periodeFraOgMed = LocalDate.parse("2020-12-01"),

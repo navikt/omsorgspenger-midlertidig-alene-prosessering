@@ -35,6 +35,6 @@ enum class Situasjon(val utskriftvennlig: String){
     INNLAGT_I_HELSEINSTITUSJON("Innlagt i helseinstitusjon"),
     UTØVER_VERNEPLIKT("Utøver verneplikt"),
     FENGSEL("Fengsel"),
-    SYKDOM("Sykdom"),
+    SYKDOM("Sykdom, skade eller funksjonshemning"),
     ANNET("Annet")
 }
