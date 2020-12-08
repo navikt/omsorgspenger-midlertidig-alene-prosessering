@@ -7,7 +7,6 @@ import com.github.jknack.handlebars.context.MapValueResolver
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
-import com.openhtmltopdf.util.XRLog
 import no.nav.helse.dusseldorf.ktor.core.fromResources
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.Søker
@@ -77,7 +76,7 @@ internal class PdfV1Generator {
     }
 
     internal fun generateSoknadOppsummeringPdf(melding: MeldingV1): ByteArray {
-        XRLog.setLoggingEnabled(false) //TODO Finnes det en måte å kun justere logg level, ikke skru den helt av?
+        //XRLog.setLoggingEnabled(false) //TODO Finnes det en måte å kun justere logg level, ikke skru den helt av?
         soknadTemplate.apply(
             Context
                 .newBuilder(
