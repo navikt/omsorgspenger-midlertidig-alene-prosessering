@@ -45,7 +45,7 @@ internal class JournalforingsStream(
 
                         val preprosessertMelding = entry.deserialiserTilPreprosessertMelding()
                         val dokumenter = preprosessertMelding.dokumentUrls
-                        logger.trace("Journalfører dokumenter: {}", dokumenter)
+                        logger.info("Journalfører dokumenter: {}", dokumenter)
 
                         val journalPostId = joarkGateway.journalfør(
                             mottatt = preprosessertMelding.mottatt,
@@ -59,7 +59,7 @@ internal class JournalforingsStream(
                             )
                         )
 
-                        logger.trace("Dokumenter journalført med ID = ${journalPostId.journalpostId}.")
+                        logger.info("Dokumenter journalført med ID = ${journalPostId.journalpostId}.")
                         val journalfort = Journalfort(journalpostId = journalPostId.journalpostId)
 
                         Cleanup(
