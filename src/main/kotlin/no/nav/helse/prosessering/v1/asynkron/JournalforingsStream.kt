@@ -11,6 +11,7 @@ import no.nav.helse.kafka.ManagedStreamReady
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
+import java.net.URI
 
 internal class JournalforingsStream(
     joarkGateway: JoarkGateway,
@@ -44,7 +45,11 @@ internal class JournalforingsStream(
                         logger.info(formaterStatuslogging(soknadId, "journalføres"))
 
                         val preprosessertMelding = entry.deserialiserTilPreprosessertMelding()
-                        val dokumenter = preprosessertMelding.dokumentUrls
+                        val fiksetPreprossesertMelding = preprosessertMelding.copy(
+                            dokumentUrls = preprosessertMelding.dokumentUrls.fixUrl()
+                        )
+                        val dokumenter = fiksetPreprossesertMelding.dokumentUrls.fixUrl() //TODO: Erstatt  med preprosessertMelding etter fix.
+
                         logger.info("Journalfører dokumenter: {}", dokumenter)
 
                         val journalPostId = joarkGateway.journalfør(
@@ -64,7 +69,7 @@ internal class JournalforingsStream(
 
                         Cleanup(
                             metadata = entry.metadata,
-                            melding = preprosessertMelding,
+                            melding = fiksetPreprossesertMelding, //TODO: Erstatt  med preprosessertMelding etter fix.
                             journalførtMelding = journalfort
                         ).serialiserTilData()
                     }
@@ -76,4 +81,17 @@ internal class JournalforingsStream(
     }
 
     internal fun stop() = stream.stop(becauseOfError = false)
+}
+
+fun List<List<URI>>.fixUrl() = map { urlBolk: List<URI> ->
+    urlBolk.map {
+        if (it.host == "k9-mellomlagring.nav.no") {
+            val path = it.path
+            val nyBaseUrl = "https://k9-mellomlagring.intern.nav.no"
+
+            URI("$nyBaseUrl$path")
+        } else {
+            it
+        }
+    }
 }

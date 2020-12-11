@@ -65,5 +65,4 @@ object SøknadUtils {
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true
     )
-
 }
