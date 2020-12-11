@@ -11,13 +11,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
-import no.nav.helse.prosessering.v1.asynkron.fixUrl
 import org.json.JSONObject
 import org.junit.AfterClass
-import org.junit.Assert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URI
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import kotlin.test.Test
@@ -145,18 +142,6 @@ class MidlertidigAleneProsesseringTest {
         k9RapidKonsumer
             .hentK9RapidMelding(søknad.id)
             .validerK9RapidFormat(søknad.id)
-    }
-
-    @Test
-    fun name() {
-        val fixUrl = listOf(
-            listOf(
-                URI("https://k9-mellomlagring.nav.no/v1/dokument/123"),
-                URI("https://k9-mellomlagring.nav.no/v1/dokument/456")
-            )
-        ).fixUrl()
-
-        assertEquals(URI("https://k9-mellomlagring.intern.nav.no/v1/dokument/123"), fixUrl.first().first())
     }
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
