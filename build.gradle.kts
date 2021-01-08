@@ -1,14 +1,14 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "1.4.3.c883096"
+val dusseldorfKtorVersion = "1.5.0.3315e68"
 val k9RapidBehovVersion = "1.91b665d"
 val k9RapidMidlertidigAleneVersion = "1.91b665d"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 
-val openhtmltopdfVersion = "1.0.5"
+val openhtmltopdfVersion = "1.0.6"
 val kafkaEmbeddedEnvVersion = "2.4.0"
 val kafkaVersion = "2.4.0" // Alligned med version fra kafka-embedded-env
 val handlebarsVersion = "4.1.2"
@@ -22,7 +22,7 @@ plugins {
 
 buildscript {
     // Henter ut diverse dependency versjoner, i.e. ktorVersion.
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/c88309616e7f153ed7084699aa0392defd0675f5/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/3315e68ec40ad9a24fa0c45d4f463d9cbae56fa0/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -106,7 +106,7 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "6.2.2"
+    gradleVersion = "6.7.1"
 }
 
 tasks.register("createDependabotFile") {

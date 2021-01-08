@@ -7,6 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.engine.*
 import io.ktor.server.testing.*
 import io.ktor.util.*
+import io.prometheus.client.CollectorRegistry
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
@@ -69,8 +70,9 @@ class MidlertidigAleneProsesseringTest {
 
         private fun stopEngine() = engine.stop(5, 60, TimeUnit.SECONDS)
 
-        internal fun restartEngine() {
+        fun restartEngine() {
             stopEngine()
+            CollectorRegistry.defaultRegistry.clear()
             engine = newEngine(kafkaEnvironment)
             engine.start(wait = true)
         }
