@@ -106,7 +106,7 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "6.2.2"
+    gradleVersion = "6.7.1"
 }
 
 tasks.register("createDependabotFile") {
