@@ -17,7 +17,7 @@ val mainClass = "no.nav.helse.MidlertidigAleneProsesseringKt"
 
 plugins {
     kotlin("jvm") version "1.4.30"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 buildscript {
@@ -106,5 +106,5 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "6.7.1"
+    gradleVersion = "6.8.2"
 }
