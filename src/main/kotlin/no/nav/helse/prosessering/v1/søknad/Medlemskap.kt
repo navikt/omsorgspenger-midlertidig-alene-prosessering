@@ -1,6 +1,6 @@
 package no.nav.helse.prosessering.v1.søknad
 
-data class Medlemskap(
+data class Medlemskap( //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
     val harBoddIUtlandetSiste12Mnd: Boolean,
     val utenlandsoppholdSiste12Mnd: List<Utenlandsopphold> = listOf(),
     val skalBoIUtlandetNeste12Mnd: Boolean,

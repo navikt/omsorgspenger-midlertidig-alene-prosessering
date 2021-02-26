@@ -45,6 +45,13 @@ class SøknadsformatTest {
                 "periodeFraOgMed": "2020-01-01",
                 "periodeTilOgMed": "2020-10-01"
               },
+              "barn" : [
+                {
+                  "navn" : "Ole",
+                  "identitetsnummer": "1234",
+                  "aktørId": null
+                }
+              ],
               "antallBarn": 2,
               "fødselsårBarn": [
                 2005,
@@ -105,6 +112,13 @@ class SøknadsformatTest {
             periodeOver6Måneder = false,
             periodeFraOgMed = LocalDate.parse("2020-01-01"),
             periodeTilOgMed = LocalDate.parse("2020-10-01")
+        ),
+        barn = listOf(
+            Barn(
+                navn = "Ole",
+                identitetsnummer = "1234",
+                aktørId = null
+            )
         ),
         antallBarn = 2,
         fødselsårBarn = listOf(2005, 2013),
