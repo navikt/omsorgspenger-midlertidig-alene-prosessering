@@ -30,7 +30,7 @@ class PdfV1GeneratorTest {
             id = "123456789",
             barn = listOf(
                 Barn(
-                    navn = "Ole",
+                    navn = "OLE TEST NAVNESEN",
                     identitetsnummer = "12334",
                     aktørId = null
                 ), Barn(

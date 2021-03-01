@@ -65,8 +65,10 @@ internal fun List<Int>.somMapTilPdfFødselsår(): List<Map<String, Any?>> { //TO
 internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
     return map {
         mapOf<String, Any?>(
-            "navn" to it.navn,
+            "navn" to it.navn.capitalizeWords(),
             "identitetsnummer" to it.identitetsnummer
         )
     }
 }
+
+fun String.capitalizeWords(): String = split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
