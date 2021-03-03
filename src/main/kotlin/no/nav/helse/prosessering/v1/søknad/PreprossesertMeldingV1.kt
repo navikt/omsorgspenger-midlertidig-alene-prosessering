@@ -13,11 +13,11 @@ data class PreprossesertMeldingV1(
     val dokumentUrls: List<List<URI>>,
     val søker: PreprossesertSøker,
     val id: String,
-    val arbeidssituasjon: List<Arbeidssituasjon>,
+    val arbeidssituasjon: List<Arbeidssituasjon>? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
     val annenForelder: AnnenForelder,
-    val antallBarn: Int,
-    val fødselsårBarn: List<Int>,
-    val medlemskap: Medlemskap,
+    val antallBarn: Int? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
+    val fødselsårBarn: List<Int>? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
+    val medlemskap: Medlemskap? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 ) {

@@ -28,6 +28,21 @@ class PdfV1GeneratorTest {
                 fødselsdato = fødselsdato
             ),
             id = "123456789",
+            barn = listOf(
+                Barn(
+                    navn = "OLE TEST NAVNESEN",
+                    identitetsnummer = "12334",
+                    aktørId = null
+                ), Barn(
+                    navn = "Dole",
+                    identitetsnummer = "98444",
+                    aktørId = null
+                ), Barn(
+                    navn = "Doffen",
+                    identitetsnummer = "123123123",
+                    aktørId = null
+                )
+            ),
             arbeidssituasjon = listOf(
                 Arbeidssituasjon.FRILANSER,
                 Arbeidssituasjon.SELVSTENDIG_NÆRINGSDRIVENDE,
@@ -94,6 +109,24 @@ class PdfV1GeneratorTest {
         )
         if (writeBytes) File(pdfPath(soknadId = id)).writeBytes(pdf)
 
+        id = "3-søknad-medlemskap-som-null" //TODO 26.02.2021 - Fjernes når frontend er oppdatert
+        pdf = generator.generateSoknadOppsummeringPdf(
+            melding = fullGyldigMelding(soknadsId = id).copy(
+                medlemskap = null
+            )
+        )
+        if (writeBytes) File(pdfPath(soknadId = id)).writeBytes(pdf)
+
+        id = "4-søknad-alle-gamle-felter-som-null" //TODO 26.02.2021 - Fjernes når frontend er oppdatert
+        pdf = generator.generateSoknadOppsummeringPdf(
+            melding = fullGyldigMelding(soknadsId = id).copy(
+                medlemskap = null,
+                arbeidssituasjon = null,
+                antallBarn = null,
+                fødselsårBarn = null
+            )
+        )
+        if (writeBytes) File(pdfPath(soknadId = id)).writeBytes(pdf)
     }
 
     private fun pdfPath(soknadId: String) = "${System.getProperty("user.dir")}/generated-pdf-$soknadId.pdf"
