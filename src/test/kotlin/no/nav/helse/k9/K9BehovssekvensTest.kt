@@ -82,18 +82,18 @@ class K9BehovssekvensTest {
                     fornavn = "Ola"
                 ),
                 id = "01ARZ3NDEKTSV4RRFFQ69G5FAV",
-                arbeidssituasjon = listOf(Arbeidssituasjon.FRILANSER),
                 annenForelder = AnnenForelder(
                     navn = "Berit",
                     fnr = gyldigFodselsnummerB,
                     situasjon = Situasjon.INNLAGT_I_HELSEINSTITUSJON,
                     periodeOver6Måneder = true
                 ),
-                antallBarn = 2,
-                fødselsårBarn = listOf(2005, 2013),
-                medlemskap = Medlemskap(
-                    harBoddIUtlandetSiste12Mnd = false,
-                    skalBoIUtlandetNeste12Mnd = false
+                barn = listOf(
+                    Barn(
+                        navn = "Ole Dole",
+                        identitetsnummer = "29076523302",
+                        aktørId = null
+                    )
                 ),
                 harBekreftetOpplysninger = true,
                 harForståttRettigheterOgPlikter = true

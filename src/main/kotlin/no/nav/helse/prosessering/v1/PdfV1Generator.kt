@@ -8,7 +8,10 @@ import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
 import no.nav.helse.dusseldorf.ktor.core.fromResources
-import no.nav.helse.prosessering.v1.søknad.*
+import no.nav.helse.prosessering.v1.søknad.MeldingV1
+import no.nav.helse.prosessering.v1.søknad.Søker
+import no.nav.helse.prosessering.v1.søknad.capitalizeName
+import no.nav.helse.prosessering.v1.søknad.somMapTilPdf
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.time.DayOfWeek
@@ -87,11 +90,7 @@ internal class PdfV1Generator {
                         ),
                         "id" to melding.id,
                         "barn" to melding.barn?.somMapTilPdf(),
-                        "arbeidssituasjon" to melding.arbeidssituasjon?.somMapTilPdfArbeidssituasjon(), //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
-                        "antallBarn" to melding.antallBarn, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
-                        "fødselsårBarn" to melding.fødselsårBarn?.somMapTilPdfFødselsår(), //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
                         "annenForelder" to melding.annenForelder.somMapTilPdf(),
-                        "medlemskap" to melding.medlemskap?.somMapTilPdf(), //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,
                             "harBekreftetOpplysninger" to melding.harBekreftetOpplysninger
