@@ -13,11 +13,8 @@ data class PreprossesertMeldingV1(
     val dokumentUrls: List<List<URI>>,
     val søker: PreprossesertSøker,
     val id: String,
-    val arbeidssituasjon: List<Arbeidssituasjon>? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
     val annenForelder: AnnenForelder,
-    val antallBarn: Int? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
-    val fødselsårBarn: List<Int>? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
-    val medlemskap: Medlemskap? = null, //TODO 26.02.2021 - Fjernes når frontend og api er prodsatt
+    val barn: List<Barn>,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 ) {
@@ -32,11 +29,8 @@ data class PreprossesertMeldingV1(
         dokumentUrls = dokumentUrls,
         søker = PreprossesertSøker(melding.søker, søkerAktørId),
         id = melding.id,
-        arbeidssituasjon = melding.arbeidssituasjon,
         annenForelder = melding.annenForelder,
-        antallBarn = melding.antallBarn,
-        fødselsårBarn = melding.fødselsårBarn,
-        medlemskap = melding.medlemskap,
+        barn = melding.barn,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger
     )

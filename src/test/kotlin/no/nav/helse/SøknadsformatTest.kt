@@ -32,10 +32,6 @@ class SøknadsformatTest {
                 "aktørId": "123456"
               },
               "id": "123456789",
-              "arbeidssituasjon": [
-                "FRILANSER",
-                "SELVSTENDIG_NÆRINGSDRIVENDE"
-              ],
               "annenForelder": {
                 "navn": "Berit",
                 "fnr": "02119970078",
@@ -52,37 +48,6 @@ class SøknadsformatTest {
                   "aktørId": null
                 }
               ],
-              "antallBarn": 2,
-              "fødselsårBarn": [
-                2005,
-                2013
-              ],
-              "medlemskap": {
-                "harBoddIUtlandetSiste12Mnd": true,
-                "utenlandsoppholdSiste12Mnd": [
-                  {
-                    "fraOgMed": "2020-01-01",
-                    "tilOgMed": "2020-01-10",
-                    "landkode": "DE",
-                    "landnavn": "Tyskland"
-                  },
-                  {
-                    "fraOgMed": "2020-01-01",
-                    "tilOgMed": "2020-01-10",
-                    "landkode": "SWE",
-                    "landnavn": "Sverige"
-                  }
-                ],
-                "skalBoIUtlandetNeste12Mnd": true,
-                "utenlandsoppholdNeste12Mnd": [
-                  {
-                    "fraOgMed": "2020-10-01",
-                    "tilOgMed": "2020-10-10",
-                    "landkode": "BR",
-                    "landnavn": "Brasil"
-                  }
-                ]
-              },
               "harForståttRettigheterOgPlikter": true,
               "harBekreftetOpplysninger": true
             }
@@ -103,7 +68,6 @@ class SøknadsformatTest {
             fødselsdato = LocalDate.parse("2018-01-24")
         ),
         id = "123456789",
-        arbeidssituasjon = listOf(Arbeidssituasjon.FRILANSER, Arbeidssituasjon.SELVSTENDIG_NÆRINGSDRIVENDE),
         annenForelder = AnnenForelder(
             navn = "Berit",
             fnr = "02119970078",
@@ -118,34 +82,6 @@ class SøknadsformatTest {
                 navn = "Ole",
                 identitetsnummer = "1234",
                 aktørId = null
-            )
-        ),
-        antallBarn = 2,
-        fødselsårBarn = listOf(2005, 2013),
-        medlemskap = Medlemskap(
-            harBoddIUtlandetSiste12Mnd = true,
-            utenlandsoppholdSiste12Mnd = listOf(
-                Utenlandsopphold(
-                    fraOgMed = LocalDate.parse("2020-01-01"),
-                    tilOgMed = LocalDate.parse("2020-01-10"),
-                    landnavn = "Tyskland",
-                    landkode = "DE"
-                ),
-                Utenlandsopphold(
-                    fraOgMed = LocalDate.parse("2020-01-01"),
-                    tilOgMed = LocalDate.parse("2020-01-10"),
-                    landnavn = "Sverige",
-                    landkode = "SWE"
-                )
-            ),
-            skalBoIUtlandetNeste12Mnd = true,
-            utenlandsoppholdNeste12Mnd = listOf(
-                Utenlandsopphold(
-                    fraOgMed = LocalDate.parse("2020-10-01"),
-                    tilOgMed = LocalDate.parse("2020-10-10"),
-                    landnavn = "Brasil",
-                    landkode = "BR"
-                )
             )
         ),
         harBekreftetOpplysninger = true,

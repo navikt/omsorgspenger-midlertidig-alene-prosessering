@@ -11,9 +11,7 @@
     <bookmarks>
         <bookmark name="Søker" href="#søker" />
         <bookmark name="Dine barn" href="#dineBarn" />
-        <bookmark name="Din situasjon" href="#din_situasjon" />
         <bookmark name="Den andre forelderen" href="#andre_forelderen" />
-        <bookmark name="Medlemskap" href="#medlemskap" />
         <bookmark name="Samtykke" href="#samtykke" />
     </bookmarks>
     {{#block 'style-common' }}
@@ -35,44 +33,15 @@
         </div>
 
         <section id="dineBarn">
-            {{#if barn}}
-                <h2>Dine barn</h2>
-                <ul>
-                    {{# each barn as |barn|~}}
-                        <li>
-                            <p><b>Navn: </b>{{barn.navn}}</p>
-                            <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
-                        </li>
-                    {{/each}}
-                </ul>
-            {{/if}}
-        </section>
-
-        <!-- DIN_SITUASJON OBS: FJERNES NÅR FRONTEND ER PRODSAT-->
-        <section id="din_situasjon">
-            {{#if arbeidssituasjon}}
-                <h2>Din situasjon</h2>
-                <p class="sporsmalstekst">Hva er din arbeidssituasjon?</p>
-                <ul>
-                    {{# each arbeidssituasjon as |situasjon|~}}
-                        <li>{{situasjon.utskriftvennlig}}</li>
-                    {{/each}}
-                </ul>
-            {{/if}}
-
-            {{#if antallBarn}}
-                <p class="sporsmalstekst">Hvor mange felles barn har dere? Inkludert eventuelle fosterbarn</p>
-                <p> {{antallBarn}}</p>
-            {{/if}}
-
-            {{#if fødselsårBarn}}
-                <p class="sporsmalstekst">Hva er fødselsåret på alle barna?</p>
-                <ul>
-                    {{# each fødselsårBarn as |barn|~}}
-                        <li>{{barn.alder}}</li>
-                    {{/each}}
-                </ul>
-            {{/if}}
+            <h2>Dine barn</h2>
+            <ul>
+                {{# each barn as |barn|~}}
+                    <li>
+                        <p><b>Navn: </b>{{barn.navn}}</p>
+                        <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
+                    </li>
+                {{/each}}
+            </ul>
         </section>
 
         <!-- ANDRE_FORELDER -->
@@ -101,37 +70,6 @@
             {{#if hjelp.periodeOver6MånederSatt}}
                 <p class="sporsmalstekst">Har perioden en varighet på minst 6 måneder?</p>
                 <p>{{ jaNeiSvar annenForelder.periodeOver6Måneder}}</p>
-            {{/if}}
-        </section>
-
-        <!-- Medlemskap  OBS: FJERNES NÅR FRONTEND ER PRODSAT-->
-        <section id="medlemskap">
-            {{#if medlemskap}}
-                <h2>Medlemskap i folketrygden</h2>
-                <p class="sporsmalstekst">Har du bodd i utlandet de siste 12 månedene?</p>
-                <p>{{ jaNeiSvar medlemskap.harBoddIUtlandetSiste12Mnd}}</p>
-                {{#if medlemskap.harBoddIUtlandetSiste12Mnd}}
-                <p class="sporsmalstekst">Utenlandsopphold de siste 12 månedene: </p>
-                    <ul>
-                        {{# each medlemskap.utenlandsoppholdSiste12Mnd as |utenlandsopphold|~}}
-                            <li>
-                                {{utenlandsopphold.landnavn}} ({{utenlandsopphold.fraOgMed}} - {{utenlandsopphold.tilOgMed}})
-                            </li>
-                        {{/each}}
-                    </ul>
-                {{/if}}
-                <p class="sporsmalstekst">Skal du bo i utlandet de neste 12 månedene?</p>
-                <p>{{ jaNeiSvar medlemskap.skalBoIUtlandetNeste12Mnd}}</p>
-                {{#if medlemskap.skalBoIUtlandetNeste12Mnd}}
-                    <p class="sporsmalstekst">Utenlandsopphold de neste 12 månedene: </p>
-                    <ul>
-                        {{# each medlemskap.utenlandsoppholdNeste12Mnd as |utenlandsopphold|~}}
-                            <li>
-                                {{utenlandsopphold.landnavn}} ({{utenlandsopphold.fraOgMed}} - {{utenlandsopphold.tilOgMed}})
-                            </li>
-                        {{/each}}
-                    </ul>
-                {{/if}}
             {{/if}}
         </section>
 
