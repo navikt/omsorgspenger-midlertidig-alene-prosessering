@@ -89,7 +89,7 @@ internal class PdfV1Generator {
                             "fødselsnummer" to melding.søker.fødselsnummer
                         ),
                         "id" to melding.id,
-                        "barn" to melding.barn?.somMapTilPdf(),
+                        "barn" to melding.barn.somMapTilPdf(),
                         "annenForelder" to melding.annenForelder.somMapTilPdf(),
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,

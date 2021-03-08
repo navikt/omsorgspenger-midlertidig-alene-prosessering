@@ -1,7 +1,7 @@
 package no.nav.helse.prosessering.v1.asynkron
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -98,6 +98,6 @@ data class TopicEntry(val rawJson: String) {
 
 fun midlertidigAleneKonfigurertMapper(): ObjectMapper {
     return jacksonObjectMapper().dusseldorfConfigured()
-        .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+        .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
         .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
 }

@@ -8,6 +8,7 @@ import no.nav.k9.søknad.felles.type.Periode
 import no.nav.k9.søknad.felles.type.SøknadId
 import no.nav.k9.søknad.ytelse.omsorgspenger.utvidetrett.v1.OmsorgspengerMidlertidigAlene
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
 import no.nav.k9.søknad.felles.personopplysninger.Barn as K9Barn
@@ -57,7 +58,7 @@ object SøknadUtils {
     fun gyldigK9Format() = Søknad(
         SøknadId("123456"),
         Versjon("1.0.0"),
-        ZonedDateTime.now(),
+        ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC")),
         K9Søker(NorskIdentitetsnummer.of("02119970078")),
         OmsorgspengerMidlertidigAlene(
             listOf(

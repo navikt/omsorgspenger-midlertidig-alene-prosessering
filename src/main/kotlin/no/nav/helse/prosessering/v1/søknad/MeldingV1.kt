@@ -13,7 +13,7 @@ data class MeldingV1(
     val id: String,
     val annenForelder: AnnenForelder,
     val barn: List<Barn>,
-    val k9Format: Søknad? = null, //TODO 05.03.2021 - Settes til påbudt når det er prodsatt i API
+    val k9Format: Søknad,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 )

@@ -1,5 +1,6 @@
 package no.nav.helse.k9
 
+import no.nav.helse.SøknadUtils
 import no.nav.helse.felles.AktørId
 import no.nav.helse.felles.Metadata
 import no.nav.helse.prosessering.v1.asynkron.Cleanup
@@ -95,6 +96,7 @@ class K9BehovssekvensTest {
                         aktørId = null
                     )
                 ),
+                k9Format = SøknadUtils.gyldigK9Format(),
                 harBekreftetOpplysninger = true,
                 harForståttRettigheterOgPlikter = true
             ),

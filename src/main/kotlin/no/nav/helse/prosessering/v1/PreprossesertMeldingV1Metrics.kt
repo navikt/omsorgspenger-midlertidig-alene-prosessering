@@ -2,7 +2,6 @@ package no.nav.helse.prosessering.v1
 
 import io.prometheus.client.Counter
 import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
-import org.slf4j.LoggerFactory
 
 private val annenForelderSituasjonCounter = Counter.build()
     .name("annen_forelder_situasjon_counter")
@@ -17,8 +16,6 @@ private val generelCounter = Counter.build()
     .register()
 
 internal fun PreprossesertMeldingV1.reportMetrics(){
-    val logger = LoggerFactory.getLogger("no.nav.helse.prosessering.v1.Metrics")
-
     annenForelderSituasjonCounter.labels(annenForelder.situasjon.name).inc()
 
     //Sjekker hvor mange som sender inn hvor de sier "Nei" til at perioden er over 6 mnd

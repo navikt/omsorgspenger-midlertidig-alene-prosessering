@@ -16,7 +16,7 @@ data class PreprossesertMeldingV1(
     val id: String,
     val annenForelder: AnnenForelder,
     val barn: List<Barn>,
-    val k9Format: Søknad?,
+    val k9Format: Søknad,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 ) {

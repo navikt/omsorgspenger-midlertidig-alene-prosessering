@@ -41,14 +41,37 @@ class SøknadsformatTest {
                 "periodeFraOgMed": "2020-01-01",
                 "periodeTilOgMed": "2020-10-01"
               },
-              "barn" : [
+              "barn": [
                 {
-                  "navn" : "Ole",
+                  "navn": "Ole",
                   "identitetsnummer": "1234",
                   "aktørId": null
                 }
               ],
-              "k9Format" : null,
+              "k9Format": {
+                "søknadId": "123456",
+                "versjon": "1.0.0",
+                "mottattDato": "2018-01-02T03:04:05.000Z",
+                "søker": {
+                  "norskIdentitetsnummer": "02119970078"
+                },
+                "språk": "nb",
+                "ytelse": {
+                  "type": "OMP_UTV_MA",
+                  "barn": [
+                    {
+                      "norskIdentitetsnummer": "29076523302",
+                      "fødselsdato": null
+                    }
+                  ],
+                  "annenForelder": {
+                    "norskIdentitetsnummer": "25058118020",
+                    "situasjon": "FENGSEL",
+                    "situasjonBeskrivelse": "Sitter i fengsel..",
+                    "periode": "2020-01-01/2030-01-01"
+                  }
+                }
+              },
               "harForståttRettigheterOgPlikter": true,
               "harBekreftetOpplysninger": true
             }
@@ -85,7 +108,7 @@ class SøknadsformatTest {
                 aktørId = null
             )
         ),
-        k9Format = null,
+        k9Format = SøknadUtils.gyldigK9Format(),
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true
     )

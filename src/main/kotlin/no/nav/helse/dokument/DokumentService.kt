@@ -1,8 +1,6 @@
 package no.nav.helse.dokument
 
 import no.nav.helse.felles.CorrelationId
-import no.nav.helse.prosessering.v1.søknad.MeldingV1
-import no.nav.k9.søknad.JsonUtils
 import no.nav.k9.søknad.Søknad
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,27 +43,10 @@ class DokumentService(
         dokumentEier: DokumentGateway.DokumentEier,
         correlationId: CorrelationId
     ) : URI {
-        logger.info("SKAL IKKE VISES I PRID: Format som journalføres mot joark: {}", JsonUtils.toString(k9Format)) //TODO 05.03.2021 - FJERNES FØR PRODSETTING
         return lagreDokument(
             dokument = DokumentGateway.Dokument(
                 eier = dokumentEier,
                 content = Søknadsformat.somJson(k9Format),
-                contentType = "application/json",
-                title = "Omsorgsdager - Søknad om å bli regnet som alene som JSON"
-            ),
-            correlationId = correlationId
-        )
-    }
-
-    internal suspend fun lagreSoknadsMelding(
-        melding: MeldingV1,
-        dokumentEier: DokumentGateway.DokumentEier,
-        correlationId: CorrelationId
-    ) : URI {
-        return lagreDokument(
-            dokument = DokumentGateway.Dokument(
-                eier = dokumentEier,
-                content = Søknadsformat.somJson(melding),
                 contentType = "application/json",
                 title = "Omsorgsdager - Søknad om å bli regnet som alene som JSON"
             ),
