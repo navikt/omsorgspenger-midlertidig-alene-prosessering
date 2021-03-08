@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val dusseldorfKtorVersion = "1.5.1.870aa75"
 val k9RapidBehovVersion = "1.91b665d"
 val k9RapidMidlertidigAleneVersion = "1.91b665d"
+val k9FormatVersion = "5.1.17"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
@@ -27,31 +28,34 @@ buildscript {
 
 dependencies {
     // Server
-    implementation ( "no.nav.helse:dusseldorf-ktor-core:$dusseldorfKtorVersion")
-    implementation ( "no.nav.helse:dusseldorf-ktor-jackson:$dusseldorfKtorVersion")
-    implementation ( "no.nav.helse:dusseldorf-ktor-metrics:$dusseldorfKtorVersion")
-    implementation ( "no.nav.helse:dusseldorf-ktor-health:$dusseldorfKtorVersion")
-    implementation ( "no.nav.helse:dusseldorf-ktor-auth:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-ktor-core:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-ktor-jackson:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-ktor-metrics:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-ktor-health:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-ktor-auth:$dusseldorfKtorVersion")
 
-    implementation ( "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
-    
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
+
     // Client
-    implementation ( "no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")
-    implementation ( "no.nav.helse:dusseldorf-oauth2-client:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")
+    implementation("no.nav.helse:dusseldorf-oauth2-client:$dusseldorfKtorVersion")
 
     // PDF
-    implementation ( "com.openhtmltopdf:openhtmltopdf-pdfbox:$openhtmltopdfVersion")
-    implementation ( "com.openhtmltopdf:openhtmltopdf-slf4j:$openhtmltopdfVersion")
-    implementation ( "org.slf4j:jcl-over-slf4j:$slf4jVersion")
-    implementation ( "com.github.jknack:handlebars:$handlebarsVersion")
+    implementation("com.openhtmltopdf:openhtmltopdf-pdfbox:$openhtmltopdfVersion")
+    implementation("com.openhtmltopdf:openhtmltopdf-slf4j:$openhtmltopdfVersion")
+    implementation("org.slf4j:jcl-over-slf4j:$slf4jVersion")
+    implementation("com.github.jknack:handlebars:$handlebarsVersion")
 
     // Kafka
     implementation("org.apache.kafka:kafka-streams:$kafkaVersion")
 
+    // K9-format
+    implementation("no.nav.k9:soknad:$k9FormatVersion")
+
     // Test
-    testImplementation ( "org.apache.kafka:kafka-clients:$kafkaVersion")
-    testImplementation ( "no.nav:kafka-embedded-env:$kafkaEmbeddedEnvVersion")
-    testImplementation ( "no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
+    testImplementation("org.apache.kafka:kafka-clients:$kafkaVersion")
+    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedEnvVersion")
+    testImplementation("no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }

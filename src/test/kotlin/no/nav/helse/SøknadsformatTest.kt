@@ -48,6 +48,7 @@ class SøknadsformatTest {
                   "aktørId": null
                 }
               ],
+              "k9Format" : null,
               "harForståttRettigheterOgPlikter": true,
               "harBekreftetOpplysninger": true
             }
@@ -84,6 +85,7 @@ class SøknadsformatTest {
                 aktørId = null
             )
         ),
+        k9Format = null,
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true
     )

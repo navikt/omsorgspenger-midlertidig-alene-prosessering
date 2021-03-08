@@ -2,6 +2,7 @@ package no.nav.helse.prosessering.v1.søknad
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.helse.felles.AktørId
+import no.nav.k9.søknad.Søknad
 import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -15,6 +16,7 @@ data class PreprossesertMeldingV1(
     val id: String,
     val annenForelder: AnnenForelder,
     val barn: List<Barn>,
+    val k9Format: Søknad?,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 ) {
@@ -31,6 +33,7 @@ data class PreprossesertMeldingV1(
         id = melding.id,
         annenForelder = melding.annenForelder,
         barn = melding.barn,
+        k9Format = melding.k9Format,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger
     )

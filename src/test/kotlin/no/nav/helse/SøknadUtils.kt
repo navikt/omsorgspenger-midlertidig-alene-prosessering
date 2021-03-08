@@ -1,9 +1,18 @@
 package no.nav.helse
 
 import no.nav.helse.prosessering.v1.søknad.*
+import no.nav.k9.søknad.Søknad
+import no.nav.k9.søknad.felles.Versjon
+import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
+import no.nav.k9.søknad.felles.type.Periode
+import no.nav.k9.søknad.felles.type.SøknadId
+import no.nav.k9.søknad.ytelse.omsorgspenger.utvidetrett.v1.OmsorgspengerMidlertidigAlene
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.*
+import no.nav.k9.søknad.felles.personopplysninger.Barn as K9Barn
+import no.nav.k9.søknad.felles.personopplysninger.Søker as K9Søker
+import no.nav.k9.søknad.ytelse.omsorgspenger.utvidetrett.v1.AnnenForelder as K9AnnenForelder
 
 object SøknadUtils {
 
@@ -40,7 +49,26 @@ object SøknadUtils {
               aktørId = null
           )
         ),
+        k9Format = gyldigK9Format(),
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true
+    )
+
+    fun gyldigK9Format() = Søknad(
+        SøknadId("123456"),
+        Versjon("1.0.0"),
+        ZonedDateTime.now(),
+        K9Søker(NorskIdentitetsnummer.of("02119970078")),
+        OmsorgspengerMidlertidigAlene(
+            listOf(
+                K9Barn(NorskIdentitetsnummer.of("29076523302"), null)
+            ),
+            K9AnnenForelder(
+                NorskIdentitetsnummer.of("25058118020"),
+                K9AnnenForelder.SituasjonType.FENGSEL,
+                "Sitter i fengsel..",
+                Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2030-01-01"))
+            )
+        )
     )
 }

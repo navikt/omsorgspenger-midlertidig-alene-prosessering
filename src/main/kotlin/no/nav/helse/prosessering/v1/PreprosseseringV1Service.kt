@@ -46,13 +46,23 @@ internal class PreprosseseringV1Service(
 
         logger.trace("Mellomlagrer Oppsummerings-JSON")
 
-        val søknadJsonUrl = dokumentService.lagreSoknadsMelding(
-            melding = melding,
-            dokumentEier = dokumentEier,
-            correlationId = correlationId
-        )
-        logger.trace("Mellomlagrer Oppsummerings-JSON OK.")
+        val søknadJsonUrl = let {
+            if(melding.k9Format != null) {
+                dokumentService.lagreSoknadsMelding(
+                    k9Format = melding.k9Format,
+                    dokumentEier = dokumentEier,
+                    correlationId = correlationId
+                )
+            } else {
+                dokumentService.lagreSoknadsMelding(
+                    melding = melding,
+                    dokumentEier = dokumentEier,
+                    correlationId = correlationId
+                )
+            }
+        }
 
+        logger.trace("Mellomlagrer Oppsummerings-JSON OK.")
         val komplettDokumentUrls = mutableListOf(
             listOf(
                 soknadOppsummeringPdfUrl,

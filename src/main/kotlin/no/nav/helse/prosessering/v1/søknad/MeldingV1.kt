@@ -1,6 +1,7 @@
 package no.nav.helse.prosessering.v1.søknad
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import no.nav.k9.søknad.Søknad
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -12,6 +13,7 @@ data class MeldingV1(
     val id: String,
     val annenForelder: AnnenForelder,
     val barn: List<Barn>,
+    val k9Format: Søknad? = null, //TODO 05.03.2021 - Settes til påbudt når det er prodsatt i API
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 )
