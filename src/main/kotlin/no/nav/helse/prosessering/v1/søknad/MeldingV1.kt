@@ -33,7 +33,11 @@ data class Barn (
     val navn: String,
     val aktørId: String?,
     var identitetsnummer: String?,
-)
+) {
+    override fun toString(): String {
+        return "Barn(navn='$navn', aktørId=*****, identitetsnummer=*****)"
+    }
+}
 
 internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
     return map {
