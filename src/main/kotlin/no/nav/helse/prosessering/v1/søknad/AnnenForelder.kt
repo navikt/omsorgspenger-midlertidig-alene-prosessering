@@ -23,6 +23,10 @@ data class AnnenForelder(
         "periodeFraOgMed" to periodeFraOgMed.formaterDato(),
         "periodeTilOgMed" to periodeTilOgMed.formaterDato()
     )
+
+    override fun toString(): String {
+        return "AnnenForelder(navn='$navn', fnr='*****')"
+    }
 }
 
 
