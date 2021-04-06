@@ -69,7 +69,8 @@ class SøknadsformatTest {
                     "situasjon": "FENGSEL",
                     "situasjonBeskrivelse": "Sitter i fengsel..",
                     "periode": "2020-01-01/2030-01-01"
-                  }
+                  },
+                  "begrunnelse": null
                 }
               },
               "harForståttRettigheterOgPlikter": true,

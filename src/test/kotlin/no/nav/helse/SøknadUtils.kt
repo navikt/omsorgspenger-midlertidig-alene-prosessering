@@ -69,7 +69,8 @@ object SøknadUtils {
                 K9AnnenForelder.SituasjonType.FENGSEL,
                 "Sitter i fengsel..",
                 Periode(LocalDate.parse("2020-01-01"), LocalDate.parse("2030-01-01"))
-            )
+            ),
+            null
         )
     )
 }
