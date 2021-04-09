@@ -2,8 +2,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val dusseldorfKtorVersion = "1.5.1.870aa75"
-val k9RapidBehovVersion = "1.91b665d"
-val k9RapidMidlertidigAleneVersion = "1.91b665d"
 val k9FormatVersion = "5.1.30"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
@@ -61,11 +59,6 @@ dependencies {
     }
     testImplementation("org.skyscreamer:jsonassert:1.5.0")
     implementation(kotlin("stdlib-jdk8"))
-
-    //K9-Rapid
-    implementation("no.nav.k9.rapid:behov:$k9RapidBehovVersion")
-    implementation("no.nav.k9.rapid:midlertidig-alene:$k9RapidMidlertidigAleneVersion")
-
 }
 
 repositories {

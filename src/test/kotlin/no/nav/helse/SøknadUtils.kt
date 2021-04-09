@@ -50,13 +50,13 @@ object SøknadUtils {
               aktørId = null
           )
         ),
-        k9Format = gyldigK9Format(),
+        k9Format = gyldigK9Format(søknadId),
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true
     )
 
-    fun gyldigK9Format() = Søknad(
-        SøknadId("123456"),
+    fun gyldigK9Format(søknadId: String = UUID.randomUUID().toString()) = Søknad(
+        SøknadId(søknadId),
         Versjon("1.0.0"),
         ZonedDateTime.of(2018, 1, 2, 3, 4, 5, 6, ZoneId.of("UTC")),
         K9Søker(NorskIdentitetsnummer.of("02119970078")),

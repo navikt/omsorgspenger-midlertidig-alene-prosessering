@@ -7,7 +7,6 @@ import no.nav.helse.felles.Metadata
 import no.nav.helse.prosessering.v1.asynkron.Data
 import no.nav.helse.prosessering.v1.asynkron.TopicEntry
 import no.nav.helse.prosessering.v1.asynkron.Topics.CLEANUP
-import no.nav.helse.prosessering.v1.asynkron.Topics.K9_RAPID_V2
 import no.nav.helse.prosessering.v1.asynkron.Topics.MOTTATT
 import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSSESERT
 import no.nav.helse.prosessering.v1.asynkron.midlertidigAleneKonfigurertMapper
@@ -36,8 +35,7 @@ object KafkaWrapper {
             topicNames = listOf(
                 MOTTATT.name,
                 PREPROSSESERT.name,
-                CLEANUP.name,
-                K9_RAPID_V2.name
+                CLEANUP.name
             )
         )
         return kafkaEnvironment
@@ -71,13 +69,13 @@ private fun KafkaEnvironment.testProducerProperties(clientId: String): MutableMa
 }
 
 
-fun KafkaEnvironment.k9RapidKonsumer(): KafkaConsumer<String, String> {
+fun KafkaEnvironment.cleanupConsumer(): KafkaConsumer<String, String> {
     val consumer = KafkaConsumer(
-        testConsumerProperties("K9RapidKonsumer"),
+        testConsumerProperties("CleanupKonsumer"),
         StringDeserializer(),
         StringDeserializer()
     )
-    consumer.subscribe(listOf(K9_RAPID_V2.name))
+    consumer.subscribe(listOf(CLEANUP.name))
     return consumer
 }
 
@@ -87,7 +85,7 @@ fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
     MOTTATT.serDes
 )
 
-fun KafkaConsumer<String, String>.hentK9RapidMelding(
+fun KafkaConsumer<String, String>.hentCleanupMelding(
     id: String,
     maxWaitInSeconds: Long = 20
 ): String {
@@ -95,7 +93,7 @@ fun KafkaConsumer<String, String>.hentK9RapidMelding(
     while (System.currentTimeMillis() < end) {
         seekToBeginning(assignment())
         val entries = poll(Duration.ofSeconds(1))
-            .records(K9_RAPID_V2.name)
+            .records(CLEANUP.name)
             .filter { it.key() == id }
 
         if (entries.isNotEmpty()) {

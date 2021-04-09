@@ -49,7 +49,7 @@ class SøknadsformatTest {
                 }
               ],
               "k9Format": {
-                "søknadId": "123456",
+                "søknadId": $søknadId,
                 "versjon": "1.0.0",
                 "mottattDato": "2018-01-02T03:04:05.000Z",
                 "søker": {
@@ -109,7 +109,7 @@ class SøknadsformatTest {
                 aktørId = null
             )
         ),
-        k9Format = SøknadUtils.gyldigK9Format(),
+        k9Format = SøknadUtils.gyldigK9Format(soknadId),
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true
     )
