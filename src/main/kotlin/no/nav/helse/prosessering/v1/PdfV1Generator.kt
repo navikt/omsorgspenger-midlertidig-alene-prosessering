@@ -98,7 +98,6 @@ internal class PdfV1Generator {
                         "hjelp" to mapOf(
                             "språk" to melding.språk?.språkTilTekst(),
                             "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt(),
-                            "erPeriodenOver6Måneder" to melding.hjelperErPerioden6MndEllerOver()
                         )
                     )
                 )
@@ -155,13 +154,16 @@ private fun String.språkTilTekst() = when (this.toLowerCase()) {
 }
 
 private fun MeldingV1.hjelperErPerioden6MndEllerOver(): Boolean? {
-    return if(annenForelder.periodeFraOgMed == null || annenForelder.periodeTilOgMed == null) null else {
-        val differanse = ChronoUnit.DAYS.between(annenForelder.periodeFraOgMed, annenForelder.periodeTilOgMed.plusDays(1)) // plusDays(1) fordi den er eksklusiv i utregningen
+    return if (annenForelder.periodeFraOgMed == null || annenForelder.periodeTilOgMed == null) null else {
+        val differanse = ChronoUnit.DAYS.between(
+            annenForelder.periodeFraOgMed,
+            annenForelder.periodeTilOgMed.plusDays(1)
+        ) // plusDays(1) fordi den er eksklusiv i utregningen
         differanse >= 182
     }
 }
 
-private fun ZonedDateTime.norskDag() = when(dayOfWeek) {
+private fun ZonedDateTime.norskDag() = when (dayOfWeek) {
     DayOfWeek.MONDAY -> "Mandag"
     DayOfWeek.TUESDAY -> "Tirsdag"
     DayOfWeek.WEDNESDAY -> "Onsdag"
