@@ -59,17 +59,25 @@
         {{/if}}
         {{#if annenForelder.periodeFraOgMed}}
             <p class="sporsmalstekst">Perioden den andre forelderen ikke kan ta seg av barn</p>
-            <p>{{annenForelder.periodeFraOgMed}} - {{annenForelder.periodeTilOgMed}}
+        <p>{{annenForelder.periodeFraOgMed}} -
+            {{#if annenForelder.periodeTilOgMed}}
+                {{annenForelder.periodeTilOgMed}}
+                {{#if hjelp.erPeriodenOver6Måneder}}
+                    (over 6 måneder)
+                {{else}}
+                    (ikke over 6 måneder)
+                {{/if}}
+            {{else}}
+                Jeg vet ikke hvor lenge perioden vil være.
+
                 {{#if hjelp.periodeOver6MånederSatt}}
-                    {{#if annenForelder.periodeOver6Måneder}}
-                        (over 6 måneder)
-                    {{else}}
-                        (ikke over 6 måneder)
-                    {{/if}}
 
                     <p class="sporsmalstekst">Har perioden en varighet på minst 6 måneder?</p>
                     <p>{{ jaNeiSvar annenForelder.periodeOver6Måneder}}</p>
                 {{/if}}
+
+            {{/if}}
+
             </p>
         {{/if}}
     </section>
