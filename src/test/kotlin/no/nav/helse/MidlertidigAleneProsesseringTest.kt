@@ -12,8 +12,11 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
+import no.nav.k9.søknad.JsonUtils
+import no.nav.k9.søknad.Søknad
 import org.json.JSONObject
 import org.junit.AfterClass
+import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
@@ -44,7 +47,7 @@ class MidlertidigAleneProsesseringTest {
         private val kafkaEnvironment = KafkaWrapper.bootstrap()
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
 
-        private val k9RapidKonsumer = kafkaEnvironment.k9RapidKonsumer()
+        private val cleanupConsumer = kafkaEnvironment.cleanupConsumer()
 
         private val dNummerA = "55125314561"
 
@@ -82,7 +85,7 @@ class MidlertidigAleneProsesseringTest {
         fun tearDown() {
             logger.info("Tearing down")
             wireMockServer.stop()
-            k9RapidKonsumer.close()
+            cleanupConsumer.close()
             kafkaTestProducer.close()
             stopEngine()
             kafkaEnvironment.tearDown()
@@ -113,9 +116,9 @@ class MidlertidigAleneProsesseringTest {
         val søknad = SøknadUtils.gyldigSøknad()
 
         kafkaTestProducer.leggTilMottak(søknad)
-        k9RapidKonsumer
-            .hentK9RapidMelding(søknad.id)
-            .validerK9RapidFormat(søknad.id)
+        cleanupConsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
     }
 
     @Test
@@ -130,10 +133,9 @@ class MidlertidigAleneProsesseringTest {
 
         wireMockServer.stubJournalfor(201) // Simulerer journalføring fungerer igjen
         restartEngine()
-        k9RapidKonsumer
-            .hentK9RapidMelding(søknad.id)
-            .validerK9RapidFormat(søknad.id)
-
+        cleanupConsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
     }
 
     @Test
@@ -141,9 +143,9 @@ class MidlertidigAleneProsesseringTest {
         val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
-        k9RapidKonsumer
-            .hentK9RapidMelding(søknad.id)
-            .validerK9RapidFormat(søknad.id)
+        val melding = cleanupConsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
     }
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
@@ -159,16 +161,23 @@ class MidlertidigAleneProsesseringTest {
         }
     }
 
-    private infix fun String.validerK9RapidFormat(id: String) {
+    private fun String.assertGyldigMelding(søknadId: String) {
         val rawJson = JSONObject(this)
-        println(rawJson)
 
-        assertEquals(rawJson.getJSONArray("@behovsrekkefølge").getString(0), "MidlertidigAlene")
-        assertEquals(rawJson.getString("@type"),"Behovssekvens")
-        assertEquals(rawJson.getString("@id"), id)
+        val metadata = assertNotNull(rawJson.getJSONObject("metadata"))
+        assertNotNull(metadata.getString("correlationId"))
 
-        assertNotNull(rawJson.getString("@correlationId"))
-        assertNotNull(rawJson.getJSONObject("@behov"))
+        val data = assertNotNull(rawJson.getJSONObject("data"))
+        assertNotNull(data.getJSONObject("journalførtMelding").getString("journalpostId"))
+
+        val søknad = assertNotNull(data.getJSONObject("melding")).getJSONObject("k9Format")
+
+        assertEquals(søknadId, søknad.getString("søknadId"))
+
+        val rekonstruertSøknad = JsonUtils.fromString(søknad.toString(), Søknad::class.java)
+
+        val rekonstruertSøknadSomString = JsonUtils.toString(rekonstruertSøknad)
+        JSONAssert.assertEquals(søknad.toString(), rekonstruertSøknadSomString, true)
     }
 
 }

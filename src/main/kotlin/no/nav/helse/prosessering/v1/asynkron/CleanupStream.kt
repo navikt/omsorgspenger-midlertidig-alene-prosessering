@@ -8,8 +8,6 @@ import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.k9.rapid.behov.Behovssekvens
-import no.nav.k9.rapid.behov.MidlertidigAleneBehov
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
@@ -35,14 +33,10 @@ internal class CleanupStream(
         private fun topology(dokumentService: DokumentService): Topology {
             val builder = StreamsBuilder()
             val fraCleanup = Topics.CLEANUP
-            val tilK9Rapid = Topics.K9_RAPID_V2
 
             builder
                 .stream(fraCleanup.name, fraCleanup.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
-                .selectKey{ _, value ->
-                    value.deserialiserTilCleanup().melding.id
-                }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
                         val cleanupMelding = entry.deserialiserTilCleanup()
@@ -57,44 +51,12 @@ internal class CleanupStream(
                         )
 
                         logger.trace("Dokumenter slettet.")
-                        logger.trace("Mapper om til Behovssekvens")
-                        val behovssekvens = cleanupMelding.tilK9Behovssekvens()
-                        val (id, løsning) = behovssekvens.keyValue
-
-                        logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "har behovssekvensID $id og sendes videre til topic ${tilK9Rapid.name}"))
-
-                        Data(løsning)
+                        Data("{}") //TODO 09.04.2021 - Må fikse det her
                     }
                 }
-                .to(tilK9Rapid.name, tilK9Rapid.produced)
             return builder.build()
         }
     }
 
     internal fun stop() = stream.stop(becauseOfError = false)
-}
-
-internal fun Cleanup.tilK9Behovssekvens() : Behovssekvens{
-    val melding = this.melding
-
-    val correlationId = this.metadata.correlationId
-    val journalPostIdListe = listOf(this.journalførtMelding.journalpostId)
-    val søker = MidlertidigAleneBehov.Person(identitetsnummer = melding.søker.fødselsnummer)
-    val annenForelder = MidlertidigAleneBehov.Person(identitetsnummer = melding.annenForelder.fnr)
-
-    val behov = MidlertidigAleneBehov(
-        søker = søker,
-        annenForelder = annenForelder,
-        mottatt = melding.mottatt,
-        journalpostIder = journalPostIdListe
-    )
-
-    return Behovssekvens(
-        id = melding.id,
-        correlationId = correlationId,
-        behov = *arrayOf(
-            behov
-        )
-    )
-
 }

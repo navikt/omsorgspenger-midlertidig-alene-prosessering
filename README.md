@@ -20,7 +20,7 @@ Tjenesten konsumerer meldinger fra topicen "privat-omsorgspenger-midlertidig-ale
 Videre blir søknaden preprosessert, pdf generert og lagret i [K9-mellomlagring](https://github.com/navikt/k9-mellomlagring). 
 
 Tjenesten journalfører så søknaden mot [K9-Joark](https://github.com/navikt/k9-joark). Deretter blir pdf og andre dokumenter som ble lagret 
-i k9-mellomlagring slettet og til slutt legges søknaden på topic "k9-rapid-v2" som en behovssekvens som omsorgspenger-rammemeldinger konsumerer.
+i k9-mellomlagring slettet.
 
 All kontakt med K9-mellomlagring går gjennom [service-discovery](https://doc.nais.io/clusters/team-namespaces#service-discovery-in-kubernetes), i.e "http://k9-mellomlagring"
 

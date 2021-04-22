@@ -89,7 +89,7 @@ internal class PdfV1Generator {
                             "fødselsnummer" to melding.søker.fødselsnummer
                         ),
                         "id" to melding.id,
-                        "barn" to melding.barn?.somMapTilPdf(),
+                        "barn" to melding.barn.somMapTilPdf(),
                         "annenForelder" to melding.annenForelder.somMapTilPdf(),
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,
@@ -98,7 +98,7 @@ internal class PdfV1Generator {
                         "hjelp" to mapOf(
                             "språk" to melding.språk?.språkTilTekst(),
                             "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt(),
-                            "erPeriodenOver6Måneder" to melding.hjelperErPerioden6MndEllerOver()
+                            "erPeriodenOver6Måneder" to melding.erPeriodeOver6Mnd()
                         )
                     )
                 )
@@ -154,7 +154,7 @@ private fun String.språkTilTekst() = when (this.toLowerCase()) {
     else -> this
 }
 
-private fun MeldingV1.hjelperErPerioden6MndEllerOver(): Boolean? {
+private fun MeldingV1.erPeriodeOver6Mnd(): Boolean? {
     return if(annenForelder.periodeFraOgMed == null || annenForelder.periodeTilOgMed == null) null else {
         val differanse = ChronoUnit.DAYS.between(annenForelder.periodeFraOgMed, annenForelder.periodeTilOgMed.plusDays(1)) // plusDays(1) fordi den er eksklusiv i utregningen
         differanse >= 182

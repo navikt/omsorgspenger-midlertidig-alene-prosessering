@@ -1,7 +1,7 @@
 package no.nav.helse.prosessering.v1.asynkron
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -48,10 +48,6 @@ internal object Topics {
         serDes = SerDes()
     )
 
-    val K9_RAPID_V2 = Topic(
-        name = "k9-rapid-v2",
-        serDes = SerDes()
-    )
 }
 
 internal fun TopicEntry.deserialiserTilCleanup(): Cleanup  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
@@ -62,10 +58,7 @@ internal fun Any.serialiserTilData() = Data(midlertidigAleneKonfigurertMapper().
 class SerDes : Serializer<TopicEntry>, Deserializer<TopicEntry> {
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {}
     override fun close() {}
-    override fun serialize(topic: String, entry: TopicEntry): ByteArray = when (topic == Topics.K9_RAPID_V2.name) {
-        true -> entry.data.rawJson.toByteArray()
-        false -> entry.rawJson.toByteArray()
-    }
+    override fun serialize(topic: String, entry: TopicEntry): ByteArray = entry.rawJson.toByteArray()
     override fun deserialize(topic: String, entry: ByteArray): TopicEntry = TopicEntry(String(entry))
 }
 
@@ -98,6 +91,6 @@ data class TopicEntry(val rawJson: String) {
 
 fun midlertidigAleneKonfigurertMapper(): ObjectMapper {
     return jacksonObjectMapper().dusseldorfConfigured()
-        .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+        .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
         .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
 }

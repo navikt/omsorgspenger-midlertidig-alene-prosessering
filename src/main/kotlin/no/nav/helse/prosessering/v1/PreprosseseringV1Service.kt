@@ -47,12 +47,12 @@ internal class PreprosseseringV1Service(
         logger.trace("Mellomlagrer Oppsummerings-JSON")
 
         val søknadJsonUrl = dokumentService.lagreSoknadsMelding(
-            melding = melding,
+            k9Format = melding.k9Format,
             dokumentEier = dokumentEier,
             correlationId = correlationId
         )
-        logger.trace("Mellomlagrer Oppsummerings-JSON OK.")
 
+        logger.trace("Mellomlagrer Oppsummerings-JSON OK.")
         val komplettDokumentUrls = mutableListOf(
             listOf(
                 soknadOppsummeringPdfUrl,
