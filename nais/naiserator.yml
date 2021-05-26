@@ -45,7 +45,7 @@ spec:
     enabled: true
     path: /metrics
   envFrom:
-    - secret: omsorgspenger-midlertidig-alene-prosessering.sts-credentials
+    - secret: {{app}}
   env:
   {{#each env}}
      - name: {{@key}}
