@@ -50,7 +50,6 @@ fun Application.midlertidigAleneProsessering() {
     }
 
     val configuration = Configuration(environment.config)
-    val apiGatewayApiKey = configuration.getApiGatewayApiKey()
 
     val accessTokenClientResolver = AccessTokenClientResolver(environment.config.clients())
 
@@ -70,8 +69,7 @@ fun Application.midlertidigAleneProsessering() {
     val joarkGateway = JoarkGateway(
         baseUrl = configuration.getk9JoarkBaseUrl(),
         accessTokenClient = accessTokenClientResolver.joarkAccessTokenClient(),
-        journalforeScopes = configuration.getJournalforeScopes(),
-        apiGatewayApiKey = apiGatewayApiKey
+        journalforeScopes = configuration.getJournalforeScopes()
     )
 
     val asynkronProsesseringV1Service = AsynkronProsesseringV1Service(
