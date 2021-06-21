@@ -37,6 +37,7 @@ internal class PreprosseseringStream(
             builder
                 .stream(fromMottatt.name, fromMottatt.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
+                .filter { _, entry -> entry.metadata.correlationId != "generated-a6b9504a-b45d-4378-9450-b0dc93a71796" }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
                         logger.info(formaterStatuslogging(soknadId, "preprosesseres"))
