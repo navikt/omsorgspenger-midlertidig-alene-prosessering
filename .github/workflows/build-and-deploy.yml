@@ -7,7 +7,6 @@ on:
       - '.gitignore'
       - 'LICENCE'
       - 'CODEOWNERS'
-      - 'kafka/oneshot.json'
       - 'nais/alerterator.yml'
       - '.github/workflows/apply-alerts.yml'
     branches:
