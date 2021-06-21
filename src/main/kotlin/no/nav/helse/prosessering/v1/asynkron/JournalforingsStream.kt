@@ -11,7 +11,6 @@ import no.nav.helse.kafka.ManagedStreamReady
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
-import java.net.URI
 
 internal class JournalforingsStream(
     joarkGateway: JoarkGateway,
