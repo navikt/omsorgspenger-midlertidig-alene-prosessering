@@ -39,6 +39,7 @@ internal class JournalforingsStream(
             val mapValues = builder
                 .stream(fraPreprossesert.name, fraPreprossesert.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
+                .filter { _, entry -> "generated-6fffd181-1e6e-4fa5-9fc7-a11fa3efa85c" != entry.metadata.correlationId}
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
                         logger.info(formaterStatuslogging(soknadId, "journalføres"))
