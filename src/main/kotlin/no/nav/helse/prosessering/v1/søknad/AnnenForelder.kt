@@ -29,7 +29,6 @@ data class AnnenForelder(
     }
 }
 
-
 private fun LocalDate?.formaterDato(): String?{
     val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.of("Europe/Oslo"))
     return if(this == null) null else dateFormatter.format(this)
