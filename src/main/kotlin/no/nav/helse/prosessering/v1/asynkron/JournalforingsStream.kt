@@ -40,6 +40,7 @@ internal class JournalforingsStream(
                 .stream(fraPreprossesert.name, fraPreprossesert.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .filter { _, entry -> "generated-6fffd181-1e6e-4fa5-9fc7-a11fa3efa85c" != entry.metadata.correlationId}
+                .filter { _, entry -> "generated-8e399a36-b9c0-4dfe-87ea-9fb36dbfbef2" != entry.metadata.correlationId}
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
                         logger.info(formaterStatuslogging(soknadId, "journalføres"))
