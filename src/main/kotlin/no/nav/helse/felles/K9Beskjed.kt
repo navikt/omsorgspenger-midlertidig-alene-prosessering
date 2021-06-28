@@ -14,7 +14,7 @@ data class K9Beskjed(
     val ytelse: String
 )
 const val DAGER_SYNLIG : Long= 7
-const val TEKST = "Vi har mottatt omsorgspengesøknad fra deg om å bli regnet som alene om omsorgen for barn."
+const val TEKST = "Vi har mottatt søknad fra deg om ekstra omsorgsdager når den andre forelderen ikke kan ha tilsyn med barn."
 const val YTELSE = "OMSORGSPENGER_MIDLERTIDIG_ALENE"
 
 fun Cleanup.tilK9Beskjed() = K9Beskjed(
