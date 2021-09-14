@@ -136,7 +136,7 @@ private fun Søker.formatertNavn() = if (mellomnavn != null) "$fornavn $mellomna
 
 private fun Boolean?.erSatt() = this != null
 
-private fun String.språkTilTekst() = when (this.toLowerCase()) {
+private fun String.språkTilTekst() = when (this.lowercase()) {
     "nb" -> "bokmål"
     "nn" -> "nynorsk"
     else -> this

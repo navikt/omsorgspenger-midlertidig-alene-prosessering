@@ -50,4 +50,4 @@ internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
     }
 }
 
-fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
+fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.lowercase().capitalize() }
