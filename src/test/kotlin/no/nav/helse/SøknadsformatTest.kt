@@ -71,7 +71,8 @@ class SøknadsformatTest {
                     "periode": "2020-01-01/2030-01-01"
                   },
                   "begrunnelse": null
-                }
+                },
+                "journalposter": []
               },
               "harForståttRettigheterOgPlikter": true,
               "harBekreftetOpplysninger": true
