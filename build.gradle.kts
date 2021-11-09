@@ -1,12 +1,11 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "2.1.6.2-6ce5eaa"
+val dusseldorfKtorVersion = "3.1.6.4-e07c5ec"
 val k9FormatVersion = "5.4.28"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
-
 val openhtmltopdfVersion = "1.0.10"
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
@@ -22,7 +21,7 @@ plugins {
 
 buildscript {
     // Henter ut diverse dependency versjoner, i.e. ktorVersion.
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/6ce5eaa4666595bb6b550fca5ca8bbdc242961a0/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/e07c5ecf831928eb250c946e753aff2a3b798295/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -86,7 +85,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12
 }
-
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
