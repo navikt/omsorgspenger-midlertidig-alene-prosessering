@@ -72,6 +72,9 @@ class SøknadsformatTest {
                   },
                   "begrunnelse": null
                 },
+                "begrunnelseForInnsending" : {
+                   "tekst" : null
+                 },
                 "journalposter": []
               },
               "harForståttRettigheterOgPlikter": true,
