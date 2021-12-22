@@ -140,7 +140,7 @@ class MidlertidigAleneProsesseringTest {
         val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
-        val melding = cleanupConsumer
+        cleanupConsumer
             .hentCleanupMelding(søknad.søknadId)
             .assertGyldigMelding(søknad.søknadId)
     }
