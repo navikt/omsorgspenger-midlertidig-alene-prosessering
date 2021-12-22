@@ -62,7 +62,7 @@ object SøknadUtils {
         K9Søker(NorskIdentitetsnummer.of("02119970078")),
         OmsorgspengerMidlertidigAlene(
             listOf(
-                K9Barn(NorskIdentitetsnummer.of("29076523302"), null)
+                K9Barn().medNorskIdentitetsnummer(NorskIdentitetsnummer.of("29076523302"))
             ),
             K9AnnenForelder(
                 NorskIdentitetsnummer.of("25058118020"),
