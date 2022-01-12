@@ -9,7 +9,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.httpPost
 import io.ktor.http.*
-import no.nav.helse.felles.CorrelationId
 import no.nav.helse.HttpError
 import no.nav.helse.dusseldorf.ktor.client.buildURL
 import no.nav.helse.dusseldorf.ktor.health.HealthCheck
@@ -19,6 +18,7 @@ import no.nav.helse.dusseldorf.ktor.health.UnHealthy
 import no.nav.helse.dusseldorf.ktor.metrics.Operation
 import no.nav.helse.dusseldorf.oauth2.client.AccessTokenClient
 import no.nav.helse.dusseldorf.oauth2.client.CachedAccessTokenClient
+import no.nav.helse.felles.CorrelationId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
@@ -58,7 +58,7 @@ class JoarkGateway(
         norskIdent: String,
         mottatt: ZonedDateTime,
         navn: Navn,
-        dokumenter: List<List<URI>>,
+        dokumenter: List<List<String>>,
         correlationId: CorrelationId
     ): JournalPostId {
 
@@ -67,7 +67,7 @@ class JoarkGateway(
         val joarkRequest = JoarkRequest(
             norskIdent = norskIdent,
             mottatt = mottatt,
-            dokumenter = dokumenter,
+            dokumentId = dokumenter,
             søkerNavn = navn
         )
 
@@ -111,7 +111,8 @@ private data class JoarkRequest(
     @JsonProperty("norsk_ident") val norskIdent: String,
     @JsonProperty("soker_navn") val søkerNavn: Navn,
     val mottatt: ZonedDateTime,
-    val dokumenter: List<List<URI>>
+    @JsonProperty("dokument_id")
+    val dokumentId: List<List<String>>
 )
 
 data class Navn(
