@@ -41,7 +41,7 @@ internal class PreprosseseringStream(
                     process(NAME, soknadId, entry) {
                         logger.info(formaterStatuslogging(soknadId, "preprosesseres"))
 
-                        val preprossesertMelding = preprosseseringV1Service.preprosseser(
+                        val preprossesertMelding = preprosseseringV1Service.preprosesser(
                             melding = entry.deserialiserTilMelding(),
                             metadata = entry.metadata
                         )

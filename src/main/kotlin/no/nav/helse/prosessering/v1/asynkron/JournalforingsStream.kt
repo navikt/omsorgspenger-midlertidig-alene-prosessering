@@ -44,7 +44,7 @@ internal class JournalforingsStream(
                         logger.info(formaterStatuslogging(soknadId, "journalføres"))
 
                         val preprosessertMelding = entry.deserialiserTilPreprosessertMelding()
-                        val dokumenter = preprosessertMelding.dokumentUrls
+                        val dokumenter = preprosessertMelding.dokumentId
 
                         logger.info("Journalfører dokumenter: {}", dokumenter)
 
