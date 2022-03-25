@@ -19,6 +19,9 @@ spec:
       application: omsorgspenger-midlertidig-alene-api
       access: write
     - team: dusseldorf
+      application: k9-brukerdialog-api
+      access: write
+    - team: dusseldorf
       application: omsorgspenger-midlertidig-alene-prosessering
       access: read
 
