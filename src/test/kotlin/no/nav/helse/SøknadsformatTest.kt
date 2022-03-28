@@ -44,7 +44,7 @@ class SøknadsformatTest {
               "barn": [
                 {
                   "navn": "Ole",
-                  "identitetsnummer": "1234",
+                  "norskIdentifikator": "1234",
                   "aktørId": null
                 }
               ],
@@ -109,7 +109,7 @@ class SøknadsformatTest {
         barn = listOf(
             Barn(
                 navn = "Ole",
-                identitetsnummer = "1234",
+                norskIdentifikator = "1234",
                 aktørId = null
             )
         ),

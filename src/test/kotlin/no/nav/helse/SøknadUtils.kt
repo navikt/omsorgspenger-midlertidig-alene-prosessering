@@ -46,7 +46,7 @@ object SøknadUtils {
         barn = listOf(
           Barn(
               navn = "Ole Dole",
-              identitetsnummer = "29076523302",
+              norskIdentifikator = "29076523302",
               aktørId = null
           )
         ),
