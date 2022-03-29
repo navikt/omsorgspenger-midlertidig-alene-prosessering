@@ -1,6 +1,5 @@
 package no.nav.helse.prosessering.v1.søknad
 
-import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.k9.søknad.Søknad
 import java.time.LocalDate
@@ -35,7 +34,6 @@ data class Søker(
 data class Barn (
     val navn: String,
     val aktørId: String?,
-    @JsonAlias("identitetsnummer")
     var norskIdentifikator: String?,
 ) {
     override fun toString(): String {
