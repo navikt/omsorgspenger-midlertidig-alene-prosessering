@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.k9.søknad.Søknad
 import java.time.LocalDate
 import java.time.ZonedDateTime
+import java.util.*
 
 data class MeldingV1(
     val søknadId: String,
@@ -31,7 +32,7 @@ data class Søker(
     }
 }
 
-data class Barn (
+data class Barn(
     val navn: String,
     val aktørId: String?,
     var norskIdentifikator: String?,
@@ -50,4 +51,7 @@ internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
     }
 }
 
-fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.lowercase().capitalize() }
+fun String.capitalizeName(): String = split(" ").joinToString(" ") { s ->
+    s.lowercase()
+        .replaceFirstChar { it.titlecase(Locale.getDefault()) }
+}
