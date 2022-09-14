@@ -1,8 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "3.2.0.2-a615e0c"
-val k9FormatVersion = "6.0.1"
+val dusseldorfKtorVersion = "3.2.1.1-15e2e63"
+val k9FormatVersion = "6.1.5"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
@@ -11,11 +11,12 @@ val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
 val handlebarsVersion = "4.3.0"
 val fuelVersion = "2.3.1"
+val jsonassertVersion = "1.5.1"
 
 val mainClass = "no.nav.helse.MidlertidigAleneProsesseringKt"
 
 plugins {
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -62,7 +63,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
-    testImplementation("org.skyscreamer:jsonassert:1.5.0")
+    testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
@@ -102,7 +103,7 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.4.2"
+    gradleVersion = "7.5.1"
 }
 
 tasks.withType<Test> {

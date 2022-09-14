@@ -4,11 +4,7 @@
   "namespace": "dusseldorf",
   "kafka-pool" : "nav-dev",
   "team": "dusseldorf",
-  "ingresses": [],
   "tenant": "trygdeetaten.no",
-  "externalHosts": [
-    "oauth2.googleapis.com"
-  ],
   "env": {
     "K9_JOARK_BASE_URL": "http://k9-joark",
     "AZURE_V2_DISCOVERY_ENDPOINT": "https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/v2.0/.well-known/openid-configuration",
