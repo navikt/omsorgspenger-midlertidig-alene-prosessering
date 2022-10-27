@@ -1,28 +1,28 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val dusseldorfKtorVersion = "3.2.1.1-15e2e63"
-val k9FormatVersion = "6.1.5"
+val dusseldorfKtorVersion = "3.2.1.2-93aa998"
+val k9FormatVersion = "7.0.4"
 val ktorVersion = ext.get("ktorVersion").toString()
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 val openhtmltopdfVersion = "1.0.10"
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
-val handlebarsVersion = "4.3.0"
+val handlebarsVersion = "4.3.1"
 val fuelVersion = "2.3.1"
 val jsonassertVersion = "1.5.1"
 
 val mainClass = "no.nav.helse.MidlertidigAleneProsesseringKt"
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.7.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 buildscript {
     // Henter ut diverse dependency versjoner, i.e. ktorVersion.
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/a615e0cd38696e407239902c9017a5a73a011c34/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/3bd7664b0352f77c0d6c124d1d03c57bc0284690/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -58,7 +58,11 @@ dependencies {
 
     // Test
     testImplementation("org.apache.kafka:kafka-clients:$kafkaVersion")
-    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedEnvVersion")
+    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedEnvVersion") {
+        exclude("org.glassfish", "jakarta.el")
+        exclude("org.apache.kafka", "kafka-clients")
+        exclude("javax.el", "javax.el-api")
+    }
     testImplementation("no.nav.helse:dusseldorf-test-support:$dusseldorfKtorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
