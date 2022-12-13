@@ -17,7 +17,6 @@ class MidlertidigAleneProsesseringWithMocks {
 
             val wireMockServer: WireMockServer = WireMockBuilder()
                 .withPort(8091)
-                .withNaisStsSupport()
                 .withAzureSupport()
                 .navnOppslagConfig()
                 .build()
@@ -39,7 +38,7 @@ class MidlertidigAleneProsesseringWithMocks {
                 override fun run() {
                     logger.info("Tearing down")
                     wireMockServer.stop()
-                    kafkaEnvironment.tearDown()
+                    kafkaEnvironment.stop()
                     logger.info("Tear down complete")
                 }
             })
