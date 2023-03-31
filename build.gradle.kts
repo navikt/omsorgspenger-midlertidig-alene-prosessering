@@ -16,7 +16,7 @@ val jsonassertVersion = "1.5.1"
 val mainClass = "no.nav.helse.MidlertidigAleneProsesseringKt"
 
 plugins {
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
