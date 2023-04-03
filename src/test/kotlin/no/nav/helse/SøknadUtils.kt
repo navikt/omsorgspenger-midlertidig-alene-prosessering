@@ -2,6 +2,7 @@ package no.nav.helse
 
 import no.nav.helse.prosessering.v1.søknad.*
 import no.nav.k9.søknad.Søknad
+import no.nav.k9.søknad.felles.Kildesystem.SØKNADSDIALOG
 import no.nav.k9.søknad.felles.Versjon
 import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
 import no.nav.k9.søknad.felles.type.Periode
@@ -72,5 +73,5 @@ object SøknadUtils {
             ),
             null
         )
-    )
+    ).medKildesystem(SØKNADSDIALOG)
 }

@@ -13,7 +13,7 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.k9.søknad.JsonUtils
 import no.nav.k9.søknad.Søknad
 import org.json.JSONObject
-import org.junit.AfterClass
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
@@ -78,7 +78,7 @@ class MidlertidigAleneProsesseringTest {
             engine.start(wait = true)
         }
 
-        @AfterClass
+        @AfterAll
         @JvmStatic
         fun tearDown() {
             logger.info("Tearing down")
